@@ -10,7 +10,7 @@ import React, { Component } from 'react';
  * 
  */
 
-class RSB_Info_Modal extends Component {
+class RSBInfoModal extends Component {
     constructor(prop) {
         super();
         this.state = {
@@ -44,4 +44,4 @@ class RSB_Info_Modal extends Component {
     }
 }
 
-export default RSB_Info_Modal;
+export default RSBInfoModal;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 // import '../App.css';
-import './quickAccess.css';
-import RSB_Button from '../../components_generic/RSB_Button';
-import RSB_Host_Modal from '../host-page/hostPage';
-import RSB_Mini_Modal from '../../components_generic/RSB_Info_Modal';
+import './style.css';
+import RSBButton from '../ui/RSBButton';
+import RSBHostModal from '../HostGame';
+import RSBMiniModal from '../ui/RSBInfoModal';
 
 
 class QuickAccess extends Component {
@@ -65,7 +65,7 @@ class QuickAccess extends Component {
     render() {
 
         let returnable = [];
-        this.state.content.forEach((element) => {
+        this.state.content.forEach((element, i) => {
             let handleFunction;
             if (element.visible) {
                 switch (element.title) {
@@ -89,7 +89,8 @@ class QuickAccess extends Component {
 
                 let type = element.buttonType;
                 returnable.push(
-                    <RSB_Button
+                    <RSBButton
+                        key= {i}
                         text={element.title}
                         buttonType={type}
                         onClickFunction={handleFunction}
@@ -100,12 +101,14 @@ class QuickAccess extends Component {
 
         let modalsInPage = [];
 
-        modalsInPage.push(<RSB_Mini_Modal
+        modalsInPage.push(<RSBMiniModal
             modalID="Sport"
             bodyText="You are in Sport!"
+            key={1}
         />)
-        modalsInPage.push(<RSB_Host_Modal
+        modalsInPage.push(<RSBHostModal
             modalID="Host"
+            key={2}
         />)
 
 
@@ -113,7 +116,7 @@ class QuickAccess extends Component {
             <div>
                 {modalsInPage}
                 <div className="btn-group quick-access" id="quick">
-                    {/* {console.log("Returnable: ", returnable)} */}
+                    {console.log("Returnable: ", returnable)}
                     {returnable}
                 </div>
             </div>

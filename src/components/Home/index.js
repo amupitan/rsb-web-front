@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import './App.css';
-import HamburgerMenu from '../../components_page/hamburger-menu/hamburgerMenu';
-import QuickAccess from '../../components_page/quick-access/quickAccess';
+import HamburgerMenu from '../HamburgerMenu';
+import QuickAccess from '../QuickAccess';
 
 
 
@@ -31,11 +31,6 @@ class Home extends Component {
         <QuickAccess
           content={
             [
-              {
-                title: "Test file",
-                visible: false,
-                buttonType: "primary qa-button"
-              },
               {
                 title: "Host",
                 visible: false,

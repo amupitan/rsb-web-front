@@ -30,7 +30,7 @@ import React, { Component } from 'react';
 
  //TODO use openModal in the modal creation thing 
 
-class RSB_Button extends Component {
+class RSBButton extends Component {
     constructor(prop) {
         super(prop);
 
@@ -58,4 +58,4 @@ class RSB_Button extends Component {
     }
 }
 
-export default RSB_Button;
+export default RSBButton;

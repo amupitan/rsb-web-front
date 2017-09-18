@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import './hostPage.css';
-import RSB_Button from '../../components_generic/RSB_Button';
+import './style.css';
+import RSBButton from '../ui/RSBButton';
 
 /**
  * Modals are different because we don't have to rerender the page for it to show.
@@ -12,7 +12,7 @@ import RSB_Button from '../../components_generic/RSB_Button';
  * 
  */
 
-class Host_Page extends Component {
+class HostPage extends Component {
     constructor(prop) {
         super();
         this.state = {
@@ -41,7 +41,7 @@ class Host_Page extends Component {
                                         <label htmlFor="game-sport" className="form-control-label">Sport:</label>
                                         <div className="container row">
                                             <div className="col-sm-4">
-                                                <RSB_Button
+                                                <RSBButton
                                                     text="Soccer"
                                                     buttonType="info form-control"
                                                     onClickFunction={() => {
@@ -50,7 +50,7 @@ class Host_Page extends Component {
                                                 />
                                             </div>
                                             <div className="col-sm-4">
-                                                <RSB_Button
+                                                <RSBButton
                                                     text="basketball"
                                                     buttonType="info form-control"
                                                     onClickFunction={() => {
@@ -80,4 +80,4 @@ class Host_Page extends Component {
     }
 }
 
-export default Host_Page;
+export default HostPage;

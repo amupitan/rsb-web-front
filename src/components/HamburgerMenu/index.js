@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 // import '../App.css';
-import './hamburgerMenu.css';
+import './style.css';
 
 class HamburgerMenu extends Component {
   constructor(props) {
