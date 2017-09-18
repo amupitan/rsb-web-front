@@ -1,0 +1,25 @@
+.btn-group button {
+    padding: 10px 2px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    display: block; /* Make the buttons appear below each other */
+
+    width: 5rem;
+	height: 5rem;
+	-moz-border-radius: 5rem;
+	-webkit-border-radius: 5rem;
+	border-radius: 5rem;
+}
+
+.quick-access {
+    position:fixed;
+    left: 0;
+    bottom: 0;
+    padding: 10px 2px;
+  }
+  
+  .qa-button{
+    border: 1rem;
+    margin: .6rem;
+    padding: 10px 2px;
+  }
+  

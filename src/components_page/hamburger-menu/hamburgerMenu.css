@@ -1,0 +1,61 @@
+.test-hamburger{
+    font-size:30px;
+    color: white;
+    cursor:pointer;
+    width: 50px;
+    text-align: center;
+    background: black; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(left top, black,#708090); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, black,#708090); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, black,#708090); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, black,#708090); /* Standard syntax (must be last) */
+}
+
+
+
+.rsb-menu {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    background: black; /* For browsers that do not support gradients */    
+    background: -webkit-linear-gradient(left top, black,#708090); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, black,#708090); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, black,#708090); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, black,#708090); /* Standard syntax (must be last) */
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.menu-close {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    color: lightgray
+}
+
+.menu-close:hover {
+    color: #f1f1f1;
+    cursor:pointer;
+}
+
+.menu-option:hover {
+    color: #f1f1f1;
+    cursor:pointer;
+}
+
+.menu-option {
+    padding: 8px 8px 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    border-top: 1px solid #000000;
+    border-top-color: darkgray;
+}
