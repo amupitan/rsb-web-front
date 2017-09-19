@@ -2,10 +2,41 @@
 import os,sys
 import errno
 
-if len(sys.argv) != 2:
-    sys.stderr.write("Expected only 1 argument but received " + str(len(sys.argv) -1) + "\n")
-else:
-    component = sys.argv[1]
+def main():
+    if len(sys.argv) == 1:
+        name = input("What is the name of the component you want to create?\n> ")
+        ui = False
+        if input("Is {} going to be a UI Component? Type true or hit enter[false]\n> ".format(name)) == "true":
+            ui = True
+        if ui:
+            create_ui_component(name)
+        else:
+            create_component(name)
+
+    elif len(sys.argv) != 2:
+        sys.stderr.write("Expected only 1 argument but received " + str(len(sys.argv) -1) + "\n")
+    else:
+        create_component(sys.argv[1])
+
+index_js_template = """import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+
+import './style.css';
+
+export default () => <div />
+"""
+    
+def create_ui_component(component):
+    component = component.title()
+    path = "./ui/" + component + ".js"
+    file = open(path, "w")
+    file.write(index_js_template)
+    file.close()
+    print("UI Component: {} has been created".format(component))
+
+def create_component(component):
+    component = component.title()
     path = "./" + component
 
     #create component directory
@@ -43,14 +74,11 @@ it('renders without crashing', () => {{
     #create index.js
     fpath = "./" + component + "/index.js"
     file = open(fpath, "w")
-    index_js_template = """import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-
-import './style.css';
-"""
                          
     file.write(index_js_template)
     file.close()
+
+    print("Component: {} has been created".format(component))
     
-    
+if __name__ == "__main__":
+    main()

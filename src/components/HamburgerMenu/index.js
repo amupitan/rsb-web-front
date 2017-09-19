@@ -44,8 +44,8 @@ class HamburgerMenu extends Component {
       return(       
         <div className="rsb-menu" style={{width: menuWidth}}>
           <div>
-            {menuOptions.map(function (menuOption) {
-              return <span className="menu-option">{menuOption.optionName}</span>;
+            {menuOptions.map(function (menuOption, i) {
+              return <span key={i} className="menu-option">{menuOption.optionName}</span>;
             })}
           </div>
 
