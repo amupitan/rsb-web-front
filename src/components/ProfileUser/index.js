@@ -16,7 +16,7 @@ class ProfileUser extends Component {
     render(){
         return (
             <div>
-                <div className="modal fade" id={this.state.id} role="dialog">
+                <div className="modal fade" id={this.props.id} role="dialog">
                     <div className="modal-dialog-full">
                         <div className="modal-content-full">
                             <div className="modal-header">

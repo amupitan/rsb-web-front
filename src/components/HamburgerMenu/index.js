@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
+import ProfileUser from '../ProfileUser';
 import './style.css';
 
 class HamburgerMenu extends Component {
@@ -32,7 +33,7 @@ class HamburgerMenu extends Component {
   }
 
   handleProfileClick() {
-    console.log("Clicked profile button"); /**TODO: Produce ProfilePage Modal */
+    console.log("Clicked profile button"); //Can remove later
   }
 
   render() {
@@ -40,8 +41,16 @@ class HamburgerMenu extends Component {
     const menuWidth = this.state.menuWidth;
     const menuOptions = this.props.menuOptions;
 
+    let modalPages = [];
+    modalPages.push(<ProfileUser
+          id="Profile"
+          key={3}
+      />);
+
     if (menuOpen) {
       return (
+        <div>
+          {modalPages}
         <div className="rsb-menu" style={{ width: menuWidth }}>
           <div>
             {menuOptions.map((menuOp, i)=> {
@@ -60,6 +69,7 @@ class HamburgerMenu extends Component {
                 name={menuOp.optionName}
                 onClickFunction={handleFunction}
                 styleClass = 'menu-option'
+                modalName = {menuOp.optionName}
               />;
             })}
           </div>
@@ -69,11 +79,13 @@ class HamburgerMenu extends Component {
           }}>&times;
           </span>
         </div>
+        </div>
       );
     }
     else {
       return (
         <div className="container-fluid row top-bar">
+          {modalPages}
           <div className="col-xs-sm-1">
             <div className="test-hamburger" onClick={() => {
               this.handleClick();

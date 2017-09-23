@@ -22,6 +22,7 @@ class HostPage extends Component {
     }
 
     render() {
+        console.log("Host Page state;", this.state);
         return (
             <div>
                 <div className="modal fade" id={this.state.id} role="dialog">

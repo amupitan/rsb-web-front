@@ -26,7 +26,10 @@ import React from 'react';
 function RSBLabel(props) {
     return (
         <div>
-            <span onClick={props.onClickFunction} className={props.styleClass}>
+            <span 
+                onClick={props.onClickFunction} 
+                className={props.styleClass}
+                data-toggle="modal" data-target={"#"+ props.modalName}>
                 {props.name}
             </span>
         </div>
