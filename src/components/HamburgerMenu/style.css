@@ -38,24 +38,3 @@
     margin-left: 50px;
     color: lightgray
 }
-
-.menu-close:hover {
-    color: #f1f1f1;
-    cursor:pointer;
-}
-
-.menu-option:hover {
-    color: #f1f1f1;
-    cursor:pointer;
-}
-
-.menu-option {
-    padding: 8px 8px 8px 8px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    color: #818181;
-    display: block;
-    border-top: 1px solid #000000;
-    border-top-color: darkgray;
-}

@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
-// import '../App.css';
+import RSBLabel from '../ui/RSBLabel';
 import './style.css';
 
 class HamburgerMenu extends Component {
   constructor(props) {
-      super(props);
-      this.state = {
-          menuOptions: this.props.menuUptions,
-          menuIsOpen: false,
-          menuWidth: 0
-      }
+    super(props);
+    this.state = {
+      menuOptions: this.props.menuUptions,
+      menuIsOpen: false,
+      menuWidth: 0
+    }
 
-      //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
-      this.render = this.render.bind(this);
+    //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
+    this.render = this.render.bind(this);
   }
 
   handleClick() {
-    if(this.state.menuIsOpen){
+    if (this.state.menuIsOpen) {
       this.setState(() => ({
         menuWidth: '0px'
       }));
     }
-    else{
+    else {
       this.setState(() => ({
         menuWidth: '250px'
       }));
@@ -34,37 +33,54 @@ class HamburgerMenu extends Component {
     console.log(this.state.menuWidth);
   }
 
+  handleProfileClick() {
+    console.log("Clicked profile button");
+  }
+
   render() {
     const menuOpen = this.state.menuIsOpen;
     const menuWidth = this.state.menuWidth;
     const menuOptions = this.props.menuOptions;
 
-    console.log(menuOptions);
-    if(menuOpen){
-      return(       
-        <div className="rsb-menu" style={{width: menuWidth}}>
+    if (menuOpen) {
+      return (
+        <div className="rsb-menu" style={{ width: menuWidth }}>
           <div>
-            {menuOptions.map(function (menuOption, i) {
-              return <span key={i} className="menu-option">{menuOption.optionName}</span>;
+            {menuOptions.map((menuOp, i)=> {
+              console.log(menuOp)
+              let handleFunction;
+
+              switch (menuOp.optionName) {
+                case "Profile":
+                  handleFunction = this.handleProfileClick;
+                  break;
+                default:
+                  handleFunction = () => {
+                    console.log("Clicked RSBLabel")
+                  }
+              }
+              return <RSBLabel key={i} className="menu-option"
+                name={menuOp.optionName}
+                onClickFunction={handleFunction}
+                styleClass = 'menu-option'
+              />;
             })}
           </div>
 
           <span className="menu-close" onClick={() => {
-              this.handleClick();
-              console.log("Closed hambuger menu");
-              }}>&times;
+            this.handleClick();
+          }}>&times;
           </span>
-       </div>
+        </div>
       );
     }
-    else{
+    else {
       return (
         <div className="container-fluid row top-bar">
           <div className="col-xs-sm-1">
-             <div className="test-hamburger" onClick={() => {
-                this.handleClick();
-                console.log("Clicked hambuger menu");
-                }}>&#9776;
+            <div className="test-hamburger" onClick={() => {
+              this.handleClick();
+            }}>&#9776;
             </div>
           </div>
         </div>
@@ -73,4 +89,4 @@ class HamburgerMenu extends Component {
   }
 }
 
-  export default HamburgerMenu;
+export default HamburgerMenu;
