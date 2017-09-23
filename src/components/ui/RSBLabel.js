@@ -8,6 +8,7 @@ import React from 'react';
  *      className: Class that the label will use. 
  *          The style associated with that class just has to be accessable in the component that uses  RSBLabel. Not in RSBLabel itself
  *      onClickFunction: Function you want the button to execute when it is pressed.
+ *      modalName: This is for if you want a modal to pop up when you press it
  * 
  * We can add more later
  *      
@@ -19,6 +20,7 @@ import React from 'react';
         onClickFunction={()=>{
             console.log("Foo");
         }}
+        modalName: "FriendsList"
     />
  * 
  */
