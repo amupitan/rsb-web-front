@@ -29,12 +29,10 @@ class HamburgerMenu extends Component {
     this.setState((prevState => ({
       menuIsOpen: !prevState.menuIsOpen
     })));
-    console.log(this.state.menuIsOpen);
-    console.log(this.state.menuWidth);
   }
 
   handleProfileClick() {
-    console.log("Clicked profile button");
+    console.log("Clicked profile button"); /**TODO: Produce ProfilePage Modal */
   }
 
   render() {
@@ -47,7 +45,6 @@ class HamburgerMenu extends Component {
         <div className="rsb-menu" style={{ width: menuWidth }}>
           <div>
             {menuOptions.map((menuOp, i)=> {
-              console.log(menuOp)
               let handleFunction;
 
               switch (menuOp.optionName) {

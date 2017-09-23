@@ -1,12 +1,12 @@
 import React from 'react';
-import './style/HamburgerMenu.css';
 
 /**
  * How to use: 
  * 
  * Props that are suggested to pass in: 
  *      name: The text value of the label
- *      className: Class that the label will use. Make sure to import the file that has that class defined into this file
+ *      className: Class that the label will use. 
+ *          The style associated with that class just has to be accessable in the component that uses  RSBLabel. Not in RSBLabel itself
  *      onClickFunction: Function you want the button to execute when it is pressed.
  * 
  * We can add more later
