@@ -7,9 +7,13 @@ import React, { Component } from 'react';
  *      text: The text value of the button
  *      buttonType: bootstrap class name for button
  *          examples: "default", "primary", "success", "warning", "danger" or "info" 
+ *               *** It's a better way to style your buttons through css and pass in that class name rather than
+ *                   use buttonType. This is because we don't want to be too dependant on bootstrap ***
  *      onClickFunction: Function you want the button to execute when it is pressed.
+ *       modalName: This is for if you want a modal to pop up when you press it
+ *
  * 
- * We can add more later
+ * Can add more later
  *      
  * 
  * Optional:
@@ -24,11 +28,10 @@ import React, { Component } from 'react';
         buttonType= "danger"
         onClickFunction={this.handleClick}
         glyphicons="glyphicon glyphicon-music"
+        modalName: "FriendsList"
     />
  * 
  */
-
- //TODO use openModal in the modal creation thing 
 
 class RSBButton extends Component {
     constructor(prop) {
@@ -39,7 +42,6 @@ class RSBButton extends Component {
             buttonType: prop.buttonType,
             onClickFunction: prop.onClickFunction ? prop.onClickFunction : " ",
             glyphicons: prop.glyphicons ? prop.glyphicons : " ",
-            openModal: prop.openModal ? `data-toggle="modal" data-target="#myModal"`: " ",
             modalName: prop.modalName
         }
     }
