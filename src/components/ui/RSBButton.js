@@ -53,7 +53,7 @@ class RSBButton extends Component {
         return (
             <div>
                 <button type="button" 
-                        className={"btn btn-" + this.state.buttonType + " " + this.state.glyphicons + this.state.className} 
+                        className={"btn btn-" + this.state.buttonType + " " + this.state.glyphicons + " " + this.state.className} 
                         onClick={this.state.onClickFunction}
                         data-toggle="modal" data-target={"#"+ this.state.modalName}
                         

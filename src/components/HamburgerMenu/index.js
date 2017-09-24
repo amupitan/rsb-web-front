@@ -35,7 +35,6 @@ class HamburgerMenu extends Component {
   }
 
   handleProfileClick() {
-    console.log("Clicked profile button"); //Can remove later
     this.setState(() => ({
       displayProfile: !this.state.displayProfile
     }));
@@ -47,12 +46,7 @@ class HamburgerMenu extends Component {
     const menuOptions = this.props.menuOptions;
 
     let renderPage;
-
-
-      console.log("this is: ", this);
-
     if (this.state.displayProfile) {
-      console.log("Inside display Profile");
       return (
         <div>
           <ProfileUser
@@ -63,7 +57,6 @@ class HamburgerMenu extends Component {
     }
 
     else if (menuOpen) {
-      console.log("Inside menuOpen", this.state.displayProfile);
       renderPage = 
         <div>
           <div className="rsb-menu" style={{ width: menuWidth }}>
@@ -97,7 +90,6 @@ class HamburgerMenu extends Component {
         </div>
     }
     else {
-      console.log("Else");
       renderPage = 
         <div className="container-fluid row top-bar">
           <div className="col-xs-sm-1">
@@ -108,7 +100,6 @@ class HamburgerMenu extends Component {
           </div>
         </div>
     }
-
     return (renderPage);
   }
 }

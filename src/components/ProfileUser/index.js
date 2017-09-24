@@ -7,20 +7,16 @@ import './style.css';
 class ProfileUser extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
         this.render = this.render.bind(this);
     }
 
     render() {
-        console.log("Display profileUser", this.props);
         return (
             <div>
                 <div className="modal-header">
                     <RSBButton
-                        text={"&times;"}
-                        buttonType="close"
+                        text="X"
+                        className="close"
                         onClickFunction={this.props.onCloseFunction}
                     />
                     <h4 className="modal-title">Profile</h4>
