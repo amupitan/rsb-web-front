@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import RSBButton from '../ui/RSBButton';
+import RSBLabel from '../ui/RSBLabel';
 
 import './style.css';
 
 class ProfileUser extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
 
         }
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <div className="modal fade" id={this.props.id} role="dialog">
@@ -24,45 +22,70 @@ class ProfileUser extends Component {
                                 <h4 className="modal-title">Profile</h4>
                             </div>
                             <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                        <label htmlFor="game-code" className="form-control-label">Game Code:</label>
-                                        <input type="text" className="form-control" id="game-code" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="game-sport" className="form-control-label">Sport:</label>
+
+                                <div className="container row">
+                                    <div className="col-sm-2" />
+                                    <div className="col-sm-8 profile-info">
                                         <div className="container row">
-                                            <div className="col-sm-4">
-                                                <RSBButton
-                                                    text="Soccer"
-                                                    buttonType="info form-control"
+                                            <div className="col-sm-4 profile-pic">
+                                                <h3>User picture</h3>
+                                            </div>
+                                            <div className="col-sm-8 user-info">
+                                                <h4>User's Name</h4>
+                                                <RSBLabel
+                                                    name="Friends"
+                                                    className="friend-link"
                                                     onClickFunction={() => {
-                                                        console.log("soccer button clicked")
+                                                        console.log("Clicked friends label")
                                                     }}
                                                 />
-                                            </div>
-                                            <div className="col-sm-4">
-                                                <RSBButton
-                                                    text="basketball"
-                                                    buttonType="info form-control"
-                                                    onClickFunction={() => {
-                                                        console.log("basketball button clicked")
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="col-sm-4">
+                                                <span>Location: User's location</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="message-text" className="form-control-label">Message:</label>
-                                        <textarea className="form-control" id="message-text"></textarea>
+                                    <div className="col-sm-2" />
+                                </div>
+                                <div className="container row">
+                                    <div className="col-sm-6">
+                                        <h2>Friends</h2>
+                                        <div className="top-col">
+                                            <div className="sub-col">
+                                                <p>Friend Request</p>
+                                                </div>
+                                            <div className="sub-col">
+                                                <p>Top Friends</p>
+                                            </div>
+                                            <div className="sub-col">
+                                                <p>Recently Added</p>
+                                            </div>
+                                            <div className="sub-col">
+                                                <p>Rest of the friends</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                    <div className="col-sm-6 ">
+                                        <h2>Games</h2>
+                                        <div className="top-col">
+                                            <div className="sub-col">
+                                                <p>Top sports, and rating of the sport?</p>
+                                                </div>
+                                            <div className="sub-col">
+                                            <RSBLabel
+                                                name="Game History"
+                                                className="game-history-link"
+                                                onClickFunction={() => {
+                                                    console.log("Clicked Game History label")
+                                                }}
+                                            />  
+                                                </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-info" data-dismiss="modal">Submit</button>
                             </div>
                         </div>
                     </div >
@@ -70,7 +93,7 @@ class ProfileUser extends Component {
             </div >
         )
     }
-    
+
 }
 
 export default ProfileUser;
