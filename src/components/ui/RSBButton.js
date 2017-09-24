@@ -11,6 +11,7 @@ import React, { Component } from 'react';
  *                   use buttonType. This is because we don't want to be too dependant on bootstrap ***
  *      onClickFunction: Function you want the button to execute when it is pressed.
  *       modalName: This is for if you want a modal to pop up when you press it
+ *      className: Pass in a class name
  *
  * 
  * Can add more later
@@ -29,6 +30,7 @@ import React, { Component } from 'react';
         onClickFunction={this.handleClick}
         glyphicons="glyphicon glyphicon-music"
         modalName: "FriendsList"
+        className: "close"
     />
  * 
  */
@@ -42,7 +44,8 @@ class RSBButton extends Component {
             buttonType: prop.buttonType,
             onClickFunction: prop.onClickFunction ? prop.onClickFunction : " ",
             glyphicons: prop.glyphicons ? prop.glyphicons : " ",
-            modalName: prop.modalName
+            modalName: prop.modalName,
+            className: prop.className
         }
     }
 
@@ -50,7 +53,7 @@ class RSBButton extends Component {
         return (
             <div>
                 <button type="button" 
-                        className={"btn btn-" + this.state.buttonType + " " + this.state.glyphicons} 
+                        className={"btn btn-" + this.state.buttonType + " " + this.state.glyphicons + this.state.className} 
                         onClick={this.state.onClickFunction}
                         data-toggle="modal" data-target={"#"+ this.state.modalName}
                         

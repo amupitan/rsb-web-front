@@ -9,11 +9,13 @@ class HamburgerMenu extends Component {
     this.state = {
       menuOptions: this.props.menuUptions,
       menuIsOpen: false,
-      menuWidth: 0
+      menuWidth: 0,
+      displayProfile: false
     }
 
     //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
     this.render = this.render.bind(this);
+    this.handleProfileClick = this.handleProfileClick.bind(this);
   }
 
   handleClick() {
@@ -34,6 +36,9 @@ class HamburgerMenu extends Component {
 
   handleProfileClick() {
     console.log("Clicked profile button"); //Can remove later
+    this.setState(() => ({
+      displayProfile: !this.state.displayProfile
+    }));
   }
 
   render() {
@@ -41,51 +46,60 @@ class HamburgerMenu extends Component {
     const menuWidth = this.state.menuWidth;
     const menuOptions = this.props.menuOptions;
 
-    let modalPages = [];
-    modalPages.push(<ProfileUser
-          id="Profile"
-          key={3}
-      />);
+    let renderPage;
 
-    if (menuOpen) {
+
+      console.log("this is: ", this);
+
+    if (this.state.displayProfile) {
+      console.log("Inside display Profile");
       return (
         <div>
-          {modalPages}
-        <div className="rsb-menu" style={{ width: menuWidth }}>
-          <div>
-            {menuOptions.map((menuOp, i)=> {
-              let handleFunction;
+          <ProfileUser
+            onCloseFunction = {this.handleProfileClick}
+          />
+        </div>
+      )
+    }
 
-              switch (menuOp.optionName) {
-                case "Profile":
-                  handleFunction = this.handleProfileClick;
-                  break;
-                default:
-                  handleFunction = () => {
-                    console.log("Clicked RSBLabel")
-                  }
-              }
-              return <RSBLabel key={i} className="menu-option"
-                name={menuOp.optionName}
-                onClickFunction={handleFunction}
-                styleClass = 'menu-option'
-                modalName = {menuOp.optionName}
-              />;
-            })}
-          </div>
+    else if (menuOpen) {
+      console.log("Inside menuOpen", this.state.displayProfile);
+      renderPage = 
+        <div>
+          <div className="rsb-menu" style={{ width: menuWidth }}>
+            <div>
+              {menuOptions.map((menuOp, i) => {
+                let handleFunction;
 
-          <span className="menu-close" onClick={() => {
-            this.handleClick();
-          }}>&times;
+                switch (menuOp.optionName) {
+                  case "Profile":
+                    handleFunction = this.handleProfileClick;
+                    break;
+                  default:
+                    handleFunction = () => {
+                      console.log("Clicked RSBLabel")
+                    }
+                }
+                return <RSBLabel key={i} className="menu-option"
+                  name={menuOp.optionName}
+                  onClickFunction={handleFunction}
+                  styleClass='menu-option'
+                  modalName={menuOp.optionName}
+                />;
+              })}
+            </div>
+
+            <span className="menu-close" onClick={() => {
+              this.handleClick();
+            }}>&times;
           </span>
+          </div>
         </div>
-        </div>
-      );
     }
     else {
-      return (
+      console.log("Else");
+      renderPage = 
         <div className="container-fluid row top-bar">
-          {modalPages}
           <div className="col-xs-sm-1">
             <div className="test-hamburger" onClick={() => {
               this.handleClick();
@@ -93,8 +107,9 @@ class HamburgerMenu extends Component {
             </div>
           </div>
         </div>
-      );
     }
+
+    return (renderPage);
   }
 }
 
