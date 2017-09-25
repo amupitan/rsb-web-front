@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Form from '../Form';
+import FormButton from '../ui/FormButton';
 
 import logo from '../../assets/rsb_logo.png';
 import './style.css';
@@ -81,22 +82,6 @@ const formElements = [
     ]
 ];
 
-var submitButton = props => {
-    return (
-        <div className="form-group col-sm-offset-10">
-            <div className="back">
-                <div className="button_base b03_skewed_slide_in">
-                    <div className="next-button"><span className="glyphicon glyphicon-menu-right"></span>
-                    </div>
-                    <div></div>
-                    <div className="next-button"><span className="glyphicon glyphicon-menu-right"></span><span className="glyphicon glyphicon-menu-right"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 var SignUp = (props) => {
     return (
         <div className="container ">
@@ -105,7 +90,7 @@ var SignUp = (props) => {
                     <img className="logo" src={logo} alt="rsb_logo" />
                 </div>
                 <div className="inner col-sm-offset-1 col-sm-10">
-                    <Form elements={formElements} button={submitButton()} title="Sign Up!" />
+                    <Form elements={formElements} button={FormButton()} title="Sign Up!" />
                 </div>
             </div>
         </div>
