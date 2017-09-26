@@ -14,7 +14,9 @@ import RSBButton from '../ui/RSBButton';
 
 class HostPage extends Component {
     constructor(prop) {
-        super();
+        super(prop);
+
+        this.render=this.render.bind(this);
     }
 
     render() {
