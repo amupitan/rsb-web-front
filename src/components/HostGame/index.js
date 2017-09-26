@@ -15,13 +15,7 @@ import RSBButton from '../ui/RSBButton';
 class HostPage extends Component {
     constructor(prop) {
         super();
-        this.state = {
-            id: prop.modalID,
-            bodyText: prop.bodyText
-        }
     }
-
-
 
     render() {
         let sportsOption = ["Soccer", "Basketball", "Volleyball", "Football", "Tennis", "Other"];
@@ -85,6 +79,12 @@ class HostPage extends Component {
                             <br />
                             {/* Search Location */}
                             <input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" />
+                            <RSBButton
+                                glyphicons= "glyphicon glyphicon-map-marker"
+                                onClickFunction={()=>{
+                                    console.log("Go to map to drop pin!");
+                                }}
+                            />
                         </div>
                     </form>
                 </div>
