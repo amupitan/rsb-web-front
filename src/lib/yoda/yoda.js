@@ -27,6 +27,14 @@ export default class Yoda {
         this.post(path, body, callback);
     };
 
+    //TODO: this is repeated
+    static signup(data, callback) {
+        let path = `${url}/create/user`;
+        let body = (new YodaRequest({}, data)).toString();
+
+        this.post(path, body, callback);
+    };
+
     static getUser(data, callback) {
         let path = `${url}/user/p/0`;
         let body = (new YodaRequest({}, data)).toString();
