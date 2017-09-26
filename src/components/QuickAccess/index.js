@@ -13,6 +13,7 @@ class QuickAccess extends Component {
         this.state = {
             content: this.props.content,
             modalInfo: this.props.modalInfo,
+            displayHost: false
         }
 
         //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
@@ -20,6 +21,7 @@ class QuickAccess extends Component {
         this.render = this.render.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.handleSport = this.handleSport.bind(this);
+        this.handleHost = this.handleHost.bind(this);
     }
 
     toggleQuickAccessButtons() {
@@ -45,11 +47,18 @@ class QuickAccess extends Component {
     }
 
     handleHost() {
-        console.log("Host button clicked!");
+        console.log("Clicked HandleHost");
+        this.setState(() => {
+            return {
+                displayHost: !this.state.displayHost
+            }
+        })
     }
 
+
+
     handleSport() {
-        console.log("sport button clicked!");
+        console.log("Handle Sport");
     }
 
     handleBack() {
@@ -58,57 +67,60 @@ class QuickAccess extends Component {
                 content: this.toggleQuickAccessButtons(),
             }
         })
-        console.log("State", this.state);
     }
 
 
+    //TODO: Make this whole thing a whole lot neater. This suuuuuucks
     render() {
-
         let returnable = [];
-        this.state.content.forEach((element, i) => {
-            let handleFunction;
-            if (element.visible) {
-                switch (element.title) {
-                    case ("Host"):
-                        handleFunction = this.handleHost;
-                        break;
-                    case ("Sport"):
-                        handleFunction = this.handleSport;
-                        break;
-                    case ("Back"):
-                        handleFunction = this.handleBack;
-                        break;
-                    case ("Open"):
-                        handleFunction = this.handleQuickAccess;
-                        break;
-                    default:
-                        handleFunction = () => {
-                            console.log("No function found");
-                        }
+        if (this.state.displayHost) {
+            returnable.push(<RSBHostModal 
+                closeButtonFunction = {this.handleHost}
+                key={3}
+            />
+            );
+        } else {
+            this.state.content.forEach((element, i) => {
+                let handleFunction;
+                if (element.visible) {
+                    switch (element.title) {
+                        case ("Host"):
+                            console.log("It is host");
+                            handleFunction = this.handleHost;
+                            break;
+                        case ("Sport"):
+                            handleFunction = this.handleSport;
+                            break;
+                        case ("Back"):
+                            handleFunction = this.handleBack;
+                            break;
+                        case ("Open"):
+                            handleFunction = this.handleQuickAccess;
+                            break;
+                        default:
+                            handleFunction = () => {
+                                console.log("No function found");
+                            }
+                    }
+
+                    let type = element.buttonType;
+                    returnable.push(
+                        <RSBButton
+                            key={i}
+                            text={element.title}
+                            buttonType={type}
+                            onClickFunction={handleFunction}
+                            modalName={element.title}
+                        />)
                 }
-
-                let type = element.buttonType;
-                returnable.push(
-                    <RSBButton
-                        key= {i}
-                        text={element.title}
-                        buttonType={type}
-                        onClickFunction={handleFunction}
-                        modalName={element.title}
-                    />)
-            }
-        }, this);
-
+            }, this);
+        }
         let modalsInPage = [];
 
         modalsInPage.push(<RSBMiniModal
             modalID="Sport"
             bodyText="You are in Sport!"
             key={1}
-        />)
-        modalsInPage.push(<RSBHostModal
-            modalID="Host"
-            key={2}
         />)
 
 
