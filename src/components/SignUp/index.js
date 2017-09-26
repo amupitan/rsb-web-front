@@ -1,5 +1,6 @@
 import React from 'react';
 
+import yoda from '../../lib/yoda';
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
 
@@ -40,7 +41,7 @@ const formElements = [
             }
         },
         {
-            name: 'cpassword',
+            name: 'confirmPass',
             title: 'Confirm Password',
             placeholder: 'xxxxxxxxxx',
             type: 'password',
@@ -61,11 +62,11 @@ const formElements = [
     },
     [
         {
-            name: 'zipcode',
-            placeholder: 'xxxxx-xxxx',
+            name: 'city',
+            placeholder: 'your city',
             type: 'text',
             validate: (value) => {
-                if (value.length !== 5 && value.length !== 10) return 'Invalid Zipcode';
+                if (value.length < 2 || value.length > 50) return 'Incorrect Length';
                 return false;
             },
         },
@@ -82,6 +83,10 @@ const formElements = [
     ]
 ];
 
+var signup = data => {
+    yoda.signup(data, console.log);
+};
+
 var SignUp = (props) => {
     return (
         <div className="container ">
@@ -90,7 +95,7 @@ var SignUp = (props) => {
                     <img className="logo" src={logo} alt="rsb_logo" />
                 </div>
                 <div className="inner col-sm-offset-1 col-sm-10">
-                    <Form elements={formElements} button={FormButton()} title="Sign Up!" />
+                    <Form elements={formElements} button={FormButton()} title="Sign Up!" submit={signup} />
                 </div>
             </div>
         </div>
