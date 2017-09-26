@@ -1,13 +1,13 @@
-.modal-dialog-full {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.friend-invite{
+    border: 1px solid black;
+    min-height: 10px;
+    min-width: inherit;
 }
 
-.modal-content-full{
-    height: auto;
-    min-height: 100%;
-    border-radius: 0;
-    background-color: white;
+.close-btn{
+    left:0
+}
+
+.submit-btn{
+    right:0
 }

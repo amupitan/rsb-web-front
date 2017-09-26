@@ -21,10 +21,27 @@ class HostPage extends Component {
         }
     }
 
-    render() {
-        return (
-            <div>
 
+
+    render() {
+        let sportsOption = ["Soccer", "Basketball", "Volleyball", "Football", "Tennis", "Other"];
+        let sportsButtons = [];
+
+        sportsOption.forEach((sport, i) => {
+            sportsButtons.push(
+                <div className="col-sm-2" key={i}>
+                    <RSBButton
+                        text={sport}
+                        onClickFunction={() => {
+                            console.log("Clicked: ", { sport })
+                        }}
+                        key={i}
+                    />
+                </div>)
+        })
+
+        return (
+            <div className="modal-dialog-full">
                 <div className="modal-header">
                     <RSBButton
                         text="X"
@@ -36,43 +53,54 @@ class HostPage extends Component {
                 <div className="modal-body">
                     <form>
                         <div className="form-group">
-                            <label htmlFor="game-code" className="form-control-label">Game Code:</label>
+                            {/* Game name */}
+                            <label htmlFor="game-code" className="form-control-label">Name of game:</label>
                             <input type="text" className="form-control" id="game-code" />
-                        </div>
-                        <div className="form-group">
+                            <br />
+                            {/* Sport */}
                             <label htmlFor="game-sport" className="form-control-label">Sport:</label>
                             <div className="container row">
-                                <div className="col-sm-4">
-                                    <RSBButton
-                                        text="Soccer"
-                                        buttonType="info form-control"
-                                        onClickFunction={() => {
-                                            console.log("soccer button clicked")
-                                        }}
-                                    />
+                                {sportsButtons}
+                            </div>
+                            <br />
+                            {/* Number of players */}
+                            <label>Number of players</label>
+                            <input type="number" min="0" />
+                            <br />
+                            {/* Start time / End Time */}
+                            <div className="container row">
+                                <div className="col-xs-3">
+                                    <input type="time" name="usr_time" />
                                 </div>
-                                <div className="col-sm-4">
-                                    <RSBButton
-                                        text="basketball"
-                                        buttonType="info form-control"
-                                        onClickFunction={() => {
-                                            console.log("basketball button clicked")
-                                        }}
-                                    />
-                                </div>
-                                <div className="col-sm-4">
+                                <div className="col-xs-9">
+                                    <input type="time" name="usr_time" />
+                                    <input type="submit" />
                                 </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="message-text" className="form-control-label">Message:</label>
-                            <textarea className="form-control" id="message-text"></textarea>
+                            <br />
+                            {/* Invite Friends */}
+                            <div className="friend-invite container row">
+                                <p>Invite Friends</p>
+                            </div>
+                            <br />
+                            {/* Search Location */}
+                            <input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" />
                         </div>
                     </form>
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-default" onClick={this.props.closeButtonFunction}>Close</button>
-                    <button type="button" className="btn btn-info" >Host</button>
+                    <RSBButton
+                        text="Close"
+                        className="btn btn-default close-btn"
+                        onClickFunction={this.props.closeButtonFunction}
+                    />
+                    <RSBButton
+                        text="Host"
+                        className = "btn btn-info submit-btn"
+                        onClickFunction={() => {
+                            console.log("Host game!");
+                        }}
+                    />
                 </div>
             </div>
         );
