@@ -58,6 +58,7 @@ class CurrentGame extends Component {
 
                 </div>
         }
+        //Render when a game exists
         else {
             renderPage =
                 <div>

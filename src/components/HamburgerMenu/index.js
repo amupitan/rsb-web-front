@@ -33,7 +33,7 @@ class HamburgerMenu extends Component {
 
   //called whenever the menu button is opened
   handleMenuOpen() {
-    console.log("this shit was clicked");
+    console.log("the menu was clicked");
     this.setState(() => ({
       menuWidth: '250px',
       menuIsOpen: true,
@@ -67,6 +67,7 @@ class HamburgerMenu extends Component {
     let renderPage;
     let renderMenu;
 
+    //case for open menu and options to select page
     if (menuOpen) {
       renderMenu =
 
@@ -104,6 +105,7 @@ class HamburgerMenu extends Component {
           </div>
         </div>
     }
+    //renders the basic menu button
     else {
       renderMenu =
         <RSBButton
