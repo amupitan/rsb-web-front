@@ -4,4 +4,19 @@ import classnames from 'classnames';
 
 import './style.css';
 
-export default () => <div />
+class CurrentGame extends Component {
+    constructor(props) {
+        super(props);
+        this.render = this.render.bind(this);
+    }
+
+    render() {
+        return (
+            <div className="text-center">
+                Hello World 
+            </div>
+        )
+    }
+}
+
+export default CurrentGame;

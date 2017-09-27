@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import ProfileUser from '../ProfileUser';
+import CurrentGame from '../CurrentGame';
 import './style.css';
 
 class HamburgerMenu extends Component {
@@ -10,33 +11,47 @@ class HamburgerMenu extends Component {
       menuOptions: this.props.menuUptions,
       menuIsOpen: false,
       menuWidth: 0,
-      displayProfile: false
+      currentOption : ""
     }
 
     //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
     this.render = this.render.bind(this);
     this.handleProfileClick = this.handleProfileClick.bind(this);
+    this.handleCurrentGameClick = this.handleCurrentGameClick.bind(this);
+    this.handleMenuOpen = this.handleMenuOpen.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
   }
 
-  handleClick() {
-    if (this.state.menuIsOpen) {
-      this.setState(() => ({
-        menuWidth: '0px'
-      }));
-    }
-    else {
-      this.setState(() => ({
-        menuWidth: '250px'
-      }));
-    }
-    this.setState((prevState => ({
-      menuIsOpen: !prevState.menuIsOpen
-    })));
+  //Funtion called when the menu is open and closed, page doesn't change
+  handleMenuClose(){
+    this.setState(() => ({
+      menuWidth: '0px',
+      menuIsOpen : false,
+    }));
   }
 
+  //called whenever the menu button is opened
+  handleMenuOpen() {
+    this.setState(() => ({
+      menuWidth: '250px',
+      menuIsOpen: true,
+    }));
+  }
+
+  //called when the profile click option is selected
   handleProfileClick() {
     this.setState(() => ({
-      displayProfile: !this.state.displayProfile
+      currentOption: "profile",
+      menuWidth : "0px",
+      menuIsOpen : false
+    }));
+  }
+
+  handleCurrentGameClick() {
+    this.setState(() => ({
+      currentOption: "currentGame",
+      menuWidth : "0px",
+      menuIsOpen : false
     }));
   }
 
@@ -44,21 +59,16 @@ class HamburgerMenu extends Component {
     const menuOpen = this.state.menuIsOpen;
     const menuWidth = this.state.menuWidth;
     const menuOptions = this.props.menuOptions;
+    const currentOption = this.state.currentOption;
 
     let renderPage;
-    if (this.state.displayProfile) {
-      return (
-        <div>
-          <ProfileUser
-            onCloseFunction = {this.handleProfileClick}
-          />
-        </div>
-      )
-    }
+    let renderMenu;
 
-    else if (menuOpen) {
-      renderPage = 
+    if (menuOpen) {
+      renderMenu =
+
         <div>
+          <div className="spacingDiv"></div>
           <div className="rsb-menu" style={{ width: menuWidth }}>
             <div>
               {menuOptions.map((menuOp, i) => {
@@ -67,6 +77,9 @@ class HamburgerMenu extends Component {
                 switch (menuOp.optionName) {
                   case "Profile":
                     handleFunction = this.handleProfileClick;
+                    break;
+                  case "Current Game":
+                    handleFunction = this.handleCurrentGameClick;
                     break;
                   default:
                     handleFunction = () => {
@@ -83,24 +96,60 @@ class HamburgerMenu extends Component {
             </div>
 
             <span className="menu-close" onClick={() => {
-              this.handleClick();
+              this.handleMenuClose();
             }}>&times;
           </span>
           </div>
         </div>
     }
     else {
-      renderPage = 
+      renderMenu =
+
         <div className="container-fluid row top-bar">
           <div className="col-xs-sm-1">
             <div className="test-hamburger" onClick={() => {
-              this.handleClick();
+              this.handleMenuOpen();
             }}>&#9776;
             </div>
           </div>
         </div>
     }
-    return (renderPage);
+
+    if (currentOption === "profile") {
+      renderPage =
+        <div>
+          <ProfileUser
+            onCloseFunction={this.handleProfileClick}
+          />
+        </div>
+    }
+    else if(currentOption === "currentGame"){
+      renderPage =
+        <div>
+          <CurrentGame
+            onCloseFunction={this.handleCurrentGameClick}
+          />
+        </div>
+    }
+    else{
+      //This will eventually reneder the map page since this will be default
+      renderPage = <div></div>
+    }
+
+    //Putting the Menu and page togther
+    let returnValue = [];
+    returnValue.push(renderMenu);
+    returnValue.push(renderPage);
+
+    var finalPage = returnValue.map(function(x, i) {
+      return <div key={i}>{x}</div>;
+    });
+
+    return (
+      <div>
+        {finalPage}
+      </div>
+    );
   }
 }
 

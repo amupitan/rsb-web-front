@@ -13,14 +13,6 @@ class ProfileUser extends Component {
     render() {
         return (
             <div>
-                <div className="modal-header">
-                    <RSBButton
-                        text="X"
-                        className="close"
-                        onClickFunction={this.props.onCloseFunction}
-                    />
-                    <h4 className="modal-title">Profile</h4>
-                </div>
                 <div className="modal-body">
                     <div className="container row">
                         <div className="col-sm-2" />
