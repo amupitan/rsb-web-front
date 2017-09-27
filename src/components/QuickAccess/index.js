@@ -48,9 +48,9 @@ class QuickAccess extends Component {
 
     handleHost() {
         console.log("Clicked HandleHost");
-        this.setState(() => {
+        this.setState((prevState) => {
             return {
-                displayHost: !this.state.displayHost
+                displayHost: !prevState.displayHost
             }
         })
     }
@@ -73,12 +73,12 @@ class QuickAccess extends Component {
     //TODO: Make this whole thing a whole lot neater. This suuuuuucks
     render() {
         let returnable = [];
+        let pageDisplay;
         if (this.state.displayHost) {
-            returnable.push(<RSBHostModal 
-                closeButtonFunction = {this.handleHost}
-                key={3}
-            />
-            );
+            pageDisplay = <RSBHostModal
+                closeButtonFunction={this.handleHost}
+                 />
+            ;
         } else {
             this.state.content.forEach((element, i) => {
                 let handleFunction;
@@ -115,18 +115,15 @@ class QuickAccess extends Component {
                 }
             }, this);
         }
-        let modalsInPage = [];
-
-        modalsInPage.push(<RSBMiniModal
-            modalID="Sport"
-            bodyText="You are in Sport!"
-            key={1}
-        />)
-
 
         return (
             <div>
-                {modalsInPage}
+                <RSBMiniModal
+                    modalID="Sport"
+                    bodyText="You are in Sport!"
+                />
+                {pageDisplay}
+                
                 <div className="btn-group quick-access" id="quick">
                     {console.log("Returnable: ", returnable)}
                     {returnable}
