@@ -1,5 +1,6 @@
 import React from 'react';
 
+import yoda from '../../lib/yoda';
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
 
@@ -28,6 +29,10 @@ const formElements = [
     },
 ];
 
+var login = data => {
+    yoda.login(data, console.log);
+};
+
 var Login = (props) => {
     return (
         <div className="container ">
@@ -36,7 +41,7 @@ var Login = (props) => {
                     <img className="logo" src={logo} alt="rsb_logo" />
                 </div>
                 <div className="inner col-sm-offset-1 col-sm-10">
-                    <Form elements={formElements} button={FormButton()} title="Login" />
+                    <Form elements={formElements} button={FormButton()} title="Login" submit={login} />
                 </div>
             </div>
         </div>

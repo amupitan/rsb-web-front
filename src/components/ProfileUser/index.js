@@ -10,7 +10,7 @@ class ProfileUser extends Component {
         this.render = this.render.bind(this);
     }
 
-    render() {
+    render() { 
         return (
             <div>
                 <div className="modal-body">
