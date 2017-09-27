@@ -28,7 +28,7 @@ export default () => <div />
 """
     
 def create_ui_component(component):
-    component = component.title()
+    component = component[0].upper() + component[1:]
     path = "./ui/" + component + ".js"
     file = open(path, "w")
     file.write(index_js_template)
@@ -36,7 +36,7 @@ def create_ui_component(component):
     print("UI Component: {} has been created".format(component))
 
 def create_component(component):
-    component = component.title()
+    component = component[0].upper() + component[1:]
     path = "./" + component
 
     #create component directory
