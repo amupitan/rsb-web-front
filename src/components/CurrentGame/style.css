@@ -1,0 +1,42 @@
+.rsb-current-game--title{
+    color: grey; 
+    font-family: 'Raleway',sans-serif; 
+    font-size: 30px; 
+    font-weight: 800; 
+    line-height: 72px; 
+    margin: 0 0 24px; 
+    text-align: center; 
+    text-transform: uppercase;
+}
+
+.rsb-current-game--team-label{
+    color: green;
+    font-family: 'Raleway',sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 800; 
+
+}
+
+.rsb-current-game--vs{
+    font-family: 'Raleway',sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 800; 
+}
+
+.rsb-current-game--opponent-label{
+    color: red;
+    font-family: 'Raleway',sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 800; 
+}
+
+.rsb-current-game--leave-btn{
+    position: fixed;
+    bottom:0;
+    right:0;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}

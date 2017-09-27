@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
+import RSBButton from '../ui/RSBButton';
 import ProfileUser from '../ProfileUser';
 import CurrentGame from '../CurrentGame';
 import './style.css';
@@ -32,6 +33,7 @@ class HamburgerMenu extends Component {
 
   //called whenever the menu button is opened
   handleMenuOpen() {
+    console.log("this shit was clicked");
     this.setState(() => ({
       menuWidth: '250px',
       menuIsOpen: true,
@@ -47,6 +49,7 @@ class HamburgerMenu extends Component {
     }));
   }
 
+  //called when the current game option is clicked
   handleCurrentGameClick() {
     this.setState(() => ({
       currentOption: "currentGame",
@@ -68,7 +71,6 @@ class HamburgerMenu extends Component {
       renderMenu =
 
         <div>
-          <div className="spacingDiv"></div>
           <div className="rsb-menu" style={{ width: menuWidth }}>
             <div>
               {menuOptions.map((menuOp, i) => {
@@ -104,15 +106,11 @@ class HamburgerMenu extends Component {
     }
     else {
       renderMenu =
-
-        <div className="container-fluid row top-bar">
-          <div className="col-xs-sm-1">
-            <div className="test-hamburger" onClick={() => {
-              this.handleMenuOpen();
-            }}>&#9776;
-            </div>
-          </div>
-        </div>
+        <RSBButton
+          glyphicons="glyphicon glyphicon-menu-hamburger"
+          onClickFunction={this.handleMenuOpen}
+          className="test-hamburger"
+        />
     }
 
     if (currentOption === "profile") {

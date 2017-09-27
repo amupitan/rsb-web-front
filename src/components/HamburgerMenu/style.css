@@ -1,8 +1,17 @@
 .test-hamburger{
-    font-size:30px;
+    position: fixed;
+    padding: 10px 2px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 5rem;
+	height: 5rem;
+	-moz-border-radius: 5rem;
+	-webkit-border-radius: 5rem;
+	border-radius: 5rem;
+
+    border: 1rem;
+    margin: .6rem;
+    font-size:20px;
     color: white;
-    cursor:pointer;
-    width: 50px;
     text-align: center;
     background: black; /* For browsers that do not support gradients */    
     background: -webkit-linear-gradient(left top, black,#708090); /* For Safari 5.1 to 6.0 */
@@ -10,11 +19,6 @@
     background: -moz-linear-gradient(bottom right, black,#708090); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to bottom right, black,#708090); /* Standard syntax (must be last) */
 }
-
-.spacingDiv{
-    height: 42px;
-}
-
 
 
 .rsb-menu {
