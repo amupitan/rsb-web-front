@@ -25,6 +25,7 @@ export default class Form extends Component {
             tempState.elements[element.name] = element;
         }
 
+        tempState.submit = props.submit;
         this.state = tempState;
 
         this.createFormElement = this.createFormElement.bind(this);
@@ -33,9 +34,13 @@ export default class Form extends Component {
     }
 
     submit() {
+        let formData = {};
         Object.keys(this.state.elements).forEach(element => {
-            console.log(`${element}: ${this.state[element]}`);
+            formData[element] = this.state[element];
         });
+
+        if (this.state.submit)
+            this.state.submit(formData);
     }
 
     validate(name) {
