@@ -10,144 +10,118 @@ class HamburgerMenu extends Component {
     super(props);
     this.state = {
       menuOptions: this.props.menuUptions,
-      menuIsOpen: false,
       menuWidth: 0,
-      currentOption : ""
+      displayPage: "Map"
     }
 
     //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
     this.render = this.render.bind(this);
-    this.handleProfileClick = this.handleProfileClick.bind(this);
-    this.handleCurrentGameClick = this.handleCurrentGameClick.bind(this);
-    this.handleMenuOpen = this.handleMenuOpen.bind(this);
-    this.handleMenuClose = this.handleMenuClose.bind(this);
+    this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-  //Funtion called when the menu is open and closed, page doesn't change
-  handleMenuClose(){
-    this.setState(() => ({
-      menuWidth: '0px',
-      menuIsOpen : false,
-    }));
-  }
+  /**
+   * Wanted to have own MapKey because of things like "Current Game" vs "CurrentGame". It's also a little neater in my opinion
+   * 
+   */
+  MapKeys = ["Map", "CurrentGame", "Profile", "Settings"]
 
-  //called whenever the menu button is opened
-  handleMenuOpen() {
-    console.log("the menu was clicked");
-    this.setState(() => ({
-      menuWidth: '250px',
-      menuIsOpen: true,
-    }));
-  }
+ /**
+  * All encompassing map for the options that comes in the hamburger menu
+  *
+  * clickFunction: Function that happens when the label is clicked
+  * displayJSX: What is displayed on the page
+  *
+  */
+  LebronMap = new Map([
+    [this.MapKeys[0], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MapKeys[0],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <h1>Map Page</h1>
+    }],
+    [this.MapKeys[1], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MapKeys[1],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <CurrentGame/>
+    }],
+    [this.MapKeys[2], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MapKeys[2],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <ProfileUser/>
+    }],
+    [this.MapKeys[3], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MapKeys[3],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <h1>Settings Page</h1>
+    }]
+  ]);
 
-  //called when the profile click option is selected
-  handleProfileClick() {
-    this.setState(() => ({
-      currentOption: "profile",
-      menuWidth : "0px",
-      menuIsOpen : false
-    }));
-  }
 
-  //called when the current game option is clicked
-  handleCurrentGameClick() {
-    this.setState(() => ({
-      currentOption: "currentGame",
-      menuWidth : "0px",
-      menuIsOpen : false
+  //called whenever the menu button is pressed
+  handleMenuClick() {
+    this.setState((prev) => ({
+      menuWidth: (prev.menuWidth === '250px' ? '0px' : '250px'),
     }));
   }
 
   render() {
-    const menuOpen = this.state.menuIsOpen;
     const menuWidth = this.state.menuWidth;
     const menuOptions = this.props.menuOptions;
-    const currentOption = this.state.currentOption;
-
-    let renderPage;
     let renderMenu;
 
     //case for open menu and options to select page
-    if (menuOpen) {
+    if (menuWidth ==="250px") {
       renderMenu =
-
         <div>
           <div className="rsb-menu" style={{ width: menuWidth }}>
             <div>
               {menuOptions.map((menuOp, i) => {
-                let handleFunction;
-
-                switch (menuOp.optionName) {
-                  case "Profile":
-                    handleFunction = this.handleProfileClick;
-                    break;
-                  case "Current Game":
-                    handleFunction = this.handleCurrentGameClick;
-                    break;
-                  default:
-                    handleFunction = () => {
-                      console.log("Clicked RSBLabel")
-                    }
-                }
-                return <RSBLabel key={i} className="menu-option"
+                return <RSBLabel key={i}
+                  className="menu-option"
                   name={menuOp.optionName}
-                  onClickFunction={handleFunction}
                   styleClass='menu-option'
-                  modalName={menuOp.optionName}
+                  //Has to use the MapKey instead of menuOp.optionName because menuOp has things like "Current Game", when the key is "CurrentGame"
+                  onClickFunction={this.LebronMap.get(this.MapKeys[i]).clickFunction}
                 />;
               })}
             </div>
-
             <span className="menu-close" onClick={() => {
-              this.handleMenuClose();
+              this.handleMenuClick();
             }}>&times;
           </span>
           </div>
         </div>
     }
+
     //renders the basic menu button
     else {
       renderMenu =
         <RSBButton
           glyphicons="glyphicon glyphicon-menu-hamburger"
-          onClickFunction={this.handleMenuOpen}
+          onClickFunction={this.handleMenuClick}
           className="test-hamburger"
         />
     }
 
-    if (currentOption === "profile") {
-      renderPage =
-        <div>
-          <ProfileUser
-            onCloseFunction={this.handleProfileClick}
-          />
-        </div>
-    }
-    else if(currentOption === "currentGame"){
-      renderPage =
-        <div>
-          <CurrentGame
-            onCloseFunction={this.handleCurrentGameClick}
-          />
-        </div>
-    }
-    else{
-      //This will eventually reneder the map page since this will be default
-      renderPage = <div></div>
-    }
-
-    //Putting the Menu and page togther
-    let returnValue = [];
-    returnValue.push(renderMenu);
-    returnValue.push(renderPage);
-
-    var finalPage = returnValue.map(function(x, i) {
-      return <div key={i}>{x}</div>;
-    });
-
     return (
       <div>
-        {finalPage}
+        {renderMenu}
+        {this.LebronMap.get(this.state.displayPage).displayJSX}
       </div>
     );
   }

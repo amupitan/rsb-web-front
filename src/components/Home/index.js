@@ -1,33 +1,31 @@
 import React, { Component } from 'react';
-// import './App.css';
 import HamburgerMenu from '../HamburgerMenu';
 import QuickAccess from '../QuickAccess';
-
 
 
 class Home extends Component {
   render() {
     return (
       <div>
-        {/* <div className="widgets"> */}
-        <HamburgerMenu 
+        <HamburgerMenu
           menuOptions={
             [
               {
-                optionName: "Map"
+                optionName: "Map",
               },
               {
-                optionName: "Current Game"
+                optionName: "Current Game",
               },
               {
-                optionName: "Profile"
+                optionName: "Profile",
               },
               {
-                optionName: "Settings"
+                optionName: "Settings",
               }
             ]
           }
         />
+
         <QuickAccess
           content={
             [
@@ -37,26 +35,26 @@ class Home extends Component {
                 buttonType: "primary qa-button",
 
               },
-              { 
-                title: "Sport", 
-                visible: false, 
+              {
+                title: "Sport",
+                visible: false,
                 buttonType: "primary qa-button",
 
               },
-              { 
-                title: "Open", 
-                visible: true, 
+              {
+                title: "Open",
+                visible: true,
                 buttonType: "primary qa-button",
               },
-              { 
-                title: "Back", 
-                visible: false, 
+              {
+                title: "Back",
+                visible: false,
                 buttonType: "primary qa-button",
 
               }
             ]
           }
-          
+
         />
       </div>
     );
