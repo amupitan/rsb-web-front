@@ -9,7 +9,9 @@ class CurrentGame extends Component {
         super(props);
         //For now I have dummy data in here to test how it looks
         this.state = {
-            doesGameExist: true,
+            doesGameExist: true, //TODO: this could come as a prop
+
+            //TODO: rest of these should move to componentWillUpdate
             opponentTeamName: "Winenrs",
             userTeamName: "Losers",
             gameLocation: "2710 East Street, Ames, Iowa",
@@ -33,17 +35,12 @@ class CurrentGame extends Component {
     }
 
     render() {
-        const doesGameExist = this.state.doesGameExist;
         const opponentTeamName = this.state.opponentTeamName;
         const userTeamName = this.state.userTeamName;
-        const gameLocation = this.state.gameLocation;
-        const gameTime = this.state.gameTime;
-        const userTeamMembers = this.state.userTeamMembers;
-        const opponentTeamMembers = this.state.opponentTeamMembers;
 
         let renderPage;
 
-        if (!doesGameExist) {
+        if (!this.state.doesGameExist) {
             renderPage =
                 <div>
                     <div className="row">
@@ -75,7 +72,7 @@ class CurrentGame extends Component {
                             <div className="panel-heading text-center">{userTeamName}</div>
                             <div className="panel-body">
                                 <ul className="list-group">
-                                    {userTeamMembers.map((memberName, i) => {
+                                    {this.state.userTeamMembers.map((memberName, i) => {
                                         return <li className="list-group-item" key={i}>
                                             <RSBLabel
                                                 name={memberName}
@@ -92,7 +89,7 @@ class CurrentGame extends Component {
                             <div className="panel-heading text-center">{opponentTeamName}</div>
                             <div className="panel-body">
                                 <ul className="list-group">
-                                    {opponentTeamMembers.map((memberName, i) => {
+                                    {this.state.opponentTeamMembers.map((memberName, i) => {
                                         return <li className="list-group-item" key={i}>
                                             <RSBLabel
                                                 name={memberName}
@@ -107,8 +104,8 @@ class CurrentGame extends Component {
                         </div>
                     </div>
                     <div className="col-xs-6 col-xs-offset-3 text-center">
-                        <p >Location: {gameLocation}</p>
-                        <p >Time: {gameTime}</p>
+                        <p >Location: {this.state.gameLocation}</p>
+                        <p >Time: {this.state.gameTime}</p>
                     </div>
                     <RSBButton
                         text="Leave Game"
