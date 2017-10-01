@@ -48,11 +48,10 @@ class QuickAccess extends Component {
 
     handleHost() {
         console.log("Clicked HandleHost");
-        this.setState((prevState) => {
-            return {
-                displayHost: !prevState.displayHost
+        this.setState({
+                displayHost: !this.state.displayHost
             }
-        })
+        )
     }
 
 
