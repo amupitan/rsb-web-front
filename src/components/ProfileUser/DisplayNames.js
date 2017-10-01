@@ -11,17 +11,16 @@ export default class DisplayFriends extends Component {
     genFriends() {
         let users = [];
         this.props.friends.forEach((el, i) => {
-            console.log("El", el);
             users.push(
-                <div className="friends-generate">
+                <div className="friends-generate" key={i}>
                 <RSBLabel
                     name={el.Username}
                     onClickFunction= {()=>{
-                        console.log("Pressed friend ", el.Username);
+                        console.log("Pressed ", el.Firstname , el.Lastname);
                     }}
                     key={i}
                 /></div>);
-        }, this);
+        });
         return users;
     }
 

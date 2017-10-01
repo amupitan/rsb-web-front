@@ -14,7 +14,6 @@ class ProfileUser extends Component {
     data = mockServer("/user/p/1");
 
     render() {
-        console.log("MockData: ", this.data.result[0]);
         let numFriends = "Friends " + this.data.result[0].Friends.length;
 
         return (
