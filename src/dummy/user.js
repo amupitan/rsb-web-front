@@ -5,7 +5,7 @@ export default {
     },
     result: [
         {
-            Username: "Puta",
+            Username: "Vicity Vic",
             Firstname:  "Victor",                 
             Lastname: "Amupitan",                        
             PersonalRating: "2",      

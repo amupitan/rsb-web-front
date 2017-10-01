@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
+import mockServer from '../../dummy';
+import DisplayFriends from './DisplayNames';
 
 import './style.css';
 
@@ -9,56 +11,40 @@ class ProfileUser extends Component {
         this.render = this.render.bind(this);
     }
 
+    data = mockServer("/user/p/1");
+
     render() {
+        console.log("MockData: ", this.data.result[0]);
+        let numFriends = "Friends " + this.data.result[0].Friends.length;
+
         return (
-            <div>
-                <div className="container row">
-                    <div className="col-sm-2" />
-                    <div className="col-sm-8 profile-info">
-                        <div className="container row">
-                            <div className="col-sm-4 profile-pic">
-                                <h3>User picture</h3>
-                            </div>
-                            <div className="col-sm-8 user-info">
-                                <h4>User's Name</h4>
-                                <RSBLabel
-                                    name="Friends"
-                                    className="friend-link"
-                                    onClickFunction={() => {
-                                        console.log("Clicked friends label")
-                                    }}
-                                />
-                                <span>Location: User's location</span>
-                            </div>
-                        </div>
+            <div className="panel panel-default col-xs-6 col-xs-offset-3">
+                <div>
+                    <div className=" text-center">
+                        <h4>{this.data.result[0].Username}</h4>
+                        <RSBLabel
+                            name={numFriends}
+                            className="friend-link"
+                            onClickFunction={() => {
+                                console.log("Clicked friends label")
+                            }}
+                        />
+                        <span>Full Name: {this.data.result[0].Firstname} {this.data.result[0].Lastname}</span>
                     </div>
-                    <div className="col-sm-2" />
                 </div>
-                <div className="container row">
-                    <div className="col-sm-6">
+                <div>
+                    <div className="col-sm-6 panel panel-default">
                         <h2>Friends</h2>
-                        <div className="top-col">
-                            <div className="sub-col">
-                                <p>Friend Request</p>
-                            </div>
-                            <div className="sub-col">
-                                <p>Top Friends</p>
-                            </div>
-                            <div className="sub-col">
-                                <p>Recently Added</p>
-                            </div>
-                            <div className="sub-col">
-                                <p>Rest of the friends</p>
-                            </div>
+                        <div className="scroll-info panel-body">
+                            <DisplayFriends
+                                friends={this.data.result[0].Friends}
+                            />
+                            {/*Can add more things like "Top friends", "Recnetly Added" later*/}
                         </div>
                     </div>
-                    <div className="col-sm-6 ">
+                    <div className="col-sm-6 panel panel-default">
                         <h2>Games</h2>
-                        <div className="top-col">
-                            <div className="sub-col">
-                                <p>Top sports, and rating of the sport?</p>
-                            </div>
-                            <div className="sub-col">
+                        <div className="scroll-info panel-body">
                                 <RSBLabel
                                     name="Game History"
                                     className="game-history-link"
@@ -66,7 +52,6 @@ class ProfileUser extends Component {
                                         console.log("Clicked Game History label")
                                     }}
                                 />
-                            </div>
                         </div>
                     </div>
                 </div>
