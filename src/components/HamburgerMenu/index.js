@@ -23,7 +23,7 @@ class HamburgerMenu extends Component {
    * Wanted to have own MapKey because of things like "Current Game" vs "CurrentGame". It's also a little neater in my opinion
    * 
    */
-  MenuOptions = ["Map", "CurrentGame", "Profile", "Settings"]
+  MenuOptions = ["Map", "CurrentGame", "Profile", "Settings","Host"]
 
  /**
   * All encompassing map for the options that comes in the hamburger menu
@@ -68,6 +68,14 @@ class HamburgerMenu extends Component {
         }));
       },
       displayJSX: <h1>Settings Page</h1>
+    }],[this.MenuOptions[4], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MenuOptions[4],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <h1>Host Page</h1>
     }]
   ]);
 
@@ -93,7 +101,7 @@ class HamburgerMenu extends Component {
               {menuOptions.map((menuOp, i) => {
                 return <RSBLabel key={i}
                   className="menu-option"
-                  name={menuOp.optionName}
+                  name={menuOp}
                   styleClass='menu-option'
                   //Has to use the MapKey instead of menuOp.optionName because menuOp has things like "Current Game", when the key is "CurrentGame"
                   onClickFunction={this.LebronMap.get(this.MenuOptions[i]).clickFunction}

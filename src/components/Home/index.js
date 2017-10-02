@@ -4,26 +4,14 @@ import QuickAccess from '../QuickAccess';
 
 
 class Home extends Component {
+
+  menuOptions = ["Map","Current Game","Profile","Settings","Host"];
+
   render() {
     return (
       <div>
         <HamburgerMenu
-          menuOptions={
-            [
-              {
-                optionName: "Map",
-              },
-              {
-                optionName: "Current Game",
-              },
-              {
-                optionName: "Profile",
-              },
-              {
-                optionName: "Settings",
-              }
-            ]
-          }
+          menuOptions={this.menuOptions}
         />
 
         <QuickAccess
