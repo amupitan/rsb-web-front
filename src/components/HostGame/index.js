@@ -16,7 +16,7 @@ class HostPage extends Component {
     constructor(prop) {
         super(prop);
 
-        this.render=this.render.bind(this);
+        this.render = this.render.bind(this);
     }
 
     render() {
@@ -39,11 +39,6 @@ class HostPage extends Component {
         return (
             <div className="modal-dialog-full">
                 <div className="modal-header">
-                    <RSBButton
-                        text="X"
-                        onClickFunction={this.props.closeButtonFunction}
-                        className="close"
-                    />
                     <h4 className="modal-title">Host Game</h4>
                 </div>
                 <div className="modal-body">
@@ -82,8 +77,8 @@ class HostPage extends Component {
                             {/* Search Location */}
                             <input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" />
                             <RSBButton
-                                glyphicons= "glyphicon glyphicon-map-marker"
-                                onClickFunction={()=>{
+                                glyphicons="glyphicon glyphicon-map-marker"
+                                onClickFunction={() => {
                                     console.log("Go to map to drop pin!");
                                 }}
                             />
@@ -92,13 +87,16 @@ class HostPage extends Component {
                 </div>
                 <div className="modal-footer">
                     <RSBButton
-                        text="Close"
+                        text="Cancel"
                         className="btn btn-default close-btn"
-                        onClickFunction={this.props.closeButtonFunction}
+                        onClickFunction={() => {
+                            console.log("Cancel game");
+                        }
+                        }
                     />
                     <RSBButton
                         text="Host"
-                        className = "btn btn-info submit-btn"
+                        className="btn btn-info submit-btn"
                         onClickFunction={() => {
                             console.log("Host game!");
                         }}
