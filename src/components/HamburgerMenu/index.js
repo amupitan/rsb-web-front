@@ -24,7 +24,7 @@ class HamburgerMenu extends Component {
    * Wanted to have own MapKey because of things like "Current Game" vs "CurrentGame". It's also a little neater in my opinion
    * 
    */
-  MapKeys = ["Map", "CurrentGame", "Profile", "Settings"]
+  MenuOptions = ["Map", "CurrentGame", "Profile", "Settings"]
 
  /**
   * All encompassing map for the options that comes in the hamburger menu
@@ -34,37 +34,37 @@ class HamburgerMenu extends Component {
   *
   */
   LebronMap = new Map([
-    [this.MapKeys[0], {
+    [this.MenuOptions[0], {
       clickFunction: () => {
         this.setState(() => ({
-          displayPage: this.MapKeys[0],
+          displayPage: this.MenuOptions[0],
           menuWidth: '0px',
         }));
       },
       displayJSX: <MapPage/>
     }],
-    [this.MapKeys[1], {
+    [this.MenuOptions[1], {
       clickFunction: () => {
         this.setState(() => ({
-          displayPage: this.MapKeys[1],
+          displayPage: this.MenuOptions[1],
           menuWidth: '0px',
         }));
       },
       displayJSX: <CurrentGame/>
     }],
-    [this.MapKeys[2], {
+    [this.MenuOptions[2], {
       clickFunction: () => {
         this.setState(() => ({
-          displayPage: this.MapKeys[2],
+          displayPage: this.MenuOptions[2],
           menuWidth: '0px',
         }));
       },
       displayJSX: <ProfileUser/>
     }],
-    [this.MapKeys[3], {
+    [this.MenuOptions[3], {
       clickFunction: () => {
         this.setState(() => ({
-          displayPage: this.MapKeys[3],
+          displayPage: this.MenuOptions[3],
           menuWidth: '0px',
         }));
       },
@@ -97,7 +97,7 @@ class HamburgerMenu extends Component {
                   name={menuOp.optionName}
                   styleClass='menu-option'
                   //Has to use the MapKey instead of menuOp.optionName because menuOp has things like "Current Game", when the key is "CurrentGame"
-                  onClickFunction={this.LebronMap.get(this.MapKeys[i]).clickFunction}
+                  onClickFunction={this.LebronMap.get(this.MenuOptions[i]).clickFunction}
                 />;
               })}
             </div>
