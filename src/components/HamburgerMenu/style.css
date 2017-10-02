@@ -3,7 +3,8 @@
     padding: 10px 2px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 5rem;
-	height: 5rem;
+    height: 5rem;
+    z-index: 99 !important;
 	-moz-border-radius: 5rem;
 	-webkit-border-radius: 5rem;
 	border-radius: 5rem;
@@ -25,7 +26,7 @@
     height: 100%;
     width: 0px;
     position: fixed;
-    z-index: 3;
+    z-index: 99 !important;
     top: 0;
     left: 0;
     background: black; /* For browsers that do not support gradients */    

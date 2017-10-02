@@ -3,6 +3,7 @@ import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
 import ProfileUser from '../ProfileUser';
 import CurrentGame from '../CurrentGame';
+import MapPage from '../MapPage';
 import './style.css';
 
 class HamburgerMenu extends Component {
@@ -40,7 +41,7 @@ class HamburgerMenu extends Component {
           menuWidth: '0px',
         }));
       },
-      displayJSX: <h1>Map Page</h1>
+      displayJSX: <MapPage/>
     }],
     [this.MapKeys[1], {
       clickFunction: () => {
