@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import RSBButton from '../ui/RSBButton';
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+
+import MockData from '../../dummy';
 
 import './style.css';
 
@@ -16,22 +16,49 @@ export class MapPage extends Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.handleJoinGame = this.handleJoinGame.bind(this);
+        this.fetchPlaces = this.fetchPlaces.bind(this);
+        this.renderGameInfoWindow = this.renderGameInfoWindow.bind(this);
+        this.renderMarkers = this.renderMarkers.bind(this);
+
+        let initialCenter = this.getInitialCenter();
+
         this.state = {
-            //lat lng
-            lat: 42.0308,
-            lng: -93.6319,
+            position: initialCenter,
             showingInfoWindow: false,
             activeMarker: {},
             selectedPlace: {},
+            markers: this.getMarkers(initialCenter),
         }
     }
 
-    handleJoinGame(id){
+    // Gets the postion of the user's location
+    // This gets called when the map is initially being created
+    // If the user doesn't provide a location, this should make
+    // an intelligent guess.
+    getInitialCenter() {
+        // TODO
+        return { lat: 42.0308, lng: -93.6319 };
+    }
+
+    // Makes a call to the server to get all markers
+    // returns the list of markers
+    getMarkers({ lat, lng }) {
+        // TODO
+        console.log(`lat: ${lat} lng: ${lng}`);
+        return MockData('games/l/lng/0/lat/0')({ lat, lng });
+    }
+
+    // Gets called when a user tries to join a game
+    // Should make a server call and do the necessary work
+    handleJoinGame(id) {
+        // TODO
         console.log("handle the user joining the game " + id);
     }
 
-    //handles the event of a game icon being clicked
+    // Handles the event of a game icon being clicked
+    // displays the game info box
     onMarkerClick(props, marker, e) {
+        // TODO
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
@@ -44,8 +71,9 @@ export class MapPage extends Component {
         );
     }
 
-    //handles the closing of a game option
+    // Handles the closing of a game option
     onMapClicked() {
+        // TODO
         if (this.state.showingInfoWindow) {
             this.setState({
                 showingInfoWindow: false,
@@ -54,55 +82,70 @@ export class MapPage extends Component {
         }
     }
 
+    //TODO: doc
     showPosition(position) {
         this.setState(() => ({
             lat: position.coords.latitude,
             lng: position.coords.longitude
         }));
     }
-    
+
+    //TODO:doc
     getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.showPosition);
-        } 
+        }
     }
 
-    //Uses the google-maps-react library components
+    // Causes a render of new markers by invalidating the map
+    fetchPlaces(mapProps, map) {
+        let center = map.getCenter();
+        this.setState({
+            markers: this.getMarkers({ lat: center.lat(), lng: center.lng() }),
+        });
+    }
+
+    // Renders the game info window
+    renderGameInfoWindow() {
+        return <InfoWindow
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}>
+            <div>
+                <h1>{this.state.selectedPlace.name}</h1>
+                <div id="rsb-map-join-game-window">
+
+                </div>
+            </div>
+        </InfoWindow>
+    }
+
+    // Renders all available markers
+    renderMarkers() {
+        return this.state.markers.map((marker, i) => {
+            return <Marker
+                onClick={this.onMarkerClick}
+                title={marker.title}
+                name={marker.name}
+                id={i}
+                key={i}
+                position={marker.position} />
+        })
+
+    }
+
     render() {
         return (
             <div className="rsb-main-map">
-                <Map 
-                google={this.props.google} 
-                zoom={14}
-                clickableIcons={false}
-                initialCenter={{
-                    lat: this.state.lat,
-                    lng: this.state.lng
-                }}
-                
-                >
-                    <Marker
-                        onClick={this.onMarkerClick}
-                        title={'There is a game here'}
-                        name={'Game 1'}
-                        id={1}
-                        position={{ lat: 42.0308, lng: -93.6319 }} />
-                    <Marker
-                        onClick={this.onMarkerClick}
-                        title={'There is a game here'}
-                        name={'Game 2'}
-                        id={2}
-                        position={{ lat: 42.041421, lng: -93.6438976 }} />
-                    <InfoWindow
-                        marker={this.state.activeMarker}
-                        visible={this.state.showingInfoWindow}>
-                        <div>
-                            <h1>{this.state.selectedPlace.name}</h1>
-                            <div id="rsb-map-join-game-window">
+                <Map
+                    google={this.props.google}
+                    zoom={14}
+                    clickableIcons={false}
+                    initialCenter={this.state.position}
+                    onDragend={this.fetchPlaces}
+                    onReady={this.fetchPlaces}>
 
-                            </div>
-                        </div>
-                    </InfoWindow>
+                    {this.renderMarkers()}
+                    {this.renderGameInfoWindow()}
                 </Map>
             </div>
         );
