@@ -5,6 +5,7 @@ import ProfileUser from '../ProfileUser';
 import CurrentGame from '../CurrentGame';
 import MapPage from '../MapPage';
 import HostGame from '../HostGame';
+import Friends from '../Friends';
 import './style.css';
 
 class HamburgerMenu extends Component {
@@ -20,7 +21,7 @@ class HamburgerMenu extends Component {
     this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-  MenuOptions = ["Map", "Current Game", "Profile", "Settings", "Host"];
+  MenuOptions = ["Map", "Current Game", "Profile", "Settings", "Host", "Friends"];
 
 
   /**
@@ -73,8 +74,18 @@ class HamburgerMenu extends Component {
           menuWidth: '0px',
         }));
       },
+      
       displayJSX: <HostGame />
-    }]
+    }],
+    [this.MenuOptions[5], {
+      clickFunction: () => {
+        this.setState(() => ({
+          displayPage: this.MenuOptions[5],
+          menuWidth: '0px',
+        }));
+      },
+      displayJSX: <Friends />
+    }],
   ]);
 
 
