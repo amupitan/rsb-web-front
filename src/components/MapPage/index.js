@@ -17,8 +17,9 @@ export class MapPage extends Component {
         this.onMapClicked = this.onMapClicked.bind(this);
         this.handleJoinGame = this.handleJoinGame.bind(this);
         this.state = {
-            latitude: 42.0308,
-            longitude: -93.6319,
+            //lat lng
+            lat: 42.0308,
+            lng: -93.6319,
             showingInfoWindow: false,
             activeMarker: {},
             selectedPlace: {},
@@ -44,7 +45,7 @@ export class MapPage extends Component {
     }
 
     //handles the closing of a game option
-    onMapClicked(props) {
+    onMapClicked() {
         if (this.state.showingInfoWindow) {
             this.setState({
                 showingInfoWindow: false,
@@ -55,10 +56,9 @@ export class MapPage extends Component {
 
     showPosition(position) {
         this.setState(() => ({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
         }));
-        console.log(this.state);
     }
     
     getLocation() {
@@ -76,8 +76,8 @@ export class MapPage extends Component {
                 zoom={14}
                 clickableIcons={false}
                 initialCenter={{
-                    lat: this.state.latitude,
-                    lng: this.state.longitude
+                    lat: this.state.lat,
+                    lng: this.state.lng
                 }}
                 
                 >

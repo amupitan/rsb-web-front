@@ -4,7 +4,7 @@
     cursor: pointer; /* Pointer/hand icon */
     width: 5rem;
     height: 5rem;
-    z-index: 99 !important;
+    z-index: 99;
 	-moz-border-radius: 5rem;
 	-webkit-border-radius: 5rem;
 	border-radius: 5rem;
