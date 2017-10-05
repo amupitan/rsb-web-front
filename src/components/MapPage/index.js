@@ -82,7 +82,7 @@ export class MapPage extends Component {
         }
     }
 
-    //TODO: doc
+    //sets the latitude and longitude in the state
     showPosition(position) {
         this.setState(() => ({
             lat: position.coords.latitude,
@@ -90,7 +90,7 @@ export class MapPage extends Component {
         }));
     }
 
-    //TODO:doc
+    //gets a users current location bases on location services
     getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.showPosition);
