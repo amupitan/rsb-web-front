@@ -4,5 +4,5 @@ import HamburgerMenu from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<HamburgerMenu />, div);
+  ReactDOM.render(<HamburgerMenu menu />, div);
 });

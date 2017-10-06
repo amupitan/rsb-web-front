@@ -25,7 +25,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} width={"250px"} />
+        <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
             {views.map((view, i) => (

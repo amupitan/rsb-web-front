@@ -49,6 +49,12 @@ HamburgerMenu.propTypes = {
   width: PropTypes.string,
 }
 
+HamburgerMenu.defaultProps = {
+  width: '250px',
+  views: [],
+  onClick: () => { },
+}
+
 MenuOption.propTypes = {
   name: PropTypes.string,
   path: PropTypes.string,
