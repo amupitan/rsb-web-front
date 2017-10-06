@@ -4,6 +4,14 @@ import MapPage from '../MapPage';
 import HostPage from '../HostGame';
 import Settings from '../Settings';
 
+// Represents the views displayed by links from the hamburger menu
+// the [component] should always be a React.Component and not a callback
+// that returns a component
+// e.g const Goodcomponent = (props) => <div /> is ok
+// e.g cont BadComponent = () => <GoodComponent {...props} /> is not ok
+// This is because we use React router's component to render our components, if 
+// we ever need the behaviour of 'Bad Component' then we'll have to modify how 
+// we use React-Router
 const views = [
     {
         name: 'Map',

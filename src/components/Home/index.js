@@ -29,8 +29,10 @@ class Home extends Component {
         <div className='display'>
           <Switch>
             {views.map((view, i) => (
-              <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={props => <view.component {...props} />} />
+              < Route exact key={`${view.name}${i}`} path={'/' + view.path} component={view.component} />
             ))}
+            {/* Default route when url is '/' */}
+            <Route component={this.props.default || (views.length > 0 && views[0].component)} />
           </Switch>
         </div>
       </div>
@@ -38,7 +40,7 @@ class Home extends Component {
   }
 }
 
-
+//{/* <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={props => <view.component {...props} />} /> */}
 // Returns a regex representing all the routes
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
