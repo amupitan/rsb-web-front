@@ -12,7 +12,20 @@ export default {
             Lastname: "Amupitan",                        
             PersonalRating: "2",      
             TeamRating: "1002",
-            ProfilePic: defaultImg,      
+            ProfilePic: defaultImg, 
+            FriendRequests: [{
+                ProfilePic: defaultImg,
+                Username: "Kool guy"
+            },{
+                ProfilePic: defaultImg,
+                Username: "Kool guy2"
+            },{
+                ProfilePic: defaultImg,
+                Username: "Kool guy3"
+            },{
+                ProfilePic: defaultImg,
+                Username: "Kool guy4"
+            }],     
             Friends:[{
                 Username: "Ginger",
                 Firstname:  "Kern",                 
