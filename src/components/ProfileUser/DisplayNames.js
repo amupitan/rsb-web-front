@@ -13,6 +13,7 @@ export default class DisplayFriends extends Component {
         this.props.friends.forEach((el, i) => {
             users.push(
                 <div className="friends-generate" key={i}>
+                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-sm" />
                 <RSBLabel
                     name={el.Username}
                     onClickFunction= {()=>{

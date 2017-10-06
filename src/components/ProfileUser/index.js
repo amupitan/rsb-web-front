@@ -19,16 +19,17 @@ class ProfileUser extends Component {
         return (
             <div className="panel panel-default col-xs-6 col-xs-offset-3">
                 <div>
-                    <div className=" text-center">
-                        <h4>{this.data.result[0].Username}</h4>
-                        <RSBLabel
-                            name={numFriends}
-                            className="friend-link"
-                            onClickFunction={() => {
-                                console.log("Clicked friends label")
-                            }}
-                        />
-                        <span>Full Name: {this.data.result[0].Firstname} {this.data.result[0].Lastname}</span>
+                    <div className="text-center">
+                            <img src={this.data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
+                            <h4>{this.data.result[0].Username}</h4>
+                            <RSBLabel
+                                name={numFriends}
+                                className="friend-link"
+                                onClickFunction={() => {
+                                    console.log("Clicked friends label")
+                                }}
+                            />
+                            <span>Full Name: {this.data.result[0].Firstname} {this.data.result[0].Lastname}</span>
                     </div>
                 </div>
                 <div>
@@ -44,13 +45,13 @@ class ProfileUser extends Component {
                     <div className="col-sm-6 panel panel-default">
                         <h2>Games</h2>
                         <div className="scroll-info panel-body">
-                                <RSBLabel
-                                    name="Game History"
-                                    className="game-history-link"
-                                    onClickFunction={() => {
-                                        console.log("Clicked Game History label")
-                                    }}
-                                />
+                            <RSBLabel
+                                name="Game History"
+                                className="game-history-link"
+                                onClickFunction={() => {
+                                    console.log("Clicked Game History label")
+                                }}
+                            />
                         </div>
                     </div>
                 </div>

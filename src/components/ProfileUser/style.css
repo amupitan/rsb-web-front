@@ -9,3 +9,13 @@
     border-style: solid;
     border-color: lightseagreen;
 }
+
+.profile-pic{
+    width: 12em;
+    height: 12em;
+}
+
+.profile-pic-sm{
+    width: 3em;
+    height:3em;
+}
