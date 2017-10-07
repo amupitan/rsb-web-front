@@ -19,7 +19,7 @@ class YodaRequest {
     }
 }
 
-class YodaResponse {
+export class YodaResponse {
     constructor({ meta, result }, error) {
         this.meta = meta;
         this.data = result;
