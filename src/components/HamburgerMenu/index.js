@@ -1,134 +1,64 @@
-import React, { Component } from 'react';
-import RSBLabel from '../ui/RSBLabel';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import RSBButton from '../ui/RSBButton';
-import ProfileUser from '../ProfileUser';
-import CurrentGame from '../CurrentGame';
-import MapPage from '../MapPage';
-import HostGame from '../HostGame';
+
 import './style.css';
 
-class HamburgerMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuWidth: 0,
-      displayPage: "Map"
-    }
-
-    //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
-    this.render = this.render.bind(this);
-    this.handleMenuClick = this.handleMenuClick.bind(this);
+const HamburgerMenu = ({ views, onClick, menu, width }) => {
+  if (menu) {
+    return menuGenerator(width)(views, onClick)
   }
+  return (
+    <RSBButton
+      glyphicons="glyphicon glyphicon-menu-hamburger"
+      onClickFunction={onClick}
+      className="test-hamburger"
+    />
+  );
+}
 
-  MenuOptions = ["Map", "Current Game", "Profile", "Settings", "Host"];
-
-
-  /**
-   * All encompassing map for the options that comes in the hamburger menu
-   *
-   * clickFunction: Function that happens when the label is clicked
-   * displayJSX: What is displayed on the page
-   *
-   */
-  LebronMap = new Map([
-    [this.MenuOptions[0], {
-      clickFunction: () => {
-        this.setState(() => ({
-          displayPage: this.MenuOptions[0],
-          menuWidth: '0px',
-        }));
-      },
-      displayJSX: <MapPage />
-    }],
-    [this.MenuOptions[1], {
-      clickFunction: () => {
-        this.setState(() => ({
-          displayPage: this.MenuOptions[1],
-          menuWidth: '0px',
-        }));
-      },
-      displayJSX: <CurrentGame />
-    }],
-    [this.MenuOptions[2], {
-      clickFunction: () => {
-        this.setState(() => ({
-          displayPage: this.MenuOptions[2],
-          menuWidth: '0px',
-        }));
-      },
-      displayJSX: <ProfileUser />
-    }],
-    [this.MenuOptions[3], {
-      clickFunction: () => {
-        this.setState(() => ({
-          displayPage: this.MenuOptions[3],
-          menuWidth: '0px',
-        }));
-      },
-      displayJSX: <h1>Settings Page</h1>
-    }], [this.MenuOptions[4], {
-      clickFunction: () => {
-        this.setState(() => ({
-          displayPage: this.MenuOptions[4],
-          menuWidth: '0px',
-        }));
-      },
-      displayJSX: <HostGame />
-    }]
-  ]);
-
-
-  //called whenever the menu button is pressed
-  handleMenuClick() {
-    this.setState((prev) => ({
-      menuWidth: (prev.menuWidth === '250px' ? '0px' : '250px'),
-    }));
-  }
-
-  render() {
-    const menuWidth = this.state.menuWidth;
-    let renderMenu;
-
-    //case for open menu and options to select page
-    if (menuWidth === "250px") {
-      renderMenu =
-        <div>
-          <div className="rsb-menu" style={{ width: menuWidth }}>
-            <div>
-              {this.MenuOptions.map((menuOp, i) => {
-                return <RSBLabel key={i}
-                  className="menu-option"
-                  name={menuOp}
-                  styleClass='menu-option'
-                  onClickFunction={this.LebronMap.get(this.MenuOptions[i]).clickFunction}
-                />;
-              })}
-            </div>
-            <span className="menu-close" onClick={() => {
-              this.handleMenuClick();
-            }}>&times;
-          </span>
-          </div>
-        </div>
-    }
-
-    //renders the basic menu button
-    else {
-      renderMenu =
-        <RSBButton
-          glyphicons="glyphicon glyphicon-menu-hamburger"
-          onClickFunction={this.handleMenuClick}
-          className="test-hamburger"
-        />
-    }
-
+const menuGenerator = (width) => {
+  return (views, onClick) => {
     return (
-      <div>
-        {renderMenu}
-        {this.LebronMap.get(this.state.displayPage).displayJSX}
+      <div className="rsb-menu" style={{ width: width }}>
+        <div className='menu-option'>
+          {views.map((view, i) => (
+            <MenuOption key={`${view.name}-menu-${i}`} name={view.name} path={view.path} onClick={onClick} />
+          ))}
+        </div>
+        <span className="menu-close" onClick={onClick}>&times;</span>
       </div>
-    );
-  }
+    )
+  };
+};
+
+const MenuOption = ({ name, path, onClick }) => (
+  <div onClick={onClick} >
+    <span className='menu-option'>
+      <Link to={'/' + path}>{name}</Link>
+    </span>
+  </div>
+);
+
+HamburgerMenu.propTypes = {
+  views: PropTypes.array,
+  onClick: PropTypes.func,
+  menu: PropTypes.bool.isRequired,
+  width: PropTypes.string,
+}
+
+HamburgerMenu.defaultProps = {
+  width: '250px',
+  views: [],
+  onClick: () => { },
+}
+
+MenuOption.propTypes = {
+  name: PropTypes.string,
+  path: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 export default HamburgerMenu;

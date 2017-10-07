@@ -13,9 +13,8 @@ import RSBButton from '../ui/RSBButton';
  */
 
 class HostPage extends Component {
-    constructor(prop) {
-        super(prop);
-
+    constructor(props) {
+        super(props);
         this.render = this.render.bind(this);
     }
 
@@ -55,7 +54,7 @@ class HostPage extends Component {
                     {/* Number of players */}
                     <label>Number of players: </label>
                     <input type="number" min="0" />
-                    <br /><br/>
+                    <br /><br />
                     {/* Start time / End Time */}
                     <div>
                         <label>Duration: </label>
