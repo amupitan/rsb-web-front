@@ -21,9 +21,6 @@ class Friends extends Component {
         }
     }
 
-
-    //this.data.result[0].Friends
-
     filterUsers(array, keyword, arrayName){
         let newArray = [];
         for(let i = 0; i < array.length; ++i){
