@@ -56,7 +56,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "GOAT",
+                Username: " Ragin GOAT",
                 Firstname:  "Not",                 
                 Lastname: "KD",                        
                 PersonalRating: "1122",      
@@ -112,7 +112,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "GOAT",
+                Username: "Ragin GOAT",
                 Firstname:  "Not",                 
                 Lastname: "KD",                        
                 PersonalRating: "1122",      

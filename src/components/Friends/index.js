@@ -14,17 +14,15 @@ class Friends extends Component {
         this.renderUsers = this.renderUsers.bind(this);
         this.filterUsers = this.filterUsers.bind(this);
         this.state = {
-            friendsList : this.data.result[0].Friends,
-            recentsList : this.data.result[0].RecentPlayers,
             currentFriends: this.data.result[0].Friends,
             currentRecents: this.data.result[0].RecentPlayers
         }
     }
 
-    filterUsers(array, keyword, arrayName){
+    filterUsers(array, keyword, arrayName) {
         let newArray = [];
-        for(let i = 0; i < array.length; ++i){
-            if(array[i].Username.toLowerCase().includes(keyword.toLowerCase())){
+        for (let i = 0; i < array.length; ++i) {
+            if (array[i].Username.toLowerCase().includes(keyword.toLowerCase())) {
                 newArray.push(array[i]);
             }
         }
@@ -33,12 +31,11 @@ class Friends extends Component {
                 currentFriends: newArray
             });
         }
-        if(arrayName === "recents"){
+        if (arrayName === "recents") {
             this.setState({
                 currentRecents: newArray
             });
         }
-
     }
 
     renderUsers(array) {
@@ -52,18 +49,23 @@ class Friends extends Component {
                 key={i}
             />
         })
-
     }
 
     render() {
-
         return (
             <div className="panel-group col-xs-10 col-xs-offset-1">
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" id="rsb-friends-search-bar" placeholder="Search Friends.."/>
-                        <button type="submit" onClick={ () => {this.filterUsers(this.data.result[0].Friends, document.getElementById("rsb-friends-search-bar").value, "friends")}}>
+                        <input className="" type="search" id="rsb-friends-search-bar" placeholder="Search Friends.." />
+                        <button type="submit"
+                            onClick={
+                                () => {
+                                    this.filterUsers(this.data.result[0].Friends,
+                                        document.getElementById("rsb-friends-search-bar").value,
+                                        "friends")
+                                }
+                            }>
                             <span className="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
@@ -77,19 +79,24 @@ class Friends extends Component {
                     <div className="panel-heading text-center">
                         <h3 className="">Recent Players</h3>
                         <input className="" type="search" id="rsb-recent-players-search-bar" placeholder="Search Recent.." />
-                        <button type="submit" onClick={ () => {this.filterUsers(this.data.result[0].RecentPlayers, document.getElementById("rsb-recent-players-search-bar").value, "recents")}}>
+                        <button type="submit"
+                            onClick={
+                                () => {
+                                    this.filterUsers(this.data.result[0].RecentPlayers,
+                                        document.getElementById("rsb-recent-players-search-bar").value,
+                                        "recents")
+                                }
+                            }>
                             <span className="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {console.log(this.state.currentRecents)}
                             {this.renderUsers(this.state.currentRecents)}
                         </div>
                     </div>
                 </div>
             </div>
-   
         )
     }
 }
