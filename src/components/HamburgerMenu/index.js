@@ -1,13 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import RSBButton from '../ui/RSBButton';
-import ProfileUser from '../ProfileUser';
-import CurrentGame from '../CurrentGame';
-import MapPage from '../MapPage';
-import HostGame from '../HostGame';
-import Friends from '../Friends';
 import './style.css';
 
 import './style.css';
