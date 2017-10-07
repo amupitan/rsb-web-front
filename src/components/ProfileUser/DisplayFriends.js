@@ -13,14 +13,14 @@ export default class DisplayFriends extends Component {
         this.props.friends.forEach((el, i) => {
             users.push(
                 <div className="friends-generate" key={i}>
-                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-sm" />
-                <RSBLabel
-                    name={el.Username}
-                    onClickFunction= {()=>{
-                        console.log("Pressed ", el.Firstname , el.Lastname);
-                    }}
-                    key={i}
-                /></div>);
+                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                    <RSBLabel
+                        name={el.Username}
+                        onClickFunction={() => {
+                            console.log("Pressed ", el.Firstname, el.Lastname);
+                        }}
+                        key={i}
+                    /></div>);
         });
         return users;
     }

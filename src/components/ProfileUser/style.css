@@ -15,25 +15,23 @@
     height: 12em;
 }
 
-.profile-pic-sm{
-    width: 3em;
-    height:3em;
+.profile-pic-xs{
+    width: relative;
+    height:6em;
 }
 
 button{
     border: 1px solid black;
     border-radius: 2em 4em;
-    padding: 1rem 0;
-  
 }
 
 .accept{
     background-color: #66ff33;
-  }
+}
   
-  .decline{
+.decline{
     background-color: #cc0000;
-  }
+}
 
 .populate-requests{
     border: 2px black solid;

@@ -53,12 +53,8 @@ class ProfileUser extends Component {
                             <h2>Games Invites</h2>
                         </div>
                         <div className="scroll-info panel-body">
-                            <RSBLabel
-                                name="Game History"
-                                className="game-history-link"
-                                onClickFunction={() => {
-                                    console.log("Clicked Game History label")
-                                }}
+                            <PopulateRequests
+                                info={this.data.result[0].GameInvites}
                             />
                         </div>
                     </div>
@@ -76,7 +72,7 @@ class ProfileUser extends Component {
                     </div>
                     <div className="col-sm-6 panel panel-default">
                         <div className="panel-heading">
-                            <h2>Games</h2>
+                            <h2>Game History</h2>
                         </div>
                         <div className="scroll-info panel-body">
                             <RSBLabel

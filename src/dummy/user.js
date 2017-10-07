@@ -13,18 +13,29 @@ export default {
             PersonalRating: "2",      
             TeamRating: "1002",
             ProfilePic: defaultImg, 
+            GameInvites: [{
+                Image: defaultImg,
+                Username: "Jason",
+                Location: "Ames",
+                Sport: "Soccer",
+                Time: "3:00 PM"
+            }],
             FriendRequests: [{
-                ProfilePic: defaultImg,
-                Username: "Kool guy"
+                Image: defaultImg,
+                Username: "Kool guy",
+                Location: "Ames",
             },{
-                ProfilePic: defaultImg,
-                Username: "Kool guy2"
+                Image: defaultImg,
+                Username: "Kool guy2",
+                Location: "Waterloo"
             },{
-                ProfilePic: defaultImg,
-                Username: "Kool guy3"
+                Image: defaultImg,
+                Username: "Kool guy3",
+                Location: "Dirty loo"
             },{
-                ProfilePic: defaultImg,
-                Username: "Kool guy4"
+                Image: defaultImg,
+                Username: "Kool guy4",
+                Location: "Clean loo"
             }],     
             Friends:[{
                 Username: "Ginger",
