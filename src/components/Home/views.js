@@ -5,6 +5,7 @@ import HostPage from '../HostGame';
 import Settings from '../Settings';
 import Join from '../Join';
 import Friends from '../Friends';
+import ViewUser from '../ViewUser';
 
 // Represents the views displayed by links from the hamburger menu
 // the [component] should always be a React.Component and not a callback
@@ -34,6 +35,11 @@ const views = [
         name: 'Host',
         path: 'host',
         component: HostPage,
+    },
+    {
+        name: 'View User',
+        path: 'user',
+        component: ViewUser
     },
     {
         name: 'Settings',
