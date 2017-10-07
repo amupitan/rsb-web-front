@@ -18,7 +18,7 @@ class ProfileUser extends Component {
         let numFriends = "Friends " + this.data.result[0].Friends.length;
 
         return (
-            <div className="panel panel-default col-xs-8 col-xs-offset-2">
+            <div className="panel panel-default col-xs-10 col-xs-offset-1">
                 <div>
                     <div className="row">
                         <div className="col-sm-6 text-right">

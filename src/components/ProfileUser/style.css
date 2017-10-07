@@ -19,3 +19,27 @@
     width: 3em;
     height:3em;
 }
+
+button{
+    border: 1px solid black;
+    border-radius: 2em 4em;
+    padding: 1rem 0;
+  
+}
+
+.accept{
+    background-color: #66ff33;
+  }
+  
+  .decline{
+    background-color: #cc0000;
+  }
+
+.populate-requests{
+    border: 2px black solid;
+    width: auto;
+}
+
+.col-sm-2{
+    padding-top: 10%;
+}
