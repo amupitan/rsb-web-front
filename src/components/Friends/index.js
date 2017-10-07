@@ -6,7 +6,7 @@ import './style.css';
 
 
 class Friends extends Component {
-    data = mockServer("/friends/p/1");
+    data = mockServer("/people");
 
     constructor(props) {
         super(props);

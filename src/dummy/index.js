@@ -8,10 +8,10 @@ export default (url) => {
             return userWithFriends
         case "games/l/lng/0/lat/0":
             return getMarkers;
-        case "/friends/p/1":
+        case "/people":
             return friendData;
         default:
             return {}
     }
 
-}
+} 
