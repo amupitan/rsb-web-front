@@ -108,6 +108,7 @@ export default class Form extends Component {
 
             <form>
                 <h1>{this.props.title || 'Hello!'}</h1>
+                {this.props.errors && <p style={{ color: 'red' }}>{this.props.errors}</p>}
                 {
                     this.state.elementArr.map(this.createFormElement)
                 }
