@@ -1,0 +1,10 @@
+.rsb-friend-icon{
+    -moz-border-radius: 5rem;
+	-webkit-border-radius: 5rem;
+	border-radius: 5rem;
+	margin-top:5px;
+}
+
+.rsb-friends-panel, .rsb-recent-players-panel{
+	margin-top: 10px;
+}

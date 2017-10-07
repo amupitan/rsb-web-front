@@ -1,4 +1,5 @@
 import userWithFriends from './user';
+import friendData from './friends';
 import getMarkers from './mapMarkers';
 
 export default (url) => {
@@ -7,6 +8,8 @@ export default (url) => {
             return userWithFriends
         case "games/l/lng/0/lat/0":
             return getMarkers;
+        case "/friends/p/1":
+            return friendData;
         default:
             return {}
     }

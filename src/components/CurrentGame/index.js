@@ -12,8 +12,8 @@ class CurrentGame extends Component {
             doesGameExist: true, //TODO: this could come as a prop
 
             //TODO: rest of these should move to componentWillUpdate
-            opponentTeamName: "Winenrs",
-            userTeamName: "Losers",
+            opponentTeamName: "Losers",
+            userTeamName: "Winners",
             gameLocation: "2710 East Street, Ames, Iowa",
             gameTime: "4:25 PM CT",
             userTeamMembers: ['Walter', 'Victor', 'Mich'],
