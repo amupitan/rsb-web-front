@@ -3,6 +3,7 @@ import friendData from './friends';
 import getMarkers from './mapMarkers';
 import game from './game';
 import games from './games';
+import viewUser from './viewUser';
 
 export default (url) => {
     switch (url) {
@@ -16,6 +17,8 @@ export default (url) => {
             return friendData;
         case "/game/join/i":
             return { data: games[0] };
+        case "/user/TODO":
+            return viewUser
         default:
             return {}
     }

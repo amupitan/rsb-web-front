@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
+import ViewUser from '../ViewUser';
 import './style.css';
 
 export default class DisplayFriends extends Component {
@@ -15,7 +16,10 @@ export default class DisplayFriends extends Component {
             users.push(
                 <div className="populate-requests row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
-                        <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                        <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" 
+                            onClick={()=>{
+                                console.log("Pressed ", el.Firstname, el.Lastname);
+                            }}/>
                     </div>
                     <div className="col-sm-4">
                         <RSBLabel
