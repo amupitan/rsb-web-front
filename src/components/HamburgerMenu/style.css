@@ -66,6 +66,9 @@
     font-size: 20px;
     color: #818181;
     display: block;
-    border-top: 1px solid #000000;
-    border-top-color: darkgray;
+}
+
+a, a:hover {
+    text-decoration: none;
+    color: inherit;
 }

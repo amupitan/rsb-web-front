@@ -1,62 +1,112 @@
-import React, { Component } from 'react';
+import React from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import mockServer from '../../dummy';
-import DisplayFriends from './DisplayNames';
+import DisplayFriends from './DisplayFriends';
+import PopulateRequests from './PopulateRequests';
 
 import './style.css';
 
-class ProfileUser extends Component {
-    constructor(props) {
-        super(props);
-        this.render = this.render.bind(this);
-    }
+function ProfileUser() {
+    let data = mockServer("/user/p/1");
+    let numFriends = "Friends " + data.result[0].Friends.length;
 
-    data = mockServer("/user/p/1");
-
-    render() {
-        let numFriends = "Friends " + this.data.result[0].Friends.length;
-
+    function heading() {
         return (
-            <div className="panel panel-default col-xs-6 col-xs-offset-3">
-                <div>
-                    <div className=" text-center">
-                        <h4>{this.data.result[0].Username}</h4>
-                        <RSBLabel
-                            name={numFriends}
-                            className="friend-link"
-                            onClickFunction={() => {
-                                console.log("Clicked friends label")
-                            }}
-                        />
-                        <span>Full Name: {this.data.result[0].Firstname} {this.data.result[0].Lastname}</span>
-                    </div>
+            <div className="row">
+                <div className="col-sm-6 text-right">
+                    <img src={data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
                 </div>
-                <div>
-                    <div className="col-sm-6 panel panel-default">
-                        <h2>Friends</h2>
-                        <div className="scroll-info panel-body">
-                            <DisplayFriends
-                                friends={this.data.result[0].Friends}
-                            />
-                            {/*Can add more things like "Top friends", "Recnetly Added" later*/}
-                        </div>
-                    </div>
-                    <div className="col-sm-6 panel panel-default">
-                        <h2>Games</h2>
-                        <div className="scroll-info panel-body">
-                                <RSBLabel
-                                    name="Game History"
-                                    className="game-history-link"
-                                    onClickFunction={() => {
-                                        console.log("Clicked Game History label")
-                                    }}
-                                />
-                        </div>
-                    </div>
+                <div className="col-sm-6 text-left">
+                    <h4>{data.result[0].Username}</h4>
+                    <RSBLabel
+                        name={numFriends}
+                        className="friend-link"
+                        onClickFunction={() => {
+                            console.log("Clicked friends label")
+                        }}
+                    />
+                    <span>Full Name: {data.result[0].Firstname} {data.result[0].Lastname}</span>
                 </div>
             </div>
         )
     }
+
+    function FriendRequest() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Friend Requests</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <PopulateRequests
+                        info={data.result[0].FriendRequests}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+    function GameInvites() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Games Invites</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <PopulateRequests
+                        info={data.result[0].GameInvites}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+    function Friends() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Friends</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <DisplayFriends
+                        friends={data.result[0].Friends}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    function GameHistory() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Game History</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <RSBLabel
+                        name="Game History"
+                        className="game-history-link"
+                        onClickFunction={() => {
+                            console.log("Clicked Game History label")
+                        }}
+                    />
+                </div>
+            </div>
+        )
+    }
+    return (
+        <div className="panel col-xs-10 col-xs-offset-1">
+            {heading()}
+            <div className="row">
+                {FriendRequest()}
+                {GameInvites()}
+            </div>
+            <div className="row">
+                {Friends()}
+                {GameHistory()}
+            </div>
+        </div >
+    )
 }
 
 export default ProfileUser;

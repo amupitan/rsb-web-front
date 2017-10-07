@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HamburgerMenu from './';
+import Settings from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<HamburgerMenu menu />, div);
-});
+  ReactDOM.render(<Settings />, div);
+}); 

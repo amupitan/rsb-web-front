@@ -1,3 +1,5 @@
+import defaultImg from './default.jpg';
+
 export default {
     meta: {
         error: false,
@@ -9,13 +11,39 @@ export default {
             Firstname:  "Victor",                 
             Lastname: "Amupitan",                        
             PersonalRating: "2",      
-            TeamRating: "1002",      
+            TeamRating: "1002",
+            ProfilePic: defaultImg, 
+            GameInvites: [{
+                Image: defaultImg,
+                Username: "Jason",
+                Location: "Ames",
+                Sport: "Soccer",
+                Time: "3:00 PM"
+            }],
+            FriendRequests: [{
+                Image: defaultImg,
+                Username: "Kool guy",
+                Location: "Ames",
+            },{
+                Image: defaultImg,
+                Username: "Kool guy2",
+                Location: "Waterloo"
+            },{
+                Image: defaultImg,
+                Username: "Kool guy3",
+                Location: "Dirty loo"
+            },{
+                Image: defaultImg,
+                Username: "Kool guy4",
+                Location: "Clean loo"
+            }],     
             Friends:[{
                 Username: "Ginger",
                 Firstname:  "Kern",                 
                 Lastname: "Kernal",                        
                 PersonalRating: "1",      
-                TeamRating: "1002",      
+                TeamRating: "1002",   
+                ProfilePic: defaultImg,                      
                 Friends:[{
                     
                 }],          
@@ -25,7 +53,8 @@ export default {
                 Firstname:  "Walter",                 
                 Lastname: "Seymour",                        
                 PersonalRating: "4",      
-                TeamRating: "1001",      
+                TeamRating: "1001",
+                ProfilePic: defaultImg,                
                 Friends:[{
 
                 }],          
@@ -35,7 +64,8 @@ export default {
                 Firstname:  "Michielu",                 
                 Lastname: "Menning",                        
                 PersonalRating: "1122",      
-                TeamRating: "1002",      
+                TeamRating: "1002",
+                ProfilePic: defaultImg,      
                 Friends:[{
                     
                 }],          
@@ -45,7 +75,8 @@ export default {
                 Firstname:  "Alex",                 
                 Lastname: "Kapler",                        
                 PersonalRating: "4",      
-                TeamRating: "1001",      
+                TeamRating: "1001", 
+                ProfilePic: defaultImg,     
                 Friends:[{
 
                 }],          
@@ -55,7 +86,8 @@ export default {
                 Firstname:  "Shawn",                 
                 Lastname: "Robinson",                        
                 PersonalRating: "1122",      
-                TeamRating: "1002",      
+                TeamRating: "1002",  
+                ProfilePic: defaultImg,    
                 Friends:[{
                     
                 }],          
@@ -65,7 +97,8 @@ export default {
                 Firstname:  "Jason",                 
                 Lastname: "Idk",                        
                 PersonalRating: "1",      
-                TeamRating: "1002",      
+                TeamRating: "1002", 
+                ProfilePic: defaultImg,     
                 Friends:[{
                     
                 }],          
@@ -75,7 +108,8 @@ export default {
                 Firstname:  "Walter",                 
                 Lastname: "Mom",                        
                 PersonalRating: "4",      
-                TeamRating: "1001",      
+                TeamRating: "1001", 
+                ProfilePic: defaultImg,     
                 Friends:[{
 
                 }],          
@@ -85,7 +119,8 @@ export default {
                 Firstname:  "Carli",                 
                 Lastname: "Sinnot",                        
                 PersonalRating: "1122",      
-                TeamRating: "1002",      
+                TeamRating: "1002",    
+                ProfilePic: defaultImg,  
                 Friends:[{
                     
                 }],          
@@ -95,7 +130,8 @@ export default {
                 Firstname:  "El",                 
                 Lastname: "M",                        
                 PersonalRating: "1",      
-                TeamRating: "1002",      
+                TeamRating: "1002", 
+                ProfilePic: defaultImg,     
                 Friends:[{
                     
                 }],          
@@ -105,7 +141,8 @@ export default {
                 Firstname:  "SomeoneFrom",                 
                 Lastname: "CCF",                        
                 PersonalRating: "4",      
-                TeamRating: "1001",      
+                TeamRating: "1001",  
+                ProfilePic: defaultImg,    
                 Friends:[{
 
                 }],          
@@ -115,7 +152,8 @@ export default {
                 Firstname:  "My",                 
                 Lastname: "Cat",                        
                 PersonalRating: "1122",      
-                TeamRating: "1002",      
+                TeamRating: "1002",     
+                ProfilePic: defaultImg, 
                 Friends:[{
                     
                 }],          
@@ -125,7 +163,8 @@ export default {
                 Firstname:  "British",                 
                 Lastname: "Chick",                        
                 PersonalRating: "1",      
-                TeamRating: "1002",      
+                TeamRating: "1002", 
+                ProfilePic: defaultImg,     
                 Friends:[{
                     
                 }],          
@@ -135,7 +174,8 @@ export default {
                 Firstname:  "Prof",                 
                 Lastname: "Gadia",                        
                 PersonalRating: "1",      
-                TeamRating: "1002",      
+                TeamRating: "1002",
+                ProfilePic: defaultImg,      
                 Friends:[{
                     
                 }],          
@@ -146,6 +186,7 @@ export default {
                 Lastname: "Rep at the career fair",                        
                 PersonalRating: "4",      
                 TeamRating: "1001",      
+                ProfilePic: defaultImg,
                 Friends:[{
 
                 }],          
@@ -155,7 +196,8 @@ export default {
                 Firstname:  "Not",                 
                 Lastname: "KD",                        
                 PersonalRating: "1122",      
-                TeamRating: "1002",      
+                TeamRating: "1002",   
+                ProfilePic: defaultImg,   
                 Friends:[{
                     
                 }],          
