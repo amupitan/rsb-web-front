@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
+import RSBButton from '../ui/RSBButton';
 import './style.css';
 
 export default class DisplayFriends extends Component {
@@ -12,15 +13,29 @@ export default class DisplayFriends extends Component {
         let users = [];
         this.props.friends.forEach((el, i) => {
             users.push(
-                <div className="friends-generate" key={i}>
-                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
-                    <RSBLabel
-                        name={el.Username}
-                        onClickFunction={() => {
-                            console.log("Pressed ", el.Firstname, el.Lastname);
-                        }}
-                        key={i}
-                    /></div>);
+                <div className="populate-requests row" key={i}>
+                    <div className="col-sm-4 col-sm-pull">
+                        <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                    </div>
+                    <div className="col-sm-4">
+                        <RSBLabel
+                            name={el.Username}
+                            onClickFunction={() => {
+                                console.log("Pressed ", el.Firstname, el.Lastname);
+                            }}
+                            key={i}
+                        />
+                    </div>
+                    <div className="col-sm-4">
+                        <RSBButton
+                            glyphicons="glyphicon glyphicon-remove"
+                            className="decline"
+                            onClickFunction={() => {
+                                console.log("Decline!");
+                            }}
+                        />
+                    </div>
+                </div>);
         });
         return users;
     }
