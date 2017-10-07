@@ -8,7 +8,7 @@ export default (url) => {
             return userWithFriends
         case "games/l/lng/0/lat/0":
             return getMarkers;
-        case "/people":
+        case "/user/f/1":
             return friendData;
         default:
             return {}
