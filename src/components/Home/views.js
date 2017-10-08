@@ -37,11 +37,6 @@ const views = [
         component: HostPage,
     },
     {
-        name: 'View User',
-        path: 'user',
-        component: ViewUser
-    },
-    {
         name: 'Settings',
         path: 'settings',
         component: Settings,

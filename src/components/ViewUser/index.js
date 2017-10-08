@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
-import mockServer from '../../dummy';
 import DisplayFriends from '../ProfileUser/DisplayFriends';
 
 import './style.css';
 
-function ProfileUser() {
-    let data = mockServer("/user/TODO");
-    let numFriends = "Friends " + data.result[0].Friends.length;
-
-
-
-    function heading() {
+class ViewUser extends Component{
+    constructor(props) {
+        super(props);
+        this.render = this.render.bind(this);    
+        console.log("In here, ", props);    
+    }
+    
+    heading() {
+        let numFriends = "Friends " + this.props.userInfo.Friends.length;
         let isFriend = ()=>{
             //TODO This is where I iterate through the user's friends list and check if 
             // the current user is one of them
@@ -25,15 +26,13 @@ function ProfileUser() {
             buttonType= {isFriend() ? "danger" : "info"}
             />)
         
-        
-
         return (
             <div className="row">
                 <div className="col-sm-6 text-right">
-                    <img src={data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
+                    <img src={this.props.userInfo.ProfilePic} alt="Profile" className="profile-pic" />
                 </div>
                 <div className="col-sm-6 text-left">
-                    <h4>{data.result[0].Username}</h4>
+                    <h4>{this.props.userInfo.Username}</h4>
                     <RSBLabel
                         name={numFriends}
                         className="friend-link"
@@ -41,14 +40,14 @@ function ProfileUser() {
                             console.log("Clicked friends label")
                         }}
                     />
-                    <span>Full Name: {data.result[0].Firstname} {data.result[0].Lastname}</span>
+                    <span>Full Name: {this.props.userInfo.Firstname} {this.props.userInfo.Lastname}</span>
                     {actionButt}
                 </div>
             </div>
         )
     }
 
-    function Friends() {
+    Friends() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -56,14 +55,14 @@ function ProfileUser() {
                 </div>
                 <div className="scroll-info panel-body">
                     <DisplayFriends
-                        friends={data.result[0].Friends}
+                        friends={this.props.userInfo.Friends}
                     />
                 </div>
             </div>
         );
     }
 
-    function GameHistory() {
+    GameHistory() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -81,15 +80,17 @@ function ProfileUser() {
             </div>
         )
     }
-    return (
+    render(){
+        return (
         <div className="panel col-xs-10 col-xs-offset-1">
-            {heading()}
+            {this.heading()}
             <div className="row">
-                {Friends()}
-                {GameHistory()}
+                {this.Friends()}
+                {this.GameHistory()}
             </div>
         </div >
-    )
+        
+    )}
 }
 
-export default ProfileUser
+export default ViewUser

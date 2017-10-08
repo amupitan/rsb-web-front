@@ -3,7 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-
+import user from '../../lib/user';
+import ViewUser from '../ViewUser';
 
 class Home extends Component {
 
@@ -24,11 +25,19 @@ class Home extends Component {
 
   render() {
     const defaultComp = this.props.default || (views.length > 0 && views[0].component);
+    let use = new user().getAllUsers().result;
     return (
       <div>
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
+           {use.map((u, i) => (
+              < Route exact key={`${u.Username}${i}`} path={'/user/' + u.Username}
+              render={(props) => (
+                <ViewUser {...props} userInfo={u}/>
+              )}/>
+            ))},
+
             {views.map((view, i) => (
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
@@ -51,6 +60,15 @@ export const appRoutes = (() => {
   let path = '/(';
   for (let route of views) {
     path += route.path + '|'
+  }
+  path += ')/';
+  return path;
+})();
+
+export const userRoutes = (() => {
+  let path = '/user/(';
+  for (let userRoutes of new user().getAllUsers().result){
+    path+= userRoutes.Username + '|'
   }
   path += ')/';
   return path;
