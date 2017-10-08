@@ -72,4 +72,8 @@ class Login extends Component {
     }
 }
 
+Login.defaultProps = {
+    location: {},
+}
+
 export default Login;
