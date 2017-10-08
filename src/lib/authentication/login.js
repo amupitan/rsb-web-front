@@ -1,4 +1,5 @@
 import yoda from '../../lib/yoda';
+import redirect from '../../lib/navigator';
 
 
 export const _formElements = [
@@ -41,8 +42,13 @@ function _handleError(error) {
     return { error: 'Unexpected Error. Please try again later' };
 }
 
-export async function _destroySession(data) {
-    return yoda.get('/logout');
+export async function _logout(data) {
+    await yoda.get('/logout');
+    redirect({ path: '/login', state: { logout: true } });
 };
+
+export function _onLogin(newPath) {
+    redirect({ path: newPath });
+}
 
 export default _login;

@@ -1,4 +1,4 @@
-import history from '../../components/App/history';
+import history from './history';
 
 const redirect = ({ path, state }) => history.push(path, state)
 

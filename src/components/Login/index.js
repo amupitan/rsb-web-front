@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { verifyCredentials, formElements } from '../../lib/authentication';
+import { verifyCredentials, formElements, onLogin } from '../../lib/authentication';
 
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
@@ -17,6 +17,7 @@ class Login extends Component {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onError = this.onError.bind(this);
+        this.renderLocationInfo = this.renderLocationInfo.bind(this);
     }
 
     async onSubmit(formData) {
@@ -24,18 +25,22 @@ class Login extends Component {
         if (res.error) {
             return this.onError(res.error);
         }
-        return this.onSuccess(res.data);
+        return onLogin(res.data);
     }
 
-    onSuccess(newPath) {
-        this.props.history.push(newPath);
-    }
-
-    // This should handle displayong errors on the form
+    // This should handle displaying errors on the form
     onError(error) {
         this.setState({
             errors: error,
         });
+    }
+
+    renderLocationInfo() {
+        if (this.props.location.state && this.props.location.state.logout === true) {
+            window.history.pushState({ logout: false }, '')
+
+            return <p>You have successfully been logged out </p>;
+        }
     }
 
     render() {
@@ -45,6 +50,7 @@ class Login extends Component {
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
+                    {this.renderLocationInfo()}
                     <div className="inner col-sm-offset-1 col-sm-10">
                         <Form elements={formElements} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
                     </div>
