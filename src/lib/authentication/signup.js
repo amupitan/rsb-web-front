@@ -2,6 +2,8 @@ import yoda from '../../lib/yoda';
 import redirect from '../../lib/navigator';
 import errorFormatter from '../../lib/errors';
 
+const onSignupAlert = 'You have successfully signed up. Don\'t forget to confirm your email';
+
 export const _formElements = [
     [
         {
@@ -95,8 +97,8 @@ export async function _logout(data) {
     redirect({ path: '/login', state: { logout: true } });
 };
 
-export function _onSignup() {
-    redirect({ path: '/login', state: { info: 'Confirm email first!' } });
+export function _onSignup({ username }) {
+    redirect({ path: '/login', state: { info: onSignupAlert, username: username } });
 }
 
 export default _signup;

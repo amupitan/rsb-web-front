@@ -75,7 +75,7 @@ export default class Yoda {
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
-            return new YodaResponse(res.json());
+            return new YodaResponse(await res.json());
         } catch (err) {
             throw err;
         }
@@ -94,7 +94,7 @@ export default class Yoda {
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
-            return new YodaResponse(res.json());
+            return new YodaResponse(await res.json());
         } catch (err) {
             throw err;
         }

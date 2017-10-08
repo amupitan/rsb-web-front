@@ -4,6 +4,7 @@ const _invalidUsernamePassword = {
     'Invalid password': 'The password does not match the requirements',
     'Invalid email': 'The email is invalid',
     'Invalid username or password': 'The username/password combination was not found',
+    'Username already taken': 'The username is already taken',
 }
 
 const _yodaErrors = {

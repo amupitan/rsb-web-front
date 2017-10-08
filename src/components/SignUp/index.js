@@ -25,7 +25,7 @@ class SignUp extends Component {
         if (res.error) {
             return this.onError(res.error);
         }
-        return onSignUp(res.data);
+        return onSignUp(formData);
     }
 
     // This should handle displaying errors on the form

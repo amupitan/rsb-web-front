@@ -45,6 +45,12 @@ class Login extends Component {
         }
     }
 
+    getForm() {
+        let username = loginForm[0];
+        username.value = this.props.location.state && this.props.location.state.username;
+        return [username, ...loginForm.slice(1)];
+    }
+
     render() {
         return (
             <div className="container " >
@@ -54,7 +60,7 @@ class Login extends Component {
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
                     <div className="inner col-sm-offset-1 col-sm-10">
-                        <Form elements={loginForm} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
+                        <Form elements={this.getForm()} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
                     </div>
                 </div>
             </div>
