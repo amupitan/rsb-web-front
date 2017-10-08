@@ -1,6 +1,8 @@
 import yoda from '../../lib/yoda';
 import redirect from '../../lib/navigator';
+import errorFormatter from '../../lib/errors';
 
+const logoutMessage = 'You have successfully logged out';
 
 export const _formElements = [
     {
@@ -33,18 +35,16 @@ async function _login(data) {
 };
 
 function _handleError(error) {
-    if (error.code === 7) {
-        return { error: 'Invalid username/password' };
-    } else if (error.code === 9) {
+    if (error.code === 9) {
         // user is already logged in
         return { data: '/' };
     }
-    return { error: 'Unexpected Error. Please try again later' };
+    return { error: errorFormatter(error) };
 }
 
 export async function _logout(data) {
     await yoda.get('/logout');
-    redirect({ path: '/login', state: { logout: true } });
+    redirect({ path: '/login', state: { info: logoutMessage } });
 };
 
 export function _onLogin(newPath) {

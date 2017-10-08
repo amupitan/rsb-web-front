@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import { verifyCredentials, formElements, onLogin } from '../../lib/authentication';
+import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
 
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
+import Notify from '../ui/Notify';
 
 import logo from '../../assets/rsb_logo.png';
 import './style.css';
@@ -36,23 +37,24 @@ class Login extends Component {
     }
 
     renderLocationInfo() {
-        if (this.props.location.state && this.props.location.state.logout === true) {
-            window.history.pushState({ logout: false }, '')
+        if (this.props.location.state && this.props.location.state.info) {
+            const message = this.props.location.state.info;
+            window.history.pushState({ info: null }, '')
 
-            return <p>You have successfully been logged out </p>;
+            return <Notify text={message} />;
         }
     }
 
     render() {
         return (
             <div className="container " >
+                {this.renderLocationInfo()}
                 <div className="smart">
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
-                    {this.renderLocationInfo()}
                     <div className="inner col-sm-offset-1 col-sm-10">
-                        <Form elements={formElements} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
+                        <Form elements={loginForm} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
                     </div>
                 </div>
             </div>
