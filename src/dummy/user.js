@@ -7,7 +7,7 @@ export default {
     },
     result: [
         {
-            Username: "Vicity Vic",
+            Username: "VicityVic",
             Firstname:  "Victor",                 
             Lastname: "Amupitan",                        
             PersonalRating: "2",      
@@ -22,19 +22,19 @@ export default {
             }],
             FriendRequests: [{
                 Image: defaultImg,
-                Username: "Kool guy",
+                Username: "KoolGuy",
                 Location: "Ames",
             },{
                 Image: defaultImg,
-                Username: "Kool guy2",
+                Username: "KoolGuy2",
                 Location: "Waterloo"
             },{
                 Image: defaultImg,
-                Username: "Kool guy3",
+                Username: "KoolGuy3",
                 Location: "Dirty loo"
             },{
                 Image: defaultImg,
-                Username: "Kool guy4",
+                Username: "KoolGuy4",
                 Location: "Clean loo"
             }],     
             Friends:[{
@@ -49,7 +49,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Walta Flocka Flame",
+                Username: "WaltaFlockaFlame",
                 Firstname:  "Walter",                 
                 Lastname: "Seymour",                        
                 PersonalRating: "4",      
@@ -60,7 +60,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Ragin Asain",
+                Username: "RaginAsain",
                 Firstname:  "Michielu",                 
                 Lastname: "Menning",                        
                 PersonalRating: "1122",      
@@ -71,7 +71,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Big Al",
+                Username: "BigAl",
                 Firstname:  "Alex",                 
                 Lastname: "Kapler",                        
                 PersonalRating: "4",      
@@ -93,7 +93,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Victor's roommate",
+                Username: "VictorRoommate",
                 Firstname:  "Jason",                 
                 Lastname: "Idk",                        
                 PersonalRating: "1",      
@@ -104,7 +104,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Mrs. Seymour",
+                Username: "MrsSeymour",
                 Firstname:  "Walter",                 
                 Lastname: "Mom",                        
                 PersonalRating: "4",      
@@ -115,7 +115,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Kern's gurl",
+                Username: "KernGurl",
                 Firstname:  "Carli",                 
                 Lastname: "Sinnot",                        
                 PersonalRating: "1122",      
@@ -126,7 +126,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Walt's gurl",
+                Username: "WaltGurl",
                 Firstname:  "El",                 
                 Lastname: "M",                        
                 PersonalRating: "1",      
@@ -137,7 +137,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Victor's Gurl",
+                Username: "VictorGurl",
                 Firstname:  "SomeoneFrom",                 
                 Lastname: "CCF",                        
                 PersonalRating: "4",      
@@ -148,7 +148,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Mich's gurl",
+                Username: "MichGurl",
                 Firstname:  "My",                 
                 Lastname: "Cat",                        
                 PersonalRating: "1122",      
@@ -159,7 +159,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Shawn's Gurl",
+                Username: "ShawnGurl",
                 Firstname:  "British",                 
                 Lastname: "Chick",                        
                 PersonalRating: "1",      
@@ -181,7 +181,7 @@ export default {
                 }],          
                 Preferences: "Wut?"
             },{
-                Username: "Mich's Dream crusher",
+                Username: "MichDreamCrusher",
                 Firstname:  "Microsoft",                 
                 Lastname: "Rep at the career fair",                        
                 PersonalRating: "4",      
