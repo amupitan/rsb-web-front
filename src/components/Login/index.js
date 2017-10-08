@@ -41,8 +41,6 @@ class Login extends Component {
             window.history.pushState({ info: null }, '')
 
             this.props.notify({ text: message });
-        } else {
-            this.props.notify({ text: 'nothing' });
         }
     }
 
