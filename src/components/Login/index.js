@@ -4,7 +4,6 @@ import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication'
 
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
-import Notify from '../ui/Notify';
 
 import logo from '../../assets/rsb_logo.png';
 import './style.css';
@@ -41,7 +40,9 @@ class Login extends Component {
             const message = this.props.location.state.info;
             window.history.pushState({ info: null }, '')
 
-            return <Notify text={message} />;
+            this.props.notify({ text: message });
+        } else {
+            this.props.notify({ text: 'nothing' });
         }
     }
 
@@ -51,10 +52,13 @@ class Login extends Component {
         return [username, ...loginForm.slice(1)];
     }
 
+    componentDidUpdate() {
+        this.renderLocationInfo();
+    }
+
     render() {
         return (
             <div className="container " >
-                {this.renderLocationInfo()}
                 <div className="smart">
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
