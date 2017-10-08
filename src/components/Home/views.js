@@ -3,6 +3,7 @@ import CurrentGame from '../CurrentGame';
 import MapPage from '../MapPage';
 import HostPage from '../HostGame';
 import Settings from '../Settings';
+import Join from '../Join';
 
 // Represents the views displayed by links from the hamburger menu
 // the [component] should always be a React.Component and not a callback
@@ -38,6 +39,12 @@ const views = [
         path: 'settings',
         component: Settings,
     },
+    {
+        name: 'Join',
+        path: 'join',
+        component: Join,
+    },
+
 ];
 
 export default views;
