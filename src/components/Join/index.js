@@ -41,7 +41,7 @@ class Join extends Component {
                 </span>
                 <div className="container">
                     <span className="row">
-                        <span className="col-xs-5 col-xs-offset-3">
+                        <span className="col-xs-5 col-xs-offset-3 rsb-join-game-input-container">
                             <input id="rsb-join-code-input" className="form-control" type="number" placeholder="Enter a game code to join.." />
                         </span>
                         <span className="col-xs-1 ">
