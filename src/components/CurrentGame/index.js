@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
+import mockServer from '../../dummy';
 
 import './style.css';
 
@@ -26,6 +27,8 @@ class CurrentGame extends Component {
         this.handleProfileClick = this.handleProfileClick.bind(this);
     }
 
+    
+
     handleLeaveGame() {
         console.log("User wants to leave the game");
     }
@@ -35,6 +38,12 @@ class CurrentGame extends Component {
     }
 
     render() {
+        let data = mockServer("/game/g/123");
+        console.log("Data: ", data);
+
+        //Array that aligns with the sports number the backend sends back
+        const sports = ["soccer", "basketball", "volleyball", "baseball", "frisbee", "discgolf"];
+        
         const opponentTeamName = this.state.opponentTeamName;
         const userTeamName = this.state.userTeamName;
 
