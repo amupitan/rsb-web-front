@@ -41,4 +41,8 @@ function _handleError(error) {
     return { error: 'Unexpected Error. Please try again later' };
 }
 
+export async function _destroySession(data) {
+    return yoda.get('/logout');
+};
+
 export default _login;
