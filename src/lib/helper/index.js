@@ -22,6 +22,16 @@ const mergeDeep = (target, source) => {
     return output;
 };
 
+// Converts a callback function to a promise function
+export function promisify(func) {
+    return (...args) =>
+        new Promise((resolve, reject) => {
+            const callback = (data, err) => err ? reject(err) : resolve(data)
+
+            func.apply(this, [...args, callback])
+        })
+}
+
 export default {
     mergeDeep: mergeDeep,
     //toTitleCase returns the string with the first letter in uppercase e.g toTitleCase('wings') -> Wings
