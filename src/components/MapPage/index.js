@@ -71,6 +71,7 @@ export class MapPage extends Component {
     // Handles the event of a game icon being clicked
     // displays the game info box
     onMarkerClick(props, marker, e) {
+        console.log(props);
         this.setState({
             selectedPlace: props.game,
             activeMarker: marker,

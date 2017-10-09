@@ -3,6 +3,10 @@ export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
+export const isObjectString = (item) => {
+    return (item && ((item.startsWith('{') && item.endsWith('}')) || (item.startsWith('[') && item.endsWith(']'))));
+    //TODO: use JSON.parse
+}
 
 // mergeDeep recursively merges source into a copy of target and returns it
 const mergeDeep = (target, source) => {

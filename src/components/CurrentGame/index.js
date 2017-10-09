@@ -1,67 +1,53 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import Game from '../../lib/game';
+import { sports } from '../../lib/map';
+
+import Loader from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
-import mockServer from '../../dummy';
 
+import defaultImg from '../../dummy/default.jpg';//'.././default.jpg';
 import './style.css';
 
-function CurrentGame() {
-    const gameData = mockServer("/game/g/123");
-    
-    function doesGameExist() {
-        return (gameData.result ? true : false);
+class CurrentGame extends Component {
+    constructor(props) {
+        super(props);
+
+        this.game = null;
+        this.state = {
+            hasGame: false,
+        }
+
+        this.getCurrentGame = this.getCurrentGame.bind(this);
     }
 
-    function heading() {
+    heading() {
         return (
             <div className="row panel-header">
                 <div className="text-center rsb-current-game--title">
-                    <h1>{gameData.result[0].name}</h1>
-                    <span>Join Code: "{gameData.result[0].joincode}"</span>
+                    <h1>{this.game.name}</h1>
+                    <span>Join Code: "{this.game.joincode}"</span>
                 </div>
             </div>
         )
     }
 
-    function populateUsers() {
-        let tempUsers = [];
-        gameData.result[0].members.forEach((mem, i) => {
-            tempUsers.push(
-                <div className="row" key={i}>
-                    <div className="col-sm-4 col-sm-pull">
-                        <img src={mem.profilepic} alt="Profile" className="profile-pic-xs" />
-                    </div>
-                    <div className="col-sm-4">
-                        <RSBLabel
-                            name={mem.username}
-                            onClickFunction={() => {
-                                console.log("Pressed ", mem.firstname, mem.lastname);
-                            }}
-                        />
-                    </div>
-                </div>
-            )
-        })
-        return tempUsers;
+    renderUsers() {
+        const mem = {
+            firstname: 'Walter',
+            lastname: 'Seymour',
+            username: 'wseymour',
+            profilepic: defaultImg,
+        };
+        const members = this.game.members.map((player, i) => {
+            return <UserLabel key={i} {...mem} />
+        });
+        return members;
     }
 
-    function getCurrentPlayers() {
-        return (
-            <div className="col-sm-6 panel panel-default">
-                <div className="panel-heading-rsb">
-                    <h2>Current Players</h2>
-                </div>
-                <div className="scroll-info panel-body">
-                    {populateUsers()}
-                </div>
-            </div>
-        );
-    }
-
-    function generalInfo() {
-        //Array that aligns with the sports number the backend sends back
-        const sports = ["soccer", "basketball", "volleyball", "baseball", "frisbee", "discgolf"];
-        const gameInfo = gameData.result[0];
+    renderGameInfo() {
+        const { host, startTime, location, sport, agerange } = this.game;
 
         var options = {
             weekday: "long", year: "numeric", month: "short",
@@ -74,47 +60,87 @@ function CurrentGame() {
                     <h2>General Game Info</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <span><b>Host</b>: {gameInfo.host}</span><br />
-                    <span><b>StartTime</b>: {(gameInfo.starttime).toLocaleTimeString("en-us", options)}</span><br />
-                    <span><b>Location</b>: Lat: {gameInfo.location["Lat"]} Lng: {gameInfo.location["Lng"]} </span><br />
-                    <span><b>Sport</b>: {sports[gameInfo.sport]}</span><br />
-                    <span><b>Age Range</b>:Min: {gameInfo.agerange[0]}  Max: {gameInfo.agerange[1]}</span><br />
+                    <span><b>Host</b>: {host}</span><br />
+                    <span><b>StartTime</b>: {(new Date(startTime)).toLocaleTimeString("en-us", options)}</span><br />
+                    <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
+                    <span><b>Sport</b>: {sports[sport]}</span><br />
+                    <span><b>Age Range</b>:Min: {agerange[0]}  Max: {agerange[1]}</span><br />
                 </div>
             </div>
         )
     }
 
-    const gameExist = (
-        <div className="panel col-xs-10 col-xs-offset-1">
-            {heading()}
-            <div className="row">
-                {getCurrentPlayers()}
-                {generalInfo()}
-            </div>
-            <RSBButton
-                text="Exit Game"
-                buttonType="danger"
-                onClickFunction={() => {
-                    console.log("User wants to leave the game");
-                }}
-            />
-        </div>
-    );
-
-    const gameNoExist = (
-        <div>
-            <div className="row">
-                <div className="rsb-current-game--title">Current Game</div>
-            </div>
-            <div className="panel panel-default col-md-6 col-md-offset-3">
-                <div className="panel-body">
-                    <div className="text-center text-danger">You are not currently in a game!</div>
-                    <div className="text-center text-danger">(Use the quick menu in the bottom left corner to start or join a game.)</div>
+    getCurrentPlayers() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Current Players</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    {this.renderUsers()}
                 </div>
             </div>
-        </div>
-    )
-    return (doesGameExist() ? gameExist : gameNoExist);
+        );
+    }
+
+    async getCurrentGame() {
+        const game = await Game();
+
+        if (game) {
+            this.game = game;
+
+            this.setState({
+                hasGame: true,
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.getCurrentGame();
+    }
+
+    render() {
+        if (!this.state.hasGame) {
+            return <div style={{ width: '150px', height: '150px', marginTop: '300px', marginLeft: '650px' }}><Loader /></div>;
+        }
+
+        return (
+            <div className="panel col-xs-10 col-xs-offset-1">
+                {this.heading()}
+                <div className="row">
+                    {this.getCurrentPlayers()}
+                    {this.renderGameInfo()}
+                </div>
+                <RSBButton
+                    text="Exit Game"
+                    buttonType="danger"
+                    onClickFunction={() => {
+                        console.log("User wants to leave the game");
+                    }}
+                />
+            </div>
+        );
+    }
 }
+
+const UserLabel = (props) => {
+    const { profilepic, firstname, lastname, username } = props;
+    console.log(props);
+    return (
+        <div className="row" >
+            <div className="col-sm-4 col-sm-pull">
+                <img src={profilepic} alt="Profile" className="profile-pic-xs" />
+            </div>
+            <div className="col-sm-4">
+                <RSBLabel
+                    name={firstname}
+                    onClickFunction={() => {
+                        console.log("Pressed ", firstname, lastname);
+                    }}
+                />
+            </div>
+        </div>
+    );
+};
 
 export default CurrentGame;

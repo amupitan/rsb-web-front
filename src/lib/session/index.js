@@ -1,25 +1,38 @@
+import { isObject, isObjectString } from '../helper';
+
 export default class session {
     static getItem(key) {
-        return sessionStorage.getItem(key);
+        const value = localStorage.getItem(key);
+        if (isObjectString(value)) {
+            return JSON.parse(value);
+        }
+        //TODO: this will return numbers as strings
+        return value;
     }
 
     static setItem(key, value) {
-        sessionStorage.setItem(key, value)
+        if (isObject(value)) {
+            localStorage.setItem(key, JSON.stringify(value));
+            return;
+        }
+        localStorage.setItem(key, value);
     }
 
     static contains(key) {
-        return sessionStorage.getItem(key) ? true : false;
+        return localStorage.getItem(key) ? true : false;
     }
 
     static removeItem(key) {
-        sessionStorage.removeItem(key);
+        localStorage.removeItem(key);
     }
 
     static clear() {
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     static async setState(state) {
+        console.log(state);
+        console.log('state');
         if (typeof state !== 'object') return;
         const keys = Object.keys(state);
         for (const key of keys) {
@@ -28,7 +41,7 @@ export default class session {
     }
 
     static logOut() {
-        sessionStorage.clear();
+        this.clear();
     }
 
     static get isLoggedIn() {

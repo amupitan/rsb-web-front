@@ -1,7 +1,6 @@
 import yoda from '../../lib/yoda';
 import { YodaRequest } from '../../lib/yoda/yoda';
 import errorFormatter from '../../lib/errors';
-import mockServer from '../../dummy';
 
 export const _sports = [
     'soccer',
@@ -13,12 +12,9 @@ export const _sports = [
 ];
 
 async function _joinGame(game, user) {
-    // return await yoda.post('/game/join/i', (new YodaRequest({}, {
-    //     id: game.id,
-    // })).toString(), true);
-    return await (async function () {
-        return mockServer('/game/join/i')
-    })();
+    return await yoda.post('/game/join/i', (new YodaRequest({}, {
+        code: game.id,
+    })).toString(), true);
 }
 
 function _handleError(error) {
