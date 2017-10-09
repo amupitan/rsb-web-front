@@ -21,7 +21,7 @@ export default class Form extends Component {
                 });
                 continue;
             }
-            tempState[element.name] = '';
+            tempState[element.name] = element.value || '';
             tempState.elements[element.name] = element;
         }
 
@@ -85,7 +85,7 @@ export default class Form extends Component {
         return (
             <div key={i} className={divclass}>
                 <label htmlFor={element.name}>{labelTitle}:</label>
-                <input type={element.type} className="form-control" id={element.name} name={element.name} placeholder={element.placeholder} onChange={this.handleInputChange} onBlur={() => { this.validate(element.name) }} />
+                <input type={element.type} className="form-control" id={element.name} name={element.name} placeholder={element.placeholder} value={this.state[element.name]} onChange={this.handleInputChange} onBlur={() => { this.validate(element.name) }} />
                 {element.indicator && <span className={classNames("glyphicon", validationSign, "form-control-feedback")} aria-hidden="true"></span>}
                 {element.indicator && <span id={`${element.name}InputStatus`} className="sr-only">{element.indicator}</span>}
                 {element.message && <span id="helpBlock2" className="help-block">{element.message === true ? labelTitle : element.message}</span>}
@@ -108,6 +108,7 @@ export default class Form extends Component {
 
             <form>
                 <h1>{this.props.title || 'Hello!'}</h1>
+                {this.props.errors && <p style={{ color: 'red' }}>{this.props.errors}</p>}
                 {
                     this.state.elementArr.map(this.createFormElement)
                 }
