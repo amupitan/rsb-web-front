@@ -10,12 +10,14 @@ class Join extends Component {
         super(props);
         this.state = {
             joinMessage: "Test message",
-            messageType: "text-danger"
+            messageType: "text-danger",
+            currentCode: ""
         }
 
         //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
         this.render = this.render.bind(this);
         this.checkCode = this.checkCode.bind(this);
+        this.handleCodeChange = this.handleCodeChange.bind(this);
     }
 
     checkCode(accessCode){
@@ -33,6 +35,12 @@ class Join extends Component {
         });
     }
 
+    handleCodeChange(event){
+        this.setState({
+            currentCode: event.target.value
+        });
+    }
+
     render() {
         return (
             <div>
@@ -42,13 +50,13 @@ class Join extends Component {
                 <div className="container">
                     <span className="row">
                         <span className="col-xs-5 col-xs-offset-3 rsb-join-game-input-container">
-                            <input id="rsb-join-code-input" className="form-control" type="number" placeholder="Enter a game code to join.." />
+                            <input value={this.state.currentCode} className="form-control" type="number" placeholder="Enter a game code to join.." onChange={this.handleCodeChange}/>
                         </span>
                         <span className="col-xs-1 ">
                             <RSBButton
                                 text="Submit"
                                 buttonType="success"
-                                onClickFunction={() => (this.checkCode(document.getElementById('rsb-join-code-input').value))}
+                                onClickFunction={() => (this.checkCode(this.state.currentCode))}
                             />
                         </span>
                     </span>
