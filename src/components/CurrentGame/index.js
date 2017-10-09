@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RSBButton from '../ui/RSBButton';
+import RSBLabel from '../ui/RSBLabel';
 import mockServer from '../../dummy';
 
 import './style.css';
@@ -18,17 +19,14 @@ class CurrentGame extends Component {
         //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
         this.render = this.render.bind(this);
         this.handleLeaveGame = this.handleLeaveGame.bind(this);
-        this.handleProfileClick = this.handleProfileClick.bind(this);
+        this.getCurrentPlayers = this.getCurrentPlayers.bind(this);
+        this.populateUsers = this.populateUsers.bind(this);
     }
 
 
 
     handleLeaveGame() {
         console.log("User wants to leave the game");
-    }
-
-    handleProfileClick(userInfo) {
-        console.log(userInfo.memberName + " should be visible")
     }
 
     doesGameExist() {
@@ -38,68 +36,70 @@ class CurrentGame extends Component {
     heading() {
         return (
             <div className="row panel-header">
-                <div className="text-center">
-                    <h4>{this.state.gameData.result[0].Name}</h4>
+                <div className="text-center rsb-current-game--title">
+                    <h1>{this.state.gameData.result[0].Name}</h1>
                     <span>Join Code: "{this.state.gameData.result[0].JoinCode}"</span>
                 </div>
             </div>
         )
     }
 
-    generate(){
+    populateUsers() {
         let tempUsers = [];
-        this.setState.gameData.result[0].Members.forEach((mem,i)=>{
-            tempUsers+= (
-                <div>
-                    Hello, {mem}
-                    </div>
+        this.state.gameData.result[0].Members.forEach((mem, i) => {
+            tempUsers.push(
+                <RSBLabel
+                    name={mem.Username}
+                    onClickFunction={() => {
+                        console.log("Pressed ", mem.Firstname, mem.Lastname);
+                    }}
+                    key={i}
+                />
             )
         })
-
         return tempUsers;
     }
 
-    getUsers() {
+    getCurrentPlayers() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
                     <h2>Current Players</h2>
                 </div>
                 <div className="scroll-info panel-body">
-
+                    {this.populateUsers()}
                 </div>
             </div>
-        )
+        );
     }
 
     generalInfo() {
         //Array that aligns with the sports number the backend sends back
         const sports = ["soccer", "basketball", "volleyball", "baseball", "frisbee", "discgolf"];
-        var options = {  
-            weekday: "long", year: "numeric", month: "short",  
-            day: "numeric", hour: "2-digit", minute: "2-digit"  
-        }; 
-
         const gameInfo = this.state.gameData.result[0];
+
+        var options = {
+            weekday: "long", year: "numeric", month: "short",
+            day: "numeric", hour: "2-digit", minute: "2-digit"
+        };
+
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
                     <h2>General Game Info</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <span><b>Host</b>: {gameInfo.Host}</span><br/>
-                    <span><b>StartTime</b>: {(gameInfo.StartTime).toLocaleTimeString("en-us", options)}</span><br/>
-                    <span><b>Location</b>: Lat: {gameInfo.Location["Lat"]} Lng: {gameInfo.Location["Lng"]} </span><br/>
-                    <span><b>Sport</b>: {sports[gameInfo.Sport]}</span><br/>
-                    <span><b>Age Range</b>:Min: {gameInfo.AgeRange[0]}  Max: {gameInfo.AgeRange[1]}</span><br/>
+                    <span><b>Host</b>: {gameInfo.Host}</span><br />
+                    <span><b>StartTime</b>: {(gameInfo.StartTime).toLocaleTimeString("en-us", options)}</span><br />
+                    <span><b>Location</b>: Lat: {gameInfo.Location["Lat"]} Lng: {gameInfo.Location["Lng"]} </span><br />
+                    <span><b>Sport</b>: {sports[gameInfo.Sport]}</span><br />
+                    <span><b>Age Range</b>:Min: {gameInfo.AgeRange[0]}  Max: {gameInfo.AgeRange[1]}</span><br />
                 </div>
             </div>
         )
     }
 
     render() {
-        console.log("Data: ", this.state.gameData);
-
         let renderPage;
 
         if (this.doesGameExist() === false) {
@@ -122,17 +122,14 @@ class CurrentGame extends Component {
                 <div className="panel col-xs-10 col-xs-offset-1">
                     {this.heading()}
                     <div className="row">
-                        {this.getUsers()}
+                        {this.getCurrentPlayers()}
                         {this.generalInfo()}
                     </div>
                     <RSBButton
                         text="Exit Game"
-                        buttonType= "danger"
-                        onClickFunction={()=>{
-                            console.log("Leave game");
-                        }}
+                        buttonType="danger"
+                        onClickFunction={this.handleLeaveGame}
                     />
-                    {/*Leave game button*/}
                 </div>
         }
 
