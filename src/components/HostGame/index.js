@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './style.css';
+import { sports } from '../../lib/map/';
 import RSBButton from '../ui/RSBButton';
 
 /**
@@ -16,83 +17,225 @@ class HostPage extends Component {
     constructor(props) {
         super(props);
         this.render = this.render.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleSportChange = this.handleSportChange.bind(this);
+        this.handleStartChange = this.handleStartChange.bind(this);
+        this.handleEndChange = this.handleEndChange.bind(this);
+        this.handleMinAgeChange = this.handleMinAgeChange.bind(this);
+        this.handleMaxAgeChange = this.handleMaxAgeChange.bind(this);
+        this.handleLatChange = this.handleLatChange.bind(this);
+        this.handleLngChange = this.handleLngChange.bind(this);
+        this.handleHostSubmit = this.handleHostSubmit.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.state = {
+            gameName: "",
+            selectedSport: "",
+            startTime: "",
+            endTime: "",
+            minimumAge: "",
+            maximumAge: "",
+            lat: "",
+            lng: "",
+            date: ""
+        };
     }
 
-    render() {
-        let sportsOption = ["Soccer", "Basketball", "Volleyball", "Football", "Tennis", "Other"];
-        let sportsButtons = [];
+    handleNameChange(event){
+        this.setState({
+            gameName: event.target.value
+        });
+    }
 
-        sportsOption.forEach((sport, i) => {
+    handleSportChange(event){
+        console.log(event.target.value);
+        this.setState({
+            selectedSport: event.target.value
+        });
+    }
+
+    handleStartChange(event){
+        this.setState({
+            startTime: event.target.value
+        });
+    }
+
+    handleEndChange(event){
+        this.setState({
+            endTime: event.target.value
+        });
+    }
+
+    handleMinAgeChange(event){
+        this.setState({
+            minimumAge: event.target.value
+        });
+    }
+
+    handleMaxAgeChange(event){
+        this.setState({
+            maximumAge: event.target.value
+        });
+    }
+
+    handleLatChange(event){
+        this.setState({
+            lat: event.target.value
+        });
+    }
+
+    handleLngChange(event){
+        this.setState({
+            lng: event.target.value
+        });
+    }
+
+    handleDateChange(event){
+        this.setState({
+            date: event.target.value
+        });
+    }
+
+    handleHostSubmit(){
+        //TODO: Don't know how to get the current users name
+
+        let result = {
+            name: this.state.gameName,
+            startTime: this.state.date + ": " + this.state.startTime,
+            endTime: this.state.date + ": " +  this.state.endTime,
+            host: "kerno",
+            sport: this.state.selectedSport,
+            ageOld: this.state.maximumAge,
+            ageYoung: this.state.minimumAge,
+            lat: this.state.lat,
+            lng: this.state.lng
+        }
+
+        //We will send the result to the server, don't know how yet
+
+        console.log(result);
+    }
+
+
+    render() {
+        //let sportsOption = ["Soccer", "Basketball", "Volleyball", "Football", "Tennis", "Other"];
+        let sportsButtons = [];
+        sports.forEach((sport, i) => {
             sportsButtons.push(
-                <div className="col-sm-1" key={i}>
-                    <RSBButton
-                        text={sport}
-                        onClickFunction={() => {
-                            console.log("Clicked: ", { sport })
-                        }}
-                        key={i}
-                    />
-                </div>)
+                <option key={i} value={i} label={sport}>
+                    
+                </option>)
         })
 
         return (
-            <div className=" panel panel-default col-xs-6 col-xs-offset-3">
-                <div className="panel-heading text-center">
-                    <h4>Host Game</h4>
-                </div>
-                <div className="panel-body">
-                    {/* Game name */}
-                    <label htmlFor="game-code" className="form-control-label">Name of game:</label>
-                    <input type="text" className="form-control" id="game-code" />
-                    <br />
-                    {/* Sport */}
-                    <label htmlFor="game-sport" className="form-control-label">Sport:</label>
-                    <div className="container row">
-                        {sportsButtons}
+            <div className="col-xs-6 col-xs-offset-3">
+                <br/>
+                <div className="panel panel-default">
+                    <div className="panel-heading text-center">
+                        <h4>Host Game</h4>
                     </div>
-                    <br />
-                    {/* Number of players */}
-                    <label>Number of players: </label>
-                    <input type="number" min="0" />
-                    <br /><br />
-                    {/* Start time / End Time */}
-                    <div>
-                        <label>Duration: </label>
-                        <input type="time" name="usr_time" />
-                        <input type="time" name="usr_time" />
-                        <input type="submit" />
+                    <div className="panel-body">
+                        {/* Game name */}
+                        <label htmlFor="game-code" className="form-control-label">Name of game:</label>
+                        <input type="text" value={this.state.gameName} className="form-control" id="game-code" onChange={this.handleNameChange}/>
+                        <br />
+                        {/* Sport */}
+                        <label htmlFor="game-sport" className="form-control-label">Sport:</label>
+                        <select className="form-control" value={this.state.selectedSport} onChange={this.handleSportChange}>
+                            {sportsButtons}
+                        </select>
+                        <br />
+                        <br />
+                        {/* Start time / End Time */}
+                        <label htmlFor="timeInputs">Duration: </label>
+                        <br/>
+                        <div className="row" name="timeInputs" id="timeInputs">
+                            <div className="col-xs-4">
+                                <label htmlFor="startTime">From</label>
+                                <input className="form-control" name="startTime" type="time" value={this.state.startTime} onChange={this.handleStartChange} />
+                            </div>
+                            <div className="col-xs-4">
+                                <label htmlFor="endTime">Until</label>
+                                <input className="form-control" name="endTime" type="time" value={this.state.endTime} onChange={this.handleEndChange} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-6">
+                                
+                            <label htmlFor="rsbGameDate">Date</label>
+                                <input className="form-control" name="rsbGameDate" type="date" value={this.state.date} onChange={this.handleDateChange} />
+                            </div>
+                        </div>
+
+                        <br /><br />
+                        {/*Age Range*/}
+                        <label htmlFor="ageRange">Age Range: </label>
+                        <br />
+                        <div className="row" name="ageRange" id="ageRange">
+                            <div className="col-xs-4">
+                                <label htmlFor="startTime">From</label>
+                                <input className="form-control" name="minAge" type="number" value={this.state.minimumAge} onChange={this.handleMinAgeChange} />
+                            </div>
+                            <div className="col-xs-4">
+                                <label htmlFor="endTime">To</label>
+                                <input className="form-control" name="maxAge" type="number" value={this.state.maximumAge} onChange={this.handleMaxAgeChange} />
+                            </div>
+                        </div>
+
+                        <br /><br />
+
+                        {/*Location based on Latitude and Longitude*/}
+                        <label htmlFor="location">Location: </label>
+                        <br />
+                        <div className="row" name="location" id="location">
+                            <div className="col-xs-4">
+                                <label htmlFor="rsbLatitude">Latitude</label>
+                                <input className="form-control" name="rsbLatitude" type="number" value={this.state.lat} onChange={this.handleLatChange} />
+                            </div>
+                            <div className="col-xs-4">
+                                <label htmlFor="rsbLongitude">Longitude</label>
+                                <input className="form-control" name="rsbLongitude" type="number" value={this.state.lng} onChange={this.handleLngChange} />
+                            </div>
+                        </div>
+
+                        <br /><br />
+
+
+                        {/* We will use this div below for finding based on location later*/}
+
+                        {/* Search Location
+                        <div className="row">
+
+                            <div className="col-xs-10"><input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" /></div>
+                            <div className="col-xs-2">
+                                <RSBButton
+                                    glyphicons="glyphicon glyphicon-map-marker"
+                                    onClickFunction={() => {
+                                        console.log("Go to map to drop pin!");
+                                    }}
+                                />
+                            </div>
+                        </div> */}
+
                     </div>
-                    <br />
-                    {/* Invite Friends */}
-                    <div className="friend-invite container row">
-                        <p>Invite Friends: </p>
+                    <div className="modal-footer">
+                        <div>
+                        {/* <RSBButton
+                            text="Cancel"
+                            className="btn btn-default close-btn col-xs-2"
+                            onClickFunction={() => {
+                                console.log("Cancel game");
+                            }
+                            }
+                        /> */}
+                        <RSBButton
+                            text="Host"
+                            className="btn btn-info rsb-host-submit-btn col-xs-2"
+                            onClickFunction={() => {
+                                this.handleHostSubmit()
+                            }}
+                        />
+                        </div>
                     </div>
-                    <br />
-                    {/* Search Location */}
-                    <input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" />
-                    <RSBButton
-                        glyphicons="glyphicon glyphicon-map-marker"
-                        onClickFunction={() => {
-                            console.log("Go to map to drop pin!");
-                        }}
-                    />
-                </div>
-                <div className="modal-footer">
-                    <RSBButton
-                        text="Cancel"
-                        className="btn btn-default close-btn"
-                        onClickFunction={() => {
-                            console.log("Cancel game");
-                        }
-                        }
-                    />
-                    <RSBButton
-                        text="Host"
-                        className="btn btn-info submit-btn"
-                        onClickFunction={() => {
-                            console.log("Host game!");
-                        }}
-                    />
                 </div>
             </div>
         );
