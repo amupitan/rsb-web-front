@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 
+import history from './lib/navigator/history';
+
 import App from './components/App';
-import history from './components/App/history';
+
 
 ReactDOM.render((
   <Router history={history} >

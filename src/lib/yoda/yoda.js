@@ -75,7 +75,26 @@ export default class Yoda {
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
-            return new YodaResponse(res.json());
+            return new YodaResponse(await res.json());
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static async get(path) {
+        try {
+            const res = await fetch(`${url}/${path}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                method: 'GET',
+            });
+            if (res.status < 200 || res.status >= 300) {
+                return this.handleHTTPError(await res.json());
+            }
+            return new YodaResponse(await res.json());
         } catch (err) {
             throw err;
         }

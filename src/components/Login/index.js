@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { verifyCredentials, formElements } from '../../lib/authentication';
+import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
 
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
@@ -17,6 +17,7 @@ class Login extends Component {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onError = this.onError.bind(this);
+        this.renderLocationInfo = this.renderLocationInfo.bind(this);
     }
 
     async onSubmit(formData) {
@@ -24,18 +25,33 @@ class Login extends Component {
         if (res.error) {
             return this.onError(res.error);
         }
-        return this.onSuccess(res.data);
+        return onLogin(res.data);
     }
 
-    onSuccess(newPath) {
-        this.props.history.push(newPath);
-    }
-
-    // This should handle displayong errors on the form
+    // This should handle displaying errors on the form
     onError(error) {
         this.setState({
             errors: error,
         });
+    }
+
+    renderLocationInfo() {
+        if (this.props.location.state && this.props.location.state.info) {
+            const message = this.props.location.state.info;
+            window.history.pushState({ info: null }, '')
+
+            this.props.notify({ text: message });
+        }
+    }
+
+    getForm() {
+        let username = loginForm[0];
+        username.value = this.props.location.state && this.props.location.state.username;
+        return [username, ...loginForm.slice(1)];
+    }
+
+    componentDidUpdate() {
+        this.renderLocationInfo();
     }
 
     render() {
@@ -46,12 +62,16 @@ class Login extends Component {
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
                     <div className="inner col-sm-offset-1 col-sm-10">
-                        <Form elements={formElements} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
+                        <Form elements={this.getForm()} errors={this.state.errors} button={FormButton()} title="Login" submit={this.onSubmit} {...this.props} />
                     </div>
                 </div>
             </div>
         );
     }
+}
+
+Login.defaultProps = {
+    location: {},
 }
 
 export default Login;
