@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import session from '../../lib/session';
 import './style.css';
 import { sports } from '../../lib/map/';
 import RSBButton from '../ui/RSBButton';
@@ -97,12 +97,11 @@ class HostPage extends Component {
 
     handleHostSubmit(){
         //TODO: Don't know how to get the current users name
-
         let result = {
             name: this.state.gameName,
             startTime: this.state.date + ": " + this.state.startTime,
             endTime: this.state.date + ": " +  this.state.endTime,
-            host: "kerno",
+            host: session.getItem('username'),
             sport: this.state.selectedSport,
             ageOld: this.state.maximumAge,
             ageYoung: this.state.minimumAge,
