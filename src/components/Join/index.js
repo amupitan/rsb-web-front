@@ -28,7 +28,7 @@ class Join extends Component {
         //Sorry, you already have a game during this time!
 
         //You successfully joined {game name}       
-
+        
         this.setState({
             joinMessage: "A success or error message may go here",
             messageType: "text-success"
