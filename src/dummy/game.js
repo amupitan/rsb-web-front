@@ -7,37 +7,37 @@ export default {
     },
     result: [
         {
-            ID: "FakeID123",
-            Name: "GameName",
-            StartTime: new Date(Date.UTC(2013, 1, 1, 14, 0, 0)),
-            Location: {
+            id: "FakeID123",
+            name: "GameName",
+            starttime: new Date(Date.UTC(2013, 1, 1, 14, 0, 0)),
+            location: {
                 Lng: 43,
                 Lat: -93.6319
             },
-            Host: "HostUser",
-            Members: [
+            host: "HostUser",
+            members: [
                 {
-                    Username: "Kerno",
-                    ProfilePic: defaultImg
+                    username: "Kerno",
+                    profilepic: defaultImg
                 },
                 {
-                    Username: "PostMalone",
-                    ProfilePic: defaultImg
+                    username: "PostMalone",
+                    profilepic: defaultImg
                 },
                 {
-                    Username: "MJ",
-                    ProfilePic: defaultImg
+                    username: "MJ",
+                    profilepic: defaultImg
                 },
                 {
-                    Username: "SourPatch",
-                    ProfilePic: defaultImg
+                    username: "SourPatch",
+                    profilepic: defaultImg
                 }
             ],
-            Duration: 200,
-            Sport: 0,
-            Rating: 1400,
-            AgeRange: [12,21],
-            JoinCode: "LetMeJoin"
+            duration: 200,
+            sport: 0,
+            rating: 1400,
+            agerange: [12,21],
+            joincode: "LetMeJoin"
         }
     ]
 

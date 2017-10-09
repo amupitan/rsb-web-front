@@ -5,7 +5,7 @@ import mockServer from '../../dummy';
 
 import './style.css';
 
-function currentGame() {
+function CurrentGame() {
     const gameData = mockServer("/game/g/123");
     
     function doesGameExist() {
@@ -16,8 +16,8 @@ function currentGame() {
         return (
             <div className="row panel-header">
                 <div className="text-center rsb-current-game--title">
-                    <h1>{gameData.result[0].Name}</h1>
-                    <span>Join Code: "{gameData.result[0].JoinCode}"</span>
+                    <h1>{gameData.result[0].name}</h1>
+                    <span>Join Code: "{gameData.result[0].joincode}"</span>
                 </div>
             </div>
         )
@@ -25,19 +25,18 @@ function currentGame() {
 
     function populateUsers() {
         let tempUsers = [];
-        gameData.result[0].Members.forEach((mem, i) => {
+        gameData.result[0].members.forEach((mem, i) => {
             tempUsers.push(
                 <div className="row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
-                        <img src={mem.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                        <img src={mem.profilepic} alt="Profile" className="profile-pic-xs" />
                     </div>
                     <div className="col-sm-4">
                         <RSBLabel
-                            name={mem.Username}
+                            name={mem.username}
                             onClickFunction={() => {
-                                console.log("Pressed ", mem.Firstname, mem.Lastname);
+                                console.log("Pressed ", mem.firstname, mem.lastname);
                             }}
-                            key={i}
                         />
                     </div>
                 </div>
@@ -75,11 +74,11 @@ function currentGame() {
                     <h2>General Game Info</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <span><b>Host</b>: {gameInfo.Host}</span><br />
-                    <span><b>StartTime</b>: {(gameInfo.StartTime).toLocaleTimeString("en-us", options)}</span><br />
-                    <span><b>Location</b>: Lat: {gameInfo.Location["Lat"]} Lng: {gameInfo.Location["Lng"]} </span><br />
-                    <span><b>Sport</b>: {sports[gameInfo.Sport]}</span><br />
-                    <span><b>Age Range</b>:Min: {gameInfo.AgeRange[0]}  Max: {gameInfo.AgeRange[1]}</span><br />
+                    <span><b>Host</b>: {gameInfo.host}</span><br />
+                    <span><b>StartTime</b>: {(gameInfo.starttime).toLocaleTimeString("en-us", options)}</span><br />
+                    <span><b>Location</b>: Lat: {gameInfo.location["Lat"]} Lng: {gameInfo.location["Lng"]} </span><br />
+                    <span><b>Sport</b>: {sports[gameInfo.sport]}</span><br />
+                    <span><b>Age Range</b>:Min: {gameInfo.agerange[0]}  Max: {gameInfo.agerange[1]}</span><br />
                 </div>
             </div>
         )
@@ -118,4 +117,4 @@ function currentGame() {
     return (doesGameExist() ? gameExist : gameNoExist);
 }
 
-export default currentGame;
+export default CurrentGame;
