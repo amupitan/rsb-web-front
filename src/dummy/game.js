@@ -1,3 +1,5 @@
+import defaultImg from './default.jpg';
+
 export default {
     meta: {
         error: false,
@@ -16,15 +18,19 @@ export default {
             Members: [
                 {
                     Username: "Kerno",
+                    ProfilePic: defaultImg
                 },
                 {
-                    Username: "PostMalone"
+                    Username: "PostMalone",
+                    ProfilePic: defaultImg
                 },
                 {
-                    Username: "MJ"
+                    Username: "MJ",
+                    ProfilePic: defaultImg
                 },
                 {
-                    Username: "SourPatch"
+                    Username: "SourPatch",
+                    ProfilePic: defaultImg
                 }
             ],
             Duration: 200,
