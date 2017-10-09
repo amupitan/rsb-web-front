@@ -2,30 +2,9 @@ import yoda from '../../lib/yoda';
 import redirect from '../../lib/navigator';
 import session from '../../lib/session';
 import errorFormatter from '../../lib/errors';
-import { promisify } from '../helper';
 import getGame, { _sports } from './game';
 
 export const sports = _sports;
-
-export async function getLocation() {
-    let lat = 42.0308, lng = -93.6319;
-    const t = (callback) => {
-        callback('data-text', null);
-    }
-    const prom = promisify(t);
-    let res = await prom();
-    console.log(res);
-    // if (navigator.geolocation) {
-    //     const getPos = promisify(navigator.geolocation.getCurrentPosition);
-    //     const { coords } = await getPos();
-    //     const { latitude, longitude } = coords;
-    //     lat = latitude || lat;
-    //     lng = longitude || lng;
-    //     console.log(`lat: ${latitude} lng: ${longitude}`);
-    // }
-
-    return { lat, lng };
-};
 
 export async function getCurrentLocation() {
     let position = {};
@@ -51,6 +30,7 @@ export async function getCurrentLocation() {
 
 const _getCurrentLocation = () => {
     return new Promise(function (resolve, reject) {
+        //TODO: check if browser supports navigator.geolocation
         navigator.geolocation.getCurrentPosition(resolve, reject);
     });
 }
