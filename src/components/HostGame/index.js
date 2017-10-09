@@ -117,10 +117,9 @@ class HostPage extends Component {
 
 
     render() {
-        //let sportsOption = ["Soccer", "Basketball", "Volleyball", "Football", "Tennis", "Other"];
-        let sportsButtons = [];
+        let sportsOptions = [];
         sports.forEach((sport, i) => {
-            sportsButtons.push(
+            sportsOptions.push(
                 <option key={i} value={i} label={sport}>
                     
                 </option>)
