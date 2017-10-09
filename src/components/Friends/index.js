@@ -4,8 +4,9 @@ import mockServer from '../../dummy';
 
 import './style.css';
 
+let data = mockServer("/user/f/1");
+
 class Friends extends Component {
-    data = mockServer("/user/f/1");
 
     constructor(props) {
         super(props);
@@ -15,8 +16,8 @@ class Friends extends Component {
         this.handleFriendSearch = this.handleFriendSearch.bind(this);
         this.handleRecentSearch = this.handleRecentSearch.bind(this);
         this.state = {
-            currentFriends: this.data.result[0].Friends,
-            currentRecents: this.data.result[0].RecentPlayers,
+            currentFriends: data.result[0].Friends,
+            currentRecents: data.result[0].RecentPlayers,
             friendSearch: "",
             recentSearch: ""
         }
@@ -76,7 +77,7 @@ class Friends extends Component {
                         <button type="submit"
                             onClick={
                                 () => {
-                                    this.filterUsers(this.data.result[0].Friends,
+                                    this.filterUsers(data.result[0].Friends,
                                         this.state.friendSearch,
                                         "friends")
                                 }
@@ -97,7 +98,7 @@ class Friends extends Component {
                         <button type="submit"
                             onClick={
                                 () => {
-                                    this.filterUsers(this.data.result[0].RecentPlayers,
+                                    this.filterUsers(data.result[0].RecentPlayers,
                                        this.state.recentSearch,
                                         "recents")
                                 }
