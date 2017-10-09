@@ -25,7 +25,7 @@ class Login extends Component {
         if (res.error) {
             return this.onError(res.error);
         }
-        return onLogin(res.data);
+        return onLogin(res);
     }
 
     // This should handle displaying errors on the form
