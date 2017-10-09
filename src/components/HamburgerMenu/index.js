@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import RSBButton from '../ui/RSBButton';
 import './style.css';
 
-import './style.css';
-
 const HamburgerMenu = ({ views, onClick, menu, width }) => {
   if (menu) {
     return menuGenerator(width)(views, onClick)

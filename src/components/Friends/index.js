@@ -4,7 +4,6 @@ import mockServer from '../../dummy';
 
 import './style.css';
 
-
 class Friends extends Component {
     data = mockServer("/user/f/1");
 
@@ -13,9 +12,13 @@ class Friends extends Component {
         this.render = this.render.bind(this);
         this.renderUsers = this.renderUsers.bind(this);
         this.filterUsers = this.filterUsers.bind(this);
+        this.handleFriendSearch = this.handleFriendSearch.bind(this);
+        this.handleRecentSearch = this.handleRecentSearch.bind(this);
         this.state = {
             currentFriends: this.data.result[0].Friends,
-            currentRecents: this.data.result[0].RecentPlayers
+            currentRecents: this.data.result[0].RecentPlayers,
+            friendSearch: "",
+            recentSearch: ""
         }
     }
 
@@ -51,18 +54,30 @@ class Friends extends Component {
         })
     }
 
+    handleFriendSearch(event) {
+        this.setState({
+            friendSearch: event.target.value
+        });
+    }
+    
+    handleRecentSearch(event) {
+        this.setState({
+            recentSearch: event.target.value
+        });
+    }
+
     render() {
         return (
             <div className="panel-group col-xs-10 col-xs-offset-1">
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" id="rsb-friends-search-bar" placeholder="Search Friends.." />
+                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch}/>
                         <button type="submit"
                             onClick={
                                 () => {
                                     this.filterUsers(this.data.result[0].Friends,
-                                        document.getElementById("rsb-friends-search-bar").value,
+                                        this.state.friendSearch,
                                         "friends")
                                 }
                             }>
@@ -78,12 +93,12 @@ class Friends extends Component {
                 <div className="panel panel-default rsb-recent-players-panel">
                     <div className="panel-heading text-center">
                         <h3 className="">Recent Players</h3>
-                        <input className="" type="search" id="rsb-recent-players-search-bar" placeholder="Search Recent.." />
+                        <input className="" type="search" value={this.state.recentSearch} id="rsb-recent-players-search-bar" placeholder="Search Recent.." onChange={this.handleRecentSearch}/>
                         <button type="submit"
                             onClick={
                                 () => {
                                     this.filterUsers(this.data.result[0].RecentPlayers,
-                                        document.getElementById("rsb-recent-players-search-bar").value,
+                                       this.state.recentSearch,
                                         "recents")
                                 }
                             }>
