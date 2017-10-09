@@ -1,5 +1,6 @@
 import yoda from '../../lib/yoda';
 import redirect from '../../lib/navigator';
+import session from '../../lib/session';
 import errorFormatter from '../../lib/errors';
 
 const logoutMessage = 'You have successfully logged out';
@@ -30,7 +31,7 @@ async function _login(data) {
     if (res.error) {
         return _handleError(res.data)
     }
-    return { data: '/' };
+    return { data: '/', username: data.username };
 
 };
 
@@ -43,12 +44,14 @@ function _handleError(error) {
 }
 
 export async function _logout(data) {
-    await yoda.get('/logout');
+    await yoda.get('/logout', true);
+    session.logOut();
+    window.history.pushState({ username: null }, '')
     redirect({ path: '/login', state: { info: logoutMessage } });
 };
 
-export function _onLogin(newPath) {
-    redirect({ path: newPath });
+export function _onLogin(loginInfo) {
+    redirect({ path: loginInfo.data, state: { username: loginInfo.username } });
 }
 
 export default _login;

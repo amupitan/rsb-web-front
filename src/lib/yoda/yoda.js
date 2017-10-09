@@ -5,7 +5,7 @@ const backend_url = 'http://127.0.0.1';
 const backend_port = '4444';
 const url = `${backend_url}:${backend_port}`;
 
-class YodaRequest {
+export class YodaRequest {
     constructor(meta, data) {
         this.meta = meta;
         this.result = data;
@@ -58,10 +58,17 @@ export default class Yoda {
 
     static handleHTTPError(res) {
         //TODO: do some error handling
+        res.meta = res.meta || {};
+        res.result = res.result || {};
         return new YodaResponse(res, true);
     }
 
-    static async post(path, body) {
+    static async post(path, body, isRelative = false) {
+        let temp;
+        if (isRelative) {
+            // TODO: check if prefix slash was added from path
+            path = `${url}${path}`;
+        }
         try {
             const res = await fetch(path, {
                 headers: {
@@ -72,18 +79,26 @@ export default class Yoda {
                 method: 'POST',
                 body: body,
             });
+            temp = res;
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
             return new YodaResponse(await res.json());
         } catch (err) {
-            throw err;
+            console.log(temp);
+            console.error(err);
+            return this.handleHTTPError({});
         }
     }
 
-    static async get(path) {
+    static async get(path, isRelative = false) {
+        let temp;
+        if (isRelative) {
+            // TODO: check if prefix slash was added from path
+            path = `${url}${path}`
+        }
         try {
-            const res = await fetch(`${url}/${path}`, {
+            const res = await fetch(path, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -91,12 +106,15 @@ export default class Yoda {
                 credentials: 'include',
                 method: 'GET',
             });
+            temp = res;
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
             return new YodaResponse(await res.json());
         } catch (err) {
-            throw err;
+            console.log(temp);
+            console.error(err);
+            return this.handleHTTPError({});
         }
     }
 };

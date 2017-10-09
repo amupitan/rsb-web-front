@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import RSBButton from '../ui/RSBButton';
-
 import './style.css';
 
 const HamburgerMenu = ({ views, onClick, menu, width }) => {
