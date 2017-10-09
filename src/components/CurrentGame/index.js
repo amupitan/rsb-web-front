@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
 import mockServer from '../../dummy';
 
@@ -9,16 +8,11 @@ class CurrentGame extends Component {
     constructor(props) {
         super(props);
         //For now I have dummy data in here to test how it looks
+        let data = mockServer("/game/g/123");
         this.state = {
             doesGameExist: true, //TODO: this could come as a prop
+            gameData: data,
 
-            //TODO: rest of these should move to componentWillUpdate
-            opponentTeamName: "Winenrs",
-            userTeamName: "Losers",
-            gameLocation: "2710 East Street, Ames, Iowa",
-            gameTime: "4:25 PM CT",
-            userTeamMembers: ['Walter', 'Victor', 'Mich'],
-            opponentTeamMembers: ['Lucas', 'Karlee']
         }
 
         //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
@@ -27,7 +21,7 @@ class CurrentGame extends Component {
         this.handleProfileClick = this.handleProfileClick.bind(this);
     }
 
-    
+
 
     handleLeaveGame() {
         console.log("User wants to leave the game");
@@ -37,19 +31,78 @@ class CurrentGame extends Component {
         console.log(userInfo.memberName + " should be visible")
     }
 
-    render() {
-        let data = mockServer("/game/g/123");
-        console.log("Data: ", data);
+    doesGameExist() {
+        return (this.state.gameData.result ? true : false);
+    }
 
+    heading() {
+        return (
+            <div className="row panel-header">
+                <div className="text-center">
+                    <h4>{this.state.gameData.result[0].Name}</h4>
+                    <span>Join Code: "{this.state.gameData.result[0].JoinCode}"</span>
+                </div>
+            </div>
+        )
+    }
+
+    generate(){
+        let tempUsers = [];
+        this.setState.gameData.result[0].Members.forEach((mem,i)=>{
+            tempUsers+= (
+                <div>
+                    Hello, {mem}
+                    </div>
+            )
+        })
+
+        return tempUsers;
+    }
+
+    getUsers() {
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>Current Players</h2>
+                </div>
+                <div className="scroll-info panel-body">
+
+                </div>
+            </div>
+        )
+    }
+
+    generalInfo() {
         //Array that aligns with the sports number the backend sends back
         const sports = ["soccer", "basketball", "volleyball", "baseball", "frisbee", "discgolf"];
-        
-        const opponentTeamName = this.state.opponentTeamName;
-        const userTeamName = this.state.userTeamName;
+        var options = {  
+            weekday: "long", year: "numeric", month: "short",  
+            day: "numeric", hour: "2-digit", minute: "2-digit"  
+        }; 
+
+        const gameInfo = this.state.gameData.result[0];
+        return (
+            <div className="col-sm-6 panel panel-default">
+                <div className="panel-heading-rsb">
+                    <h2>General Game Info</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <span><b>Host</b>: {gameInfo.Host}</span><br/>
+                    <span><b>StartTime</b>: {(gameInfo.StartTime).toLocaleTimeString("en-us", options)}</span><br/>
+                    <span><b>Location</b>: Lat: {gameInfo.Location["Lat"]} Lng: {gameInfo.Location["Lng"]} </span><br/>
+                    <span><b>Sport</b>: {sports[gameInfo.Sport]}</span><br/>
+                    <span><b>Age Range</b>:Min: {gameInfo.AgeRange[0]}  Max: {gameInfo.AgeRange[1]}</span><br/>
+                </div>
+            </div>
+        )
+    }
+
+    render() {
+        console.log("Data: ", this.state.gameData);
 
         let renderPage;
 
-        if (!this.state.doesGameExist) {
+        if (this.doesGameExist() === false) {
             renderPage =
                 <div>
                     <div className="row">
@@ -61,67 +114,25 @@ class CurrentGame extends Component {
                             <div className="text-center text-danger">(Use the quick menu in the bottom left corner to start or join a game.)</div>
                         </div>
                     </div>
-
                 </div>
         }
         //Render when a game exists
         else {
             renderPage =
-                <div>
+                <div className="panel col-xs-10 col-xs-offset-1">
+                    {this.heading()}
                     <div className="row">
-                        <div className="rsb-current-game--title">Current Game</div>
-                    </div>
-                    <div className="rsb-current-game--team-names text-center">
-                        <span className="rsb-current-game--team-label">{userTeamName}</span>
-                        <span className="rsb-current-game--vs"> Vs. </span>
-                        <span className="rsb-current-game--opponent-label">{opponentTeamName}</span>
-                    </div>
-                    <div className="panel-group col-xs-6 col-xs-offset-3">
-                        <div className="panel panel-default">
-                            <div className="panel-heading text-center">{userTeamName}</div>
-                            <div className="panel-body">
-                                <ul className="list-group">
-                                    {this.state.userTeamMembers.map((memberName, i) => {
-                                        return <li className="list-group-item" key={i}>
-                                            <RSBLabel
-                                                name={memberName}
-                                                className="info"
-                                                onClickFunction={() => {
-                                                    this.handleProfileClick({ memberName });
-                                                }}
-                                            /></li>;
-                                    })}
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="panel panel-default">
-                            <div className="panel-heading text-center">{opponentTeamName}</div>
-                            <div className="panel-body">
-                                <ul className="list-group">
-                                    {this.state.opponentTeamMembers.map((memberName, i) => {
-                                        return <li className="list-group-item" key={i}>
-                                            <RSBLabel
-                                                name={memberName}
-                                                className="info"
-                                                onClickFunction={() => {
-                                                    this.handleProfileClick({ memberName });
-                                                }}
-                                            /></li>;
-                                    })}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-xs-6 col-xs-offset-3 text-center">
-                        <p >Location: {this.state.gameLocation}</p>
-                        <p >Time: {this.state.gameTime}</p>
+                        {this.getUsers()}
+                        {this.generalInfo()}
                     </div>
                     <RSBButton
-                        text="Leave Game"
-                        buttonType="danger"
-                        onClickFunction={this.handleLeaveGame}
-                        className="rsb-current-game--leave-btn"
+                        text="Exit Game"
+                        buttonType= "danger"
+                        onClickFunction={()=>{
+                            console.log("Leave game");
+                        }}
                     />
+                    {/*Leave game button*/}
                 </div>
         }
 
