@@ -140,7 +140,7 @@ class HostPage extends Component {
                         {/* Sport */}
                         <label htmlFor="game-sport" className="form-control-label">Sport:</label>
                         <select className="form-control" value={this.state.selectedSport} onChange={this.handleSportChange}>
-                            {sportsButtons}
+                            {sportsOptions}
                         </select>
                         <br />
                         <br />
