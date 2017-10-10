@@ -18,7 +18,6 @@ class CurrentGame extends Component {
         this.state = {
             hasGame: false,
         }
-
         this.getCurrentGame = this.getCurrentGame.bind(this);
     }
 
@@ -86,13 +85,15 @@ class CurrentGame extends Component {
     async getCurrentGame() {
         const game = await Game();
 
+        // We don't check for an error here because we're th ones who 
+        // create the id so we're expecting it to be almost impossible
+        // for the server to be unable to let us join the game
         if (game) {
             this.game = game;
-
             this.setState({
                 hasGame: true,
             });
-        }
+        }//else something really bad happened
     }
 
     componentDidMount() {

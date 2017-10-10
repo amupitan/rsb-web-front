@@ -64,8 +64,7 @@ export class MapPage extends Component {
     // Should make a server call and do the necessary work
     handleJoinGame(game) {
         if (!game) return;
-        console.log("handle the user joining the game " + game.id);
-        joinGame(game);
+        joinGame(game, { byId: true, source: '/map' }); //TODO: use location
     }
 
     // Handles the event of a game icon being clicked

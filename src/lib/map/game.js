@@ -11,9 +11,9 @@ export const _sports = [
     'frisbee',
 ];
 
-async function _joinGame(game, user) {
-    return await yoda.post('/game/join/i', (new YodaRequest({}, {
-        code: game.id,
+async function _joinGame({ mode, value }) {
+    return await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
+        code: value,
     })).toString(), true);
 }
 
@@ -21,11 +21,14 @@ function _handleError(error) {
     return { error: errorFormatter(error) };
 }
 
-export default async function (game, user) {
-    const res = await _joinGame(game, user);
+async function _getGame(game, byId) {
+    const { mode, value } = byId ? { mode: 'i', value: game.id } : { mode: 'j', value: game.joincode };
 
+    const res = await _joinGame({ mode: mode, value: value });
     if (res.error) {
         return _handleError(res.data)
     }
     return res.data;
 }
+
+export default _getGame;

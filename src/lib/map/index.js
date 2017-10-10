@@ -2,7 +2,7 @@ import yoda from '../../lib/yoda';
 import redirect from '../../lib/navigator';
 import session from '../../lib/session';
 import errorFormatter from '../../lib/errors';
-import getGame, { _sports } from './game';
+import _getGame, { _sports } from './game';
 
 export const sports = _sports;
 
@@ -43,7 +43,7 @@ export async function getGames({ lat, lng }) {
     return res.data;
 }
 
-export async function joinGame(game) {
+export async function joinGame(game, { byId = true, source = '/' }) {
     if (!game) return;
     const user = session.getItem('username'); //TODO: use navigator/history
 
@@ -52,11 +52,12 @@ export async function joinGame(game) {
         return redirect('/login', { info: 'You have to be signed in to join a game' });
     }
 
-    const joinedGame = await getGame(game, user);
+    const joinedGame = await _getGame(game, byId);
     if (joinedGame.error) {
         //TODO: notify user of error and redirect them somewhere
         console.log(joinedGame.error);
-        return redirect({ path: '/' });
+        redirect({ path: source });
+        return joinedGame;
     }
 
     redirect({ path: '/game', state: { game: joinedGame } });
