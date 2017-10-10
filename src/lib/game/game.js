@@ -25,13 +25,6 @@ async function _getGame(game, byId) {
     return res.data;
 }
 
-//TODO: remove
-export async function _createGame(joincode) {
-    return await yoda.post('/game/join/i', (new YodaRequest({}, {
-        code: joincode,
-    })).toString(), true);
-}
-
 // gets games based on a location
 export async function _getGamesNearLocation({ lat, lng }) {
     const res = await yoda.get(`/games/l/lng/${lng}/lat/${lat}`, true);

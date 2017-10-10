@@ -1,5 +1,5 @@
 import session from '../session';
-import _getGame, { _createGame, _getGamesNearLocation, _joinGame } from './game';
+import _getGame, { _getGamesNearLocation, _joinGame } from './game';
 // const Game = session.getItem('game');
 
 export const sports = [
@@ -11,7 +11,6 @@ export const sports = [
     'frisbee',
 ];
 
-export const createGame = _createGame;
 export const getGame = _getGame;
 export const getGamesNearLocation = _getGamesNearLocation;
 export const joinGame = _joinGame;
