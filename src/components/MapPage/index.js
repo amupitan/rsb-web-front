@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 
-import { getCurrentLocation, getGames, sports, joinGame } from '../../lib/map';
+import { getCurrentLocation } from '../../lib/map';
+import { getGamesNearLocation, sports, joinGame } from '../../lib/game';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import Loader from '../ui/Loader';
@@ -51,7 +52,7 @@ export class MapPage extends Component {
     // Makes a call to the server to get all markers
     // returns the list of markers
     async getMarkers({ lat, lng }) {
-        const result = await getGames({ lat, lng });
+        const result = await getGamesNearLocation({ lat, lng });
         if (result.error) {
             //TODO notify user of error
             console.log(result.error);
@@ -70,7 +71,6 @@ export class MapPage extends Component {
     // Handles the event of a game icon being clicked
     // displays the game info box
     onMarkerClick(props, marker, e) {
-        console.log(props);
         this.setState({
             selectedPlace: props.game,
             activeMarker: marker,

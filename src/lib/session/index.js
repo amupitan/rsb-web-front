@@ -31,8 +31,6 @@ export default class session {
     }
 
     static async setState(state) {
-        console.log(state);
-        console.log('state');
         if (typeof state !== 'object') return;
         const keys = Object.keys(state);
         for (const key of keys) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { joinGame } from '../../lib/map';
+import { joinGame } from '../../lib/game';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -18,7 +18,24 @@ class Join extends Component {
         //ES6 React.Component doesn't auto bind methods to itself. You need to bind them yourself
         this.render = this.render.bind(this);
         this.sendCode = this.sendCode.bind(this);
+        this.validateCode = this.validateCode.bind(this);
+        this.showError = this.showError.bind(this);
         this.handleCodeChange = this.handleCodeChange.bind(this);
+    }
+
+    validateCode(code) {
+        if (code.length !== 7) {
+            this.showError('The join code must be 7 characters');
+            return false;
+        }
+        return true;
+    }
+
+    showError(error) {
+        this.setState({
+            joinMessage: error,
+            messageType: "text-danger"
+        });
     }
 
     async sendCode(accessCode) {
@@ -30,16 +47,17 @@ class Join extends Component {
 
         //You successfully joined {game name}       
         const code = this.state.currentCode;
+        if (!this.validateCode(code)) {
+            return;
+        }
+
         const result = await joinGame({ joincode: code }, { byId: false, source: '/join' }); //TODO: change it to this.props.location.path
 
         // This part is gotten to only if there's an error otherwise 
         // the user is redirected
         if (result && result.error) {
             //TODO handle error
-            this.setState({
-                joinMessage: result.error,
-                messageType: "text-danger"
-            });
+            this.showError(result.error)
         }
 
 
@@ -47,7 +65,7 @@ class Join extends Component {
 
     handleCodeChange(event) {
         this.setState({
-            currentCode: event.target.value
+            currentCode: event.target.value.toUpperCase().trim(),
         });
     }
 

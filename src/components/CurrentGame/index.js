@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import Game from '../../lib/game';
-import { sports } from '../../lib/map';
+import Game, { sports } from '../../lib/game';
 
 import Loader from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
@@ -124,9 +123,7 @@ class CurrentGame extends Component {
     }
 }
 
-const UserLabel = (props) => {
-    const { profilepic, firstname, lastname, username } = props;
-    console.log(props);
+const UserLabel = ({ profilepic, firstname, lastname, username }) => {
     return (
         <div className="row" >
             <div className="col-sm-4 col-sm-pull">
