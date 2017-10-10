@@ -65,7 +65,7 @@ class Join extends Component {
 
     handleCodeChange(event) {
         this.setState({
-            currentCode: event.target.value.toUpperCase().trim(),
+            currentCode: event.target.value.replace(/\W+/g, '').substring(0, 7).toUpperCase(),
         });
     }
 
