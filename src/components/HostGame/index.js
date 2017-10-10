@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import session from '../../lib/session';
 import './style.css';
-import { sports } from '../../lib/map/';
+import { sports } from '../../lib/game';
 import RSBButton from '../ui/RSBButton';
 
 /**
@@ -40,67 +40,67 @@ class HostPage extends Component {
         };
     }
 
-    handleNameChange(event){
+    handleNameChange(event) {
         this.setState({
             gameName: event.target.value
         });
     }
 
-    handleSportChange(event){
+    handleSportChange(event) {
         console.log(event.target.value);
         this.setState({
             selectedSport: event.target.value
         });
     }
 
-    handleStartChange(event){
+    handleStartChange(event) {
         this.setState({
             startTime: event.target.value
         });
     }
 
-    handleEndChange(event){
+    handleEndChange(event) {
         this.setState({
             endTime: event.target.value
         });
     }
 
-    handleMinAgeChange(event){
+    handleMinAgeChange(event) {
         this.setState({
             minimumAge: event.target.value
         });
     }
 
-    handleMaxAgeChange(event){
+    handleMaxAgeChange(event) {
         this.setState({
             maximumAge: event.target.value
         });
     }
 
-    handleLatChange(event){
+    handleLatChange(event) {
         this.setState({
             lat: event.target.value
         });
     }
 
-    handleLngChange(event){
+    handleLngChange(event) {
         this.setState({
             lng: event.target.value
         });
     }
 
-    handleDateChange(event){
+    handleDateChange(event) {
         this.setState({
             date: event.target.value
         });
     }
 
-    handleHostSubmit(){
+    handleHostSubmit() {
         //TODO: Don't know how to get the current users name
         let result = {
             name: this.state.gameName,
             startTime: this.state.date + ": " + this.state.startTime,
-            endTime: this.state.date + ": " +  this.state.endTime,
+            endTime: this.state.date + ": " + this.state.endTime,
             host: session.getItem('username'),
             sport: this.state.selectedSport,
             ageOld: this.state.maximumAge,
@@ -120,13 +120,13 @@ class HostPage extends Component {
         sports.forEach((sport, i) => {
             sportsOptions.push(
                 <option key={i} value={i} label={sport}>
-                    
+
                 </option>)
         })
 
         return (
             <div className="col-xs-6 col-xs-offset-3">
-                <br/>
+                <br />
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">
                         <h4>Host Game</h4>
@@ -134,7 +134,7 @@ class HostPage extends Component {
                     <div className="panel-body">
                         {/* Game name */}
                         <label htmlFor="game-code" className="form-control-label">Name of game:</label>
-                        <input type="text" value={this.state.gameName} className="form-control" id="game-code" onChange={this.handleNameChange}/>
+                        <input type="text" value={this.state.gameName} className="form-control" id="game-code" onChange={this.handleNameChange} />
                         <br />
                         {/* Sport */}
                         <label htmlFor="game-sport" className="form-control-label">Sport:</label>
@@ -145,7 +145,7 @@ class HostPage extends Component {
                         <br />
                         {/* Start time / End Time */}
                         <label htmlFor="timeInputs">Duration: </label>
-                        <br/>
+                        <br />
                         <div className="row" name="timeInputs" id="timeInputs">
                             <div className="col-xs-4">
                                 <label htmlFor="startTime">From</label>
@@ -158,8 +158,8 @@ class HostPage extends Component {
                         </div>
                         <div className="row">
                             <div className="col-xs-6">
-                                
-                            <label htmlFor="rsbGameDate">Date</label>
+
+                                <label htmlFor="rsbGameDate">Date</label>
                                 <input className="form-control" name="rsbGameDate" type="date" value={this.state.date} onChange={this.handleDateChange} />
                             </div>
                         </div>
@@ -217,7 +217,7 @@ class HostPage extends Component {
                     </div>
                     <div className="modal-footer">
                         <div>
-                        {/* <RSBButton
+                            {/* <RSBButton
                             text="Cancel"
                             className="btn btn-default close-btn col-xs-2"
                             onClickFunction={() => {
@@ -225,13 +225,13 @@ class HostPage extends Component {
                             }
                             }
                         /> */}
-                        <RSBButton
-                            text="Host"
-                            className="btn btn-info rsb-host-submit-btn col-xs-2"
-                            onClickFunction={() => {
-                                this.handleHostSubmit()
-                            }}
-                        />
+                            <RSBButton
+                                text="Host"
+                                className="btn btn-info rsb-host-submit-btn col-xs-2"
+                                onClickFunction={() => {
+                                    this.handleHostSubmit()
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
