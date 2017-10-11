@@ -39,7 +39,7 @@ class CurrentGame extends Component {
             username: 'wseymour',
             profilepic: defaultImg,
         };
-        const members = this.game.members.map((player, i) => {
+        const members = this.game.members && this.game.members.map((player, i) => {
             return <UserLabel key={i} {...mem} />
         });
         return members;
@@ -48,11 +48,6 @@ class CurrentGame extends Component {
     renderGameInfo() {
         const { host, startTime, location, sport, agerange } = this.game;
 
-        var options = {
-            weekday: "long", year: "numeric", month: "short",
-            day: "numeric", hour: "2-digit", minute: "2-digit"
-        };
-
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -60,7 +55,7 @@ class CurrentGame extends Component {
                 </div>
                 <div className="scroll-info panel-body">
                     <span><b>Host</b>: {host}</span><br />
-                    <span><b>StartTime</b>: {DateUtils.getTime(startTime)}</span><br />
+                    <span><b>StartTime</b>: {DateUtils.getReadbaleTime(startTime)}</span><br />
                     <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
                     <span><b>Sport</b>: {sports[sport]}</span><br />
                     <span><b>Age Range</b>:Min: {agerange[0]}  Max: {agerange[1]}</span><br />

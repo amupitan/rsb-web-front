@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import session from '../../lib/session';
-import './style.css';
-import { sports } from '../../lib/game';
+
+import { DateUtils } from '../../lib/utils';
+import { sports, getDuration, createGame } from '../../lib/game';
+
 import RSBButton from '../ui/RSBButton';
+
+import './style.css';
 
 /**
  * Modals are different because we don't have to rerender the page for it to show.
@@ -27,17 +30,22 @@ class HostPage extends Component {
         this.handleLngChange = this.handleLngChange.bind(this);
         this.handleHostSubmit = this.handleHostSubmit.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+
         this.state = {
             gameName: "",
-            selectedSport: "",
-            startTime: "",
-            endTime: "",
+            sport: 0, // pick first sport
+            startTime: DateUtils.getTimeAfter({ minutes: 15 }), // 15 mins after the current time
+            endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[0]) }), // 15 mins + sport duration after the current time
             minimumAge: "",
             maximumAge: "",
             lat: "",
             lng: "",
-            date: ""
+            date: DateUtils.yyyymmdd(),
+
+            error: null,
         };
+
+        this.hasSetEndTime = false;
     }
 
     handleNameChange(event) {
@@ -47,10 +55,17 @@ class HostPage extends Component {
     }
 
     handleSportChange(event) {
-        console.log(event.target.value);
+        const sport = event.target.value;
         this.setState({
-            selectedSport: event.target.value
+            sport: sport,
         });
+
+        //TODO: use setState updater instead of batching calls
+        if (!this.hasSetEndTime) {
+            this.setState({
+                endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[sport]) }),
+            });
+        }
     }
 
     handleStartChange(event) {
@@ -60,20 +75,23 @@ class HostPage extends Component {
     }
 
     handleEndChange(event) {
+        this.hasSetEndTime = true;
         this.setState({
             endTime: event.target.value
         });
     }
 
     handleMinAgeChange(event) {
+        const age = event.target.value;
         this.setState({
-            minimumAge: event.target.value
+            minimumAge: age < 1 ? 1 : age,
         });
     }
 
     handleMaxAgeChange(event) {
+        const age = event.target.value;
         this.setState({
-            maximumAge: event.target.value
+            maximumAge: age < 1 ? 1 : age,
         });
     }
 
@@ -95,23 +113,25 @@ class HostPage extends Component {
         });
     }
 
-    handleHostSubmit() {
+    async handleHostSubmit() {
         //TODO: Don't know how to get the current users name
         let result = {
             name: this.state.gameName,
-            startTime: this.state.date + ": " + this.state.startTime,
-            endTime: this.state.date + ": " + this.state.endTime,
-            host: session.getItem('username'),
-            sport: this.state.selectedSport,
-            ageOld: this.state.maximumAge,
-            ageYoung: this.state.minimumAge,
-            lat: this.state.lat,
-            lng: this.state.lng
+            startTime: (new Date(this.state.date + ":" + this.state.startTime)).toISOString(),
+            endTime: (new Date(this.state.date + ":" + this.state.endTime)).toISOString(),
+            sport: +this.state.sport,
+            maxAge: +this.state.maximumAge,
+            minAge: +this.state.minimumAge,
+            lat: +this.state.lat,
+            lng: +this.state.lng
         }
 
         //We will send the result to the server, don't know how yet
 
-        console.log(result);
+        const res = await createGame(result);
+        if (res && res.error) {
+            this.setState({ error: res.error });
+        }
     }
 
 
@@ -131,6 +151,7 @@ class HostPage extends Component {
                     <div className="panel-heading text-center">
                         <h4>Host Game</h4>
                     </div>
+                    <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.state.error}</p>
                     <div className="panel-body">
                         {/* Game name */}
                         <label htmlFor="game-code" className="form-control-label">Name of game:</label>
@@ -138,7 +159,7 @@ class HostPage extends Component {
                         <br />
                         {/* Sport */}
                         <label htmlFor="game-sport" className="form-control-label">Sport:</label>
-                        <select className="form-control" value={this.state.selectedSport} onChange={this.handleSportChange}>
+                        <select className="form-control" value={this.state.sport} onChange={this.handleSportChange}>
                             {sportsOptions}
                         </select>
                         <br />

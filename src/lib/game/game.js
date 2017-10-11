@@ -3,11 +3,9 @@ import redirect from '..//navigator';
 import session from '../session';
 import errorFormatter from '../errors';
 
-//make request to join/get game
-async function _joinAndGetGame({ mode, value }) {
-    return await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
-        code: value,
-    })).toString(), true);
+//make request to get game
+async function _getGame({ value }) {
+    return await yoda.get(`/game/g/${value}`, true);
 }
 
 function _handleError(error) {
@@ -15,10 +13,12 @@ function _handleError(error) {
 }
 
 // joins a game and returns it
-async function _getGame(game, byId) {
+async function _joinAndGetGame(game, byId) {
     const { mode, value } = byId ? { mode: 'i', value: game.id } : { mode: 'j', value: game.joincode };
 
-    const res = await _joinAndGetGame({ mode: mode, value: value });
+    const res = await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
+        code: value,
+    })).toString(), true);
     if (res.error) {
         return _handleError(res.data)
     }
@@ -44,7 +44,7 @@ export async function _joinGame(game, { byId = true, source = '/' }) {
         return redirect('/login', { info: 'You have to be signed in to join a game' });
     }
 
-    const joinedGame = await _getGame(game, byId);
+    const joinedGame = await _joinAndGetGame(game, byId);
     if (joinedGame.error) {
         //TODO: notify user of error and redirect them somewhere
         console.log(joinedGame.error);
@@ -55,4 +55,19 @@ export async function _joinGame(game, { byId = true, source = '/' }) {
     redirect({ path: '/game', state: { game: joinedGame } });
 }
 
-export default _getGame;
+export async function _createGame(data) {
+    let res = await yoda.post('/create/game', (new YodaRequest({}, data)).toString(), true);
+    if (res.error) {
+        return _handleError(res.data)
+    }
+
+    res = await _getGame({ value: res.data });
+    console.log(res);
+    if (res.error) {
+        return _handleError(res.data)
+    }
+
+    redirect({ path: '/game', state: { game: res.data } });
+};
+
+export default _joinAndGetGame;
