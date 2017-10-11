@@ -1,4 +1,4 @@
-import { isObject, isObjectString } from '../helper';
+import { isObject, isObjectString } from '../utils';
 
 export default class session {
     static getItem(key) {

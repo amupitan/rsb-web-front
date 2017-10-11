@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import update from 'immutability-helper';
 
-import helper from '../../lib/helper';
+import utils from '../../lib/utils';
 
 import './style.css';
 
@@ -80,7 +80,7 @@ export default class Form extends Component {
         );
 
         const validationSign = `glyphicon-${element.indicator === 'success' ? 'ok' : 'remove'}`;
-        let labelTitle = element.title || helper.toTitleCase(element.name);
+        let labelTitle = element.title || utils.toTitleCase(element.name);
 
         return (
             <div key={i} className={divclass}>

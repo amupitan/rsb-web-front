@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { joinGame } from '../../lib/game';
+import constraints from '../../lib/constraints';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -65,7 +66,7 @@ class Join extends Component {
 
     handleCodeChange(event) {
         this.setState({
-            currentCode: event.target.value.replace(/\W+/g, '').substring(0, 7).toUpperCase(),
+            currentCode: event.target.value.replace(/\W+/g, '').substring(0, constraints.MAX_JOINCODE_LENGTH).toUpperCase(),
         });
     }
 

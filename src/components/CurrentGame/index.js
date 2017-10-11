@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Game, { sports } from '../../lib/game';
+import { DateUtils } from '../../lib/utils';
 
 import Loader from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
@@ -59,7 +60,7 @@ class CurrentGame extends Component {
                 </div>
                 <div className="scroll-info panel-body">
                     <span><b>Host</b>: {host}</span><br />
-                    <span><b>StartTime</b>: {(new Date(startTime)).toLocaleTimeString("en-us", options)}</span><br />
+                    <span><b>StartTime</b>: {DateUtils.getTime(startTime)}</span><br />
                     <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
                     <span><b>Sport</b>: {sports[sport]}</span><br />
                     <span><b>Age Range</b>:Min: {agerange[0]}  Max: {agerange[1]}</span><br />

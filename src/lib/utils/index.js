@@ -1,3 +1,8 @@
+const dateOptions = {
+    weekday: "long", year: "numeric", month: "short",
+    day: "numeric", hour: "2-digit", minute: "2-digit"
+};
+
 //TODO: rename this class
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
@@ -35,6 +40,21 @@ export function promisify(func) {
             func.apply(this, [...args, callback])
         })
 }
+
+export const DateUtils = Object.seal({
+    getTime: (time, { locale = 'en-us' }) => (new Date(time)).toLocaleTimeString(locale, dateOptions),
+
+    yyyymmdd: ({ dateString, delimeter = '-' } = {}) => {
+        const d = dateString ? new Date(dateString) : new Date();
+        const mm = d.getMonth() + 1, dd = d.getDate();
+        return [d.getFullYear(),
+        (mm > 9 ? '' : '0') + mm,
+        (dd > 9 ? '' : '0') + dd,
+        ].join(delimeter);
+    }
+});
+
+export const getTime = (time, { locale = 'en-us' }) => (new Date(time)).toLocaleTimeString(locale, dateOptions);
 
 export default {
     mergeDeep: mergeDeep,
