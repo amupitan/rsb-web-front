@@ -36,13 +36,14 @@ export class MapPage extends Component {
     // If the user doesn't provide a location, this should make
     // an intelligent guess.
     componentWillMount() {
+        this._isMounted = true;
         this.getLocation();
     }
 
     // Gets the postion of the user's location
     async getLocation() {
         const currentLocation = await getCurrentLocation();
-
+        if (!this._isMounted) return;
         this.setState({
             position: currentLocation,
             markers: await this.getMarkers(currentLocation),
@@ -96,6 +97,7 @@ export class MapPage extends Component {
 
     // Causes a render of new markers by invalidating the map
     async fetchPlaces(mapProps, map) {
+        if (!this._isMounted) return;
         const center = map.getCenter();
         console.log(`lat: ${center.lat()} lng: ${center.lng()}`);
         this.setState({
@@ -129,6 +131,10 @@ export class MapPage extends Component {
             />
         })
 
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
