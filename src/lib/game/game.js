@@ -62,7 +62,6 @@ export async function _createGame(data) {
     }
 
     res = await _getGame({ value: res.data });
-    console.log(res);
     if (res.error) {
         return _handleError(res.data)
     }

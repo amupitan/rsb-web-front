@@ -1,7 +1,4 @@
-const dateOptions = {
-    weekday: "long", year: "numeric", month: "short",
-    day: "numeric", hour: "2-digit", minute: "2-digit"
-};
+import datetime from "./datetime";
 
 //TODO: rename this class
 export function isObject(item) {
@@ -41,36 +38,26 @@ export function promisify(func) {
         })
 }
 
-const _getCurrentTime = (dateString) => {
-    const d = dateString ? new Date(dateString) : new Date();
-    const hh = d.getHours(), mm = d.getMinutes();
-    return [
-        (hh > 9 ? '' : '0') + hh,
-        (mm > 9 ? '' : '0') + mm,
-    ].join(':');
-};
+export const DateUtils = datetime;
 
-export const DateUtils = Object.seal({
-    getReadbaleTime: (time, { locale = 'en-us' } = {}) => (new Date(time)).toLocaleTimeString(locale, dateOptions),
+export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    getCurrentTime: _getCurrentTime,
+export const deepFreeze = obj => {
+    // Retrieve the property names defined on obj
+    const propNames = Object.getOwnPropertyNames(obj);
 
-    getTimeAfter: ({ dateString, minutes = 15 } = {}) => {
-        const d = dateString ? new Date(dateString) : new Date();
-        return _getCurrentTime(new Date(d.setMinutes(d.getMinutes() + minutes)).toISOString());
-    },
+    // Freeze properties before freezing self
+    for (let name of propNames) {
+        const prop = obj[name];
 
-    yyyymmdd: ({ dateString, delimeter = '-' } = {}) => {
-        const d = dateString ? new Date(dateString) : new Date();
-        const mm = d.getMonth() + 1, dd = d.getDate();
-        return [d.getFullYear(),
-        (mm > 9 ? '' : '0') + mm,
-        (dd > 9 ? '' : '0') + dd,
-        ].join(delimeter);
+        // Freeze prop if it is an object
+        if (typeof prop === 'object' && prop !== null)
+            deepFreeze(prop);
     }
-});
 
-export const getTime = (time, { locale = 'en-us' }) => (new Date(time)).toLocaleTimeString(locale, dateOptions);
+    // Freeze self (no-op if already frozen)
+    return Object.freeze(obj);
+};
 
 export default {
     mergeDeep: mergeDeep,
