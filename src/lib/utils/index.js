@@ -1,4 +1,5 @@
 import datetime from "./datetime";
+import _makeCancelable from './makeCancelable';
 
 //TODO: rename this class
 export function isObject(item) {
@@ -39,6 +40,8 @@ export function promisify(func) {
 }
 
 export const DateUtils = datetime;
+
+export const makeCancelable = _makeCancelable;
 
 export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 

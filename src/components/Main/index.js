@@ -16,7 +16,6 @@ class Main extends Component {
 
     this.state = {
       notify: null,
-      updateApp: true,
     }
 
     this.close = this.close.bind(this);
@@ -25,9 +24,8 @@ class Main extends Component {
   }
 
   notify({ title, text, type }) {
-    this.setState({ notify: { title: title, text: text, type: type }, updateApp: false })
+    this.setState({ notify: { title: title, text: text, type: type } })
   }
-
 
   close(evt) {
     this.setState({ notify: null })
@@ -39,35 +37,18 @@ class Main extends Component {
     }
   }
 
-  componenDidUpdate() {
-    window.history.pushState({ info: null }, '')
-  }
-
   render() {
     return (
       <main>
         {this.renderNotification()}
-        <AppController update={this.state.updateApp}>
-          <Switch>
-            <Route exact path='/signup' component={SignUp} />
-            <Route exact path='/login' render={(props) => <Login notify={this.notify} {...props} />} />
-            <Route exact path={appRoutes} component={Home} />
-            <Route path='*' component={NotFound} />
-          </Switch>
-        </AppController>
-
+        <Switch>
+          <Route exact path='/signup' render={(props) => <SignUp notify={this.notify} {...props} />} />
+          <Route exact path='/login' render={(props) => <Login notify={this.notify} {...props} />} />
+          <Route exact path={appRoutes} render={(props) => <Home notify={this.notify} {...props} />} />
+          <Route path='*' component={NotFound} />
+        </Switch>
       </main>
     );
-  }
-}
-
-class AppController extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.update;
-  }
-
-  render() {
-    return <div>{this.props.children}</div>
   }
 }
 

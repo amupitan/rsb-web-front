@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
+import { Notifiable } from '../../mixins';
 
 import Form from '../Form';
 import FormButton from '../ui/FormButton';
@@ -8,7 +9,7 @@ import FormButton from '../ui/FormButton';
 import logo from '../../assets/rsb_logo.png';
 import './style.css';
 
-class Login extends Component {
+class Login extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +18,7 @@ class Login extends Component {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onError = this.onError.bind(this);
-        this.renderLocationInfo = this.renderLocationInfo.bind(this);
+        this.notify = this.notify.bind(this);
     }
 
     async onSubmit(formData) {
@@ -35,13 +36,8 @@ class Login extends Component {
         });
     }
 
-    renderLocationInfo() {
-        if (this.props.location.state && this.props.location.state.info) {
-            const message = this.props.location.state.info;
-            window.history.pushState({ info: null }, '')
-
-            this.props.notify({ text: message });
-        }
+    notify(notifyInfo) {
+        this.props.notify(notifyInfo);
     }
 
     getForm() {
@@ -50,9 +46,6 @@ class Login extends Component {
         return [username, ...loginForm.slice(1)];
     }
 
-    componentDidUpdate() {
-        this.renderLocationInfo();
-    }
 
     render() {
         return (
