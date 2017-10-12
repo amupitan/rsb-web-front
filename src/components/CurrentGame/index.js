@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Game, { sports } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
 
-import Loader from '../ui/Loader';
+import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 
@@ -98,7 +98,7 @@ class CurrentGame extends Component {
 
     render() {
         if (!this.state.hasGame) {
-            return <div style={{ width: '150px', height: '150px', marginTop: '300px', marginLeft: '650px' }}><Loader /></div>;
+            return <LoaderPage />;
         }
 
         return (

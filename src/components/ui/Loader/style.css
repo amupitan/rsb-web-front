@@ -1,11 +1,8 @@
 .spinner-loader {
-    border: 10px solid #f3f3f3;
+    border-style: solid;
     border-radius: 50%;
-    border-top: 10px solid #3498db;
-    width: 100%;
-    height: 100%;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+    -webkit-animation: spin 1.7s linear infinite;
+    animation: spin 1.7s linear infinite;
   }
   
   @-webkit-keyframes spin {
@@ -16,4 +13,15 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  .full-page-loader {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
   }

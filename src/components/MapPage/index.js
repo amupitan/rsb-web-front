@@ -5,7 +5,7 @@ import { getCurrentLocation } from '../../lib/map';
 import { getGamesNearLocation, sports, joinGame } from '../../lib/game';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
-import Loader from '../ui/Loader';
+import { LoaderPage } from '../ui/Loader';
 
 
 import './style.css';
@@ -133,7 +133,7 @@ export class MapPage extends Component {
 
     render() {
         if (!this.state.position) {
-            return <div style={{ width: '150px', height: '150px', marginTop: '300px', marginLeft: '650px' }}><Loader /></div>;
+            return <LoaderPage />;
         }
         return (
             <div className="rsb-main-map">
@@ -152,14 +152,6 @@ export class MapPage extends Component {
         );
     }
 }
-
-// This is the screen displayed while the markers are being fetched
-// const Loader = () => (
-//     <div className='map-loader'>
-//         <h1>One Second</h1>
-//         <p>Loading...</p>
-//     </div>
-// );
 
 // GameInfo is dislayed after a marker is clicked
 const GameInfo = ({ name, agerange, duration, sport, startTime, host }) => {
