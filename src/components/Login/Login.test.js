@@ -4,5 +4,6 @@ import Login from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Login />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<Login notify={notify} />, div);
 }); 

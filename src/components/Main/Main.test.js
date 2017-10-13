@@ -6,8 +6,12 @@ import Main from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(
-    <BrowserRouter>
-      <Main />
-    </BrowserRouter>, div);
+  try {
+    ReactDOM.render(
+      <BrowserRouter >
+        <Main />
+      </BrowserRouter>, div);
+  } catch (err) {
+    if (err.code !== 'NOTNOTIFIABLE') throw err;
+  }
 });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { Notifiable } from "../../mixins";
 import { createUser, onSignUp, signupForm } from '../../lib/authentication';
 
 import Form from '../Form';
@@ -9,7 +10,7 @@ import logo from '../../assets/rsb_logo.png';
 import './style.css';
 
 
-class SignUp extends Component {
+class SignUp extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.state = {

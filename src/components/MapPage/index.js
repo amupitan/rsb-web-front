@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 
+import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
 import { getGamesNearLocation, sports, joinGame } from '../../lib/game';
 
@@ -10,7 +11,7 @@ import { LoaderPage } from '../ui/Loader';
 
 import './style.css';
 
-export class MapPage extends Component {
+export class MapPage extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.render = this.render.bind(this);

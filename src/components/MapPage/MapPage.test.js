@@ -4,5 +4,6 @@ import MapPage from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<MapPage />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<MapPage notify={notify} />, div);
 }); 

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import { Notifiable } from "../../mixins";
+
 import RSBUserImage from '../ui/RSBUserImage';
 import mockServer from '../../dummy';
 
@@ -6,7 +9,7 @@ import './style.css';
 
 let data = mockServer("/user/f/1");
 
-class Friends extends Component {
+class Friends extends Notifiable(Component) {
 
     constructor(props) {
         super(props);
@@ -60,7 +63,7 @@ class Friends extends Component {
             friendSearch: event.target.value
         });
     }
-    
+
     handleRecentSearch(event) {
         this.setState({
             recentSearch: event.target.value
@@ -73,7 +76,7 @@ class Friends extends Component {
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch}/>
+                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch} />
                         <button type="submit"
                             onClick={
                                 () => {
@@ -94,12 +97,12 @@ class Friends extends Component {
                 <div className="panel panel-default rsb-recent-players-panel">
                     <div className="panel-heading text-center">
                         <h3 className="">Recent Players</h3>
-                        <input className="" type="search" value={this.state.recentSearch} id="rsb-recent-players-search-bar" placeholder="Search Recent.." onChange={this.handleRecentSearch}/>
+                        <input className="" type="search" value={this.state.recentSearch} id="rsb-recent-players-search-bar" placeholder="Search Recent.." onChange={this.handleRecentSearch} />
                         <button type="submit"
                             onClick={
                                 () => {
                                     this.filterUsers(data.result[0].RecentPlayers,
-                                       this.state.recentSearch,
+                                        this.state.recentSearch,
                                         "recents")
                                 }
                             }>

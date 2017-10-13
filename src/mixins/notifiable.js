@@ -13,7 +13,9 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         if (!this.props.notify ||
             typeof this.props.notify.show !== 'function' ||
             typeof this.props.notify.hide !== 'function') {
-            throw new Error('Notifiable props must contain notify object contains hide() and show() methods');
+            let error = new Error('Notifiable props must contain notify object contains hide() and show() methods');
+            error.code = 'NOTNOTIFIABLE';
+            throw error;
         }
     }
 

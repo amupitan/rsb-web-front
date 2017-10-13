@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { DateUtils } from '../../lib/utils';
 import { sports, getDuration, createGame } from '../../lib/game';
+import { Notifiable } from "../../mixins";
 
 import RSBButton from '../ui/RSBButton';
 
@@ -16,7 +17,7 @@ import './style.css';
  * 
  */
 
-class HostPage extends Component {
+class HostPage extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.render = this.render.bind(this);

@@ -4,5 +4,6 @@ import SignUp from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<SignUp />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<SignUp notify={notify} />, div);
 }); 

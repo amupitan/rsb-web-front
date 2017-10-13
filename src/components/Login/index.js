@@ -18,7 +18,6 @@ class Login extends Notifiable(Component) {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onError = this.onError.bind(this);
-        this.notify = this.notify.bind(this);
     }
 
     async onSubmit(formData) {

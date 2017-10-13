@@ -4,5 +4,6 @@ import Join from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Join />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<Join notify={notify} />, div);
 }); 
