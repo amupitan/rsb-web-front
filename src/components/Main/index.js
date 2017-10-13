@@ -23,8 +23,8 @@ class Main extends Component {
     this.renderNotification = this.renderNotification.bind(this);
   }
 
-  notify({ title, text, type }) {
-    this.setState({ notify: { title: title, text: text, type: type } })
+  notify({ title, message, type }) {
+    this.setState({ notify: { title: title, message: message, type: type } })
   }
 
   close(evt) {

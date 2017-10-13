@@ -29,7 +29,7 @@ class Home extends Component {
         <div className='display'>
           <Switch>
             {views.map((view, i) => (
-              < Route exact key={`${view.name}${i}`} path={'/' + view.path} component={view.component} />
+              <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
             {/* Default route when url is '/' */}
             <Route component={this.props.default || (views.length > 0 && views[0].component)} />

@@ -1,7 +1,8 @@
-import yoda from '../../lib/yoda';
-import redirect from '../../lib/navigator';
-import session from '../../lib/session';
-import errorFormatter from '../../lib/errors';
+import yoda from '../yoda';
+import redirect from '../navigator';
+import session from '../session';
+import errorFormatter from '../errors';
+import { showInfo } from '../../mixins/notifiable';
 
 const logoutMessage = 'You have successfully logged out';
 
@@ -46,8 +47,8 @@ function _handleError(error) {
 export async function _logout(data) {
     await yoda.get('/logout', true);
     session.logOut();
-    window.history.pushState({ username: null }, '')
-    redirect({ path: '/login', state: { info: logoutMessage } });
+    showInfo(logoutMessage);
+    redirect({ path: '/login' });
 };
 
 export function _onLogin(loginInfo) {

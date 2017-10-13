@@ -8,7 +8,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
     constructor() {
         super();
         if (!this.notify) {
-            throw new Error('Must implement notify(string)');
+            throw new Error('Must implement notify(object)');
         }
     }
 
@@ -20,10 +20,10 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         this.renderError();
     }
 
-    // componentDidMount() {
-    //     this.renderNotification();
-    //     this.renderError();
-    // }
+    componentDidMount() {
+        this.renderNotification();
+        this.renderError();
+    }
 
     renderNotification() {
         if (super.renderNotification) {
@@ -33,7 +33,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         const message = session.getItem('info');
         if (message) {
             session.removeItem('info');
-            this.notify({ text: message });
+            this.notify({ message: message });
         }
     }
 
@@ -45,9 +45,24 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         const error = session.getItem('error');
         if (error) {
             session.removeItem('error');
-            this.notify({ title: error.title, text: error.text, type: 'danger' });
+            this.notify({ title: error.title, message: error.message, type: 'danger' });
         }
     }
 };
+
+
+const _showMessage = (type, modifier = (msg) => msg) => (message) => session.setItem(type, (modifier(message)));
+
+// displays an info notification on a Notifiable Component
+export const showInfo = _showMessage('info');
+
+// displays a success notification on a Notifiable Component
+export const showSuccess = _showMessage('success');
+
+// displays an error notification on a Notifiable Component
+export const showError = _showMessage('error', (err) => {
+    if (typeof err === 'string') return { message: err };
+    return err;
+});
 
 export default Notifiable;

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 import { joinGame } from '../../lib/game';
 import constraints from '../../lib/constraints';
+import { Notifiable } from '../../mixins';
 
 import RSBButton from '../ui/RSBButton';
 
 import './style.css';
 
-class Join extends Component {
+class Join extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,6 +23,10 @@ class Join extends Component {
         this.validateCode = this.validateCode.bind(this);
         this.showError = this.showError.bind(this);
         this.handleCodeChange = this.handleCodeChange.bind(this);
+    }
+
+    notify(notifyInfo) {
+        this.props.notify(notifyInfo);
     }
 
     validateCode(code) {
@@ -66,7 +71,7 @@ class Join extends Component {
 
     handleCodeChange(event) {
         this.setState({
-            currentCode: event.target.value.replace(/\W+/g, '').substring(0, constraints.MAX_JOINCODE_LENGTH).toUpperCase(),
+            currentCode: event.target.value.replace(/[\W_]+/g, '').substring(0, constraints.MAX_JOINCODE_LENGTH).toUpperCase(),
         });
     }
 
