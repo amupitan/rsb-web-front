@@ -23,6 +23,7 @@ class Home extends Component {
   }
 
   render() {
+    const defaultComp = this.props.default || (views.length > 0 && views[0].component);
     return (
       <div>
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
@@ -32,7 +33,8 @@ class Home extends Component {
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
             {/* Default route when url is '/' */}
-            <Route component={this.props.default || (views.length > 0 && views[0].component)} />
+            const default = 
+            <Route render={(props) => <defaultComp {...props} {...this.props} />} />
           </Switch>
         </div>
       </div>
