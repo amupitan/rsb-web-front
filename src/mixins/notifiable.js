@@ -26,6 +26,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
     }
 
     renderNotification() {
+        if (!window.localStorage) return;
         if (super.renderNotification) {
             super.renderNotification();
         }
@@ -38,6 +39,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
     }
 
     renderError() {
+        if (!window.localStorage) return;
         if (super.renderError) {
             super.renderError();
         }
