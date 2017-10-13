@@ -25,10 +25,6 @@ class Join extends Notifiable(Component) {
         this.handleCodeChange = this.handleCodeChange.bind(this);
     }
 
-    notify(notifyInfo) {
-        this.props.notify(notifyInfo);
-    }
-
     validateCode(code) {
         if (code.length !== 7) {
             this.showError('The join code must be 7 characters');

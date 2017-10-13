@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
 
+import { deepFreeze } from "../../lib/utils";
+
 import Home, { appRoutes } from '../Home'
 import SignUp from '../SignUp'
 import Login from '../Login'
@@ -38,13 +40,14 @@ class Main extends Component {
   }
 
   render() {
+    const notify = deepFreeze({ show: this.notify, hide: this.close });
     return (
       <main>
         {this.renderNotification()}
         <Switch>
-          <Route exact path='/signup' render={(props) => <SignUp notify={this.notify} {...props} />} />
-          <Route exact path='/login' render={(props) => <Login notify={this.notify} {...props} />} />
-          <Route exact path={appRoutes} render={(props) => <Home notify={this.notify} {...props} />} />
+          <Route exact path='/signup' render={(props) => <SignUp notify={notify} {...props} />} />
+          <Route exact path='/login' render={(props) => <Login notify={notify} {...props} />} />
+          <Route exact path={appRoutes} render={(props) => <Home notify={notify} {...props} />} />
           <Route path='*' component={NotFound} />
         </Switch>
       </main>

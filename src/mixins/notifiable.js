@@ -1,14 +1,19 @@
 import session from '../lib/session';
 
 // Notifiable mixin, will need a wrapper over it to be used
-// Classes that implement this mixin should implement the 
-// notify(string) function
+// It is used as follows:
+//      import { Component } from 'react';
+//      class MyComponent extends Notifiable(Component) {
+//          
+//      }
 // This class causes notifications to be displayed
 const Notifiable = (Notifiable) => class extends Notifiable {
-    constructor() {
-        super();
-        if (!this.notify) {
-            throw new Error('Must implement notify(object)');
+    constructor(props) {
+        super(props);
+        if (!this.props.notify ||
+            typeof this.props.notify.show !== 'function' ||
+            typeof this.props.notify.hide !== 'function') {
+            throw new Error('Notifiable props must contain notify object contains hide() and show() methods');
         }
     }
 
@@ -18,6 +23,10 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         }
         this.renderNotification();
         this.renderError();
+    }
+
+    componentWillMount() {
+        this.props.notify.hide();
     }
 
     componentDidMount() {
@@ -34,7 +43,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         const message = session.getItem('info');
         if (message) {
             session.removeItem('info');
-            this.notify({ message: message });
+            this.props.notify.show({ message: message });
         }
     }
 
@@ -47,7 +56,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         const error = session.getItem('error');
         if (error) {
             session.removeItem('error');
-            this.notify({ title: error.title, message: error.message, type: 'danger' });
+            this.props.notify.show({ title: error.title, message: error.message, type: 'danger' });
         }
     }
 };

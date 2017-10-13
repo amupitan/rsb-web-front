@@ -36,10 +36,6 @@ class Login extends Notifiable(Component) {
         });
     }
 
-    notify(notifyInfo) {
-        this.props.notify(notifyInfo);
-    }
-
     getForm() {
         let username = loginForm[0];
         username.value = this.props.location.state && this.props.location.state.username;

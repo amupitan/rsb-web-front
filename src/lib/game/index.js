@@ -1,5 +1,7 @@
 import session from '../session';
 import _joinAndGetGame, { _getGamesNearLocation, _joinGame, _createGame } from './game';
+import { showError } from "../../mixins/notifiable";
+import redirect from '../navigator';
 import constraints from "../constraints";
 
 const DURATION = constraints.GameDuration;
@@ -37,7 +39,8 @@ export default async function () {
 
                     // throw error if it takes too long for session to set game
                 } else if (timeTaken === 2000) {
-                    throw new Error('Game timed out. Session took too long to set game or did not set. The user is probably not in a game');
+                    showError({ title: 'Unable to find current game', message: 'You might not be in a game.' });
+                    redirect();
                 }
             } catch (err) {
 

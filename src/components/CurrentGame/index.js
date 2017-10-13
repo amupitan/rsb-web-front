@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Game, { sports } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
+import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
@@ -10,7 +11,7 @@ import RSBLabel from '../ui/RSBLabel';
 import defaultImg from '../../dummy/default.jpg';//'.././default.jpg';
 import './style.css';
 
-class CurrentGame extends Component {
+class CurrentGame extends Notifiable(Component) {
     constructor(props) {
         super(props);
 
@@ -78,18 +79,13 @@ class CurrentGame extends Component {
     }
 
     async getCurrentGame() {
-        try {
-            const game = await Game();
-            if (game) {
-                this.game = game;
-                this.setState({
-                    hasGame: true,
-                });
-            }//else something really bad happened. TODO: handle
-        } catch (err) {
-            //TODO: handle error
-            console.error(err);
-        }
+        const game = await Game();
+        if (game) {
+            this.game = game;
+            this.setState({
+                hasGame: true,
+            });
+        }//else something really bad happened. TODO: handle
     }
 
     componentDidMount() {
