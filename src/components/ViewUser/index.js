@@ -8,10 +8,15 @@ import './style.css';
 class ViewUser extends Component{
     constructor(props) {
         super(props);
-        this.render = this.render.bind(this);    
+        this.render = this.render.bind(this);   
+        this.getUser = this.getUser.bind(this); 
         console.log("In here, ", props);    
     }
     
+    getUser(){
+        console.log("Username: ", this.props.match.params.username);
+    }
+
     heading() {
         let numFriends = "Friends " + this.props.userInfo.Friends.length;
         let isFriend = ()=>{
@@ -48,6 +53,7 @@ class ViewUser extends Component{
     }
 
     Friends() {
+        this.getUser();
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">

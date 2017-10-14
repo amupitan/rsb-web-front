@@ -5,6 +5,7 @@ import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
 import user from '../../lib/user';
 import ViewUser from '../ViewUser';
+import Users from './users';
 
 class Home extends Component {
 
@@ -31,12 +32,7 @@ class Home extends Component {
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-           {use.map((u, i) => (
-              < Route exact key={`${u.Username}${i}`} path={'/user/' + u.Username}
-              render={(props) => (
-                <ViewUser {...props} userInfo={u}/>
-              )}/>
-            ))},
+            <Route path='/user' component={Users}/>
 
             {views.map((view, i) => (
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
@@ -51,7 +47,15 @@ class Home extends Component {
   }
 }
 
-//{/* <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={props => <view.component {...props} />} /> */}
+
+// {use.map((u, i) => (
+//   < Route exact key={`${u.Username}${i}`} path={'/user/' + u.Username}
+//   render={(props) => (
+//     <ViewUser {...props} userInfo={u}/>
+//   )}/>
+// ))},
+
+
 // Returns a regex representing all the routes
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
