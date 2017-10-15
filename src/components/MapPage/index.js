@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom'
 
 import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
-import { getGamesNearLocation, sports, joinGame } from '../../lib/game';
+import { getGamesNearLocation, joinGame } from '../../lib/game';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
-
+import GameInfo from './GameInfo';
 
 import './style.css';
 
@@ -87,13 +87,13 @@ export class MapPage extends Notifiable(Component) {
 
     // Handles the closing of a game option
     onMapClicked() {
-        // TODO
-        if (this.state.showingInfoWindow) {
-            this.setState({
-                showingInfoWindow: false,
-                activeMarker: null,
-            })
-        }
+        this.setState((prevState) => {
+            if (prevState.showingInfoWindow)
+                return {
+                    showingInfoWindow: false,
+                    activeMarker: null,
+                }
+        });
     }
 
     // Causes a render of new markers by invalidating the map
@@ -109,10 +109,11 @@ export class MapPage extends Notifiable(Component) {
     // Renders the game info window
     renderGameInfoWindow() {
         return <InfoWindow
+            onClose={this.onMapClicked}
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}>
             <div>
-                <GameInfo {...this.state.selectedPlace} />
+                {<GameInfo {...this.state.selectedPlace} />}
                 <div id="rsb-map-join-game-window"></div>
             </div>
         </InfoWindow>
@@ -159,23 +160,6 @@ export class MapPage extends Notifiable(Component) {
         );
     }
 }
-
-// GameInfo is dislayed after a marker is clicked
-const GameInfo = ({ name, agerange, duration, sport, startTime, host }) => {
-    const age = (agerange && [...agerange]) || [0, 0];
-    const time = (new Date(startTime)).toTimeString();
-
-    return (
-        <div>
-            <h1>{name}</h1>
-            <p><strong>Minimum Age:</strong>{age[0]} <strong>Maximum Age: </strong>{age[1]}</p>
-            <p><strong>Start time: </strong>{time}</p>
-            <p><strong>Sport: </strong>{sports[sport]} </p>
-            <p><strong>Host: </strong>{host} </p>
-            <p><strong>Duration: </strong>{duration}</p>
-        </div>
-    );
-};
 
 //TODO: return a filtered game to be displayed
 const toGame = (game) => game;
