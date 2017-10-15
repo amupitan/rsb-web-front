@@ -36,30 +36,25 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         this.renderError();
     }
 
-    renderNotification() {
+    _renderInformation(item = 'info', content = () => ({})) {
         if (!window.localStorage) return;
         if (super.renderNotification) {
             super.renderNotification();
         }
 
-        const message = session.getItem('info');
+        const message = session.getItem(item);
         if (message) {
-            session.removeItem('info');
-            this.props.notify.show({ message: message });
+            session.removeItem(item);
+            return this.props.notify.show(content(message));
         }
     }
 
-    renderError() {
-        if (!window.localStorage) return;
-        if (super.renderError) {
-            super.renderError();
-        }
+    renderNotification() {
+        this._renderInformation('info', (info) => ({ message: info }));
+    }
 
-        const error = session.getItem('error');
-        if (error) {
-            session.removeItem('error');
-            this.props.notify.show({ title: error.title, message: error.message, type: 'danger' });
-        }
+    renderError() {
+        this._renderInformation('error', (error) => ({ title: error.title, message: error.message, type: 'danger' }));
     }
 };
 
