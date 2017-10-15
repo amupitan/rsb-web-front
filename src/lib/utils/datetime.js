@@ -13,7 +13,7 @@ const _getCurrentTime = (dateString) => {
 };
 
 const DateUtils = Object.seal({
-    getReadbaleTime: (time, { locale = 'en-us' } = {}) => (new Date(time)).toLocaleTimeString(locale, dateOptions),
+    getReadableTime: (time, { locale = 'en-us' } = {}) => (new Date(time)).toLocaleTimeString(locale, dateOptions),
 
     getCurrentTime: _getCurrentTime,
 
