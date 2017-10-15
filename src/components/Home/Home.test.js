@@ -6,13 +6,10 @@ import Home from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
+  const notify = { show: () => { }, hide: () => { } };
 
-  try {
-    ReactDOM.render(
-      <BrowserRouter >
-        <Home />
-      </BrowserRouter>, div);
-  } catch (err) {
-    if (err.code !== 'NOTNOTIFIABLE') throw err;
-  }
+  ReactDOM.render(
+    <BrowserRouter >
+      <Home notify={notify} />
+    </BrowserRouter>, div);
 });
