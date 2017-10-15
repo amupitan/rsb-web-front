@@ -5,12 +5,7 @@ import RSBLabel from '../ui/RSBLabel';
 import DisplayFriends from '../ProfileUser/DisplayFriends';
 
 //Get every user in the db to see if it matches anyone
-export function getUser(username) {
-    let allUser = new user().getAllUsers().result;
-    return allUser.find((u) => {
-        return (u.Username === username);
-    })
-}
+
 
 export function getHeading(u) {
     let numFriends = "Friends " + u.Friends.length;

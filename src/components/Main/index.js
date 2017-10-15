@@ -3,13 +3,14 @@ import { Switch, Route } from 'react-router-dom'
 
 import { deepFreeze } from "../../lib/utils";
 
-import Home, { appRoutes, userRoutes } from '../Home'
+import Home, { appRoutes } from '../Home'
 
 import SignUp from '../SignUp'
 import Login from '../Login'
 import NotFound from '../NotFound';
 
 import Notify from '../ui/Notify';
+import Users from '../ViewUser/users';
 
 
 // The Main component renders one of matching route
@@ -49,7 +50,8 @@ class Main extends Component {
           <Route exact path='/signup' render={(props) => <SignUp notify={notify} {...props} />} />
           <Route exact path='/login' render={(props) => <Login notify={notify} {...props} />} />
           <Route exact path={appRoutes} render={(props) => <Home notify={notify} {...props} />} />
-          <Route exact path={userRoutes} render={(props) => <Home notify={notify} {...props} /> }/>
+          {/* <Route exact path={userRoutes} render={(props) => <Home notify={notify} {...props} /> }/> */}
+          <Route path='/user' component={Users}/> {/*This generates another user's profile. Not own user. */}
           <Route path='*' component={NotFound} />
         </Switch>
       </main>

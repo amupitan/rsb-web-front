@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom';
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
 import user from '../../lib/user';
-import Users from './users';
 
 class Home extends Component {
 
@@ -30,8 +29,6 @@ class Home extends Component {
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-            <Route path='/user' component={Users}/> {/*This generates another user's profile. Not own user. */}
-
             {views.map((view, i) => (
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
@@ -59,13 +56,13 @@ export const appRoutes = (() => {
 })();
 
 /** Similair to appRoutes except with users */
-export const userRoutes = (() => {
-  let path = '/user/(';
-  for (let userRoutes of new user().getAllUsers().result){
-    path+= userRoutes.Username + '|'
-  }
-  path += ')/';
-  return path;
-})();
+// export const userRoutes = (() => {
+//   let path = '/user/(';
+//   for (let userRoutes of new user().getAllUsers().result){
+//     path+= userRoutes.Username + '|'
+//   }
+//   path += ')/';
+//   return path;
+// })();
 
 export default Home;
