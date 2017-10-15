@@ -4,12 +4,10 @@ import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 import DisplayFriends from '../ProfileUser/DisplayFriends';
 
-
-
-
+//Get every user in the db to see if it matches anyone
 export function getUser(username) {
-    let use = new user().getAllUsers().result;
-    return use.find((u) => {
+    let allUser = new user().getAllUsers().result;
+    return allUser.find((u) => {
         return (u.Username === username);
     })
 }

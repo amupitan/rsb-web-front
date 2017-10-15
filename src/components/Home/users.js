@@ -13,23 +13,12 @@ class Users extends Component {
         
     }
 
-    u = {
-        Username: "VicityVic",
-        Firstname: "Victor",
-        Lastname: "Amupitan",
-        PersonalRating: "2",
-        TeamRating: "1002",
-        Friends: [{}],
-        Preferences: "Wut?"
-    }
-
-
     displayUser() {
         return(
             <Switch>
                 <Route path='/user/:username' 
                         render={(props) => (
-                            <ViewUser {...props} userInfo={this.u}/> )} />
+                            <ViewUser {...props}/> )} />
             </Switch>
         )
     }

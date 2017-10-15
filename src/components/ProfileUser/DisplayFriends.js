@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
-import ViewUser from '../ViewUser';
+import redirect from '../../lib/navigator';
+
 import './style.css';
 
 export default class DisplayFriends extends Component {
@@ -18,14 +19,14 @@ export default class DisplayFriends extends Component {
                     <div className="col-sm-4 col-sm-pull">
                         <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" 
                             onClick={()=>{
-                                console.log("Pressed ", el.Firstname, el.Lastname);
+                                redirect({path: '/user/'+el.Username});
                             }}/>
                     </div>
                     <div className="col-sm-4">
                         <RSBLabel
                             name={el.Username}
                             onClickFunction={() => {
-                                console.log("Pressed ", el.Firstname, el.Lastname);
+                                redirect({path: '/user/'+el.Username});
                             }}
                             key={i}
                         />
