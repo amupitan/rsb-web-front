@@ -1,7 +1,8 @@
 import yoda, { YodaRequest } from '../yoda/yoda';
-import redirect from '..//navigator';
+import redirect from '../navigator';
 import session from '../session';
 import errorFormatter from '../errors';
+import { showError } from '../../mixins/notifiable';
 
 //make request to get game
 async function _getGame({ value }) {
@@ -29,7 +30,12 @@ async function _joinAndGetGame(game, byId) {
 export async function _getGamesNearLocation({ lat, lng }) {
     const res = await yoda.get(`/games/l/lng/${lng}/lat/${lat}`, true);
     if (res.error) {
-        return _handleError(res.data)
+        const errorToDisplay = _handleError(res.data);
+        showError(errorToDisplay.error);
+        redirect();
+        //TODO: no point returning error?
+        // Right now the reason the error is returned is so map can have a custom handleError if it wants
+        return errorToDisplay;
     }
     return res.data;
 }
