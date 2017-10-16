@@ -104,7 +104,6 @@ class CurrentGame extends Notifiable(Component) {
                     text="Exit Game"
                     buttonType="danger"
                     onClickFunction={() => {
-                        console.log(this.game.id);
                         leaveGame(this.game.id);
                     }}
                 />
