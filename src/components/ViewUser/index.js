@@ -24,7 +24,6 @@ class ViewUser extends Component{
              while(!userInstance){
                  console.log("User doesnt exist")
              }
-             console.log("In use", userInstance);
             returnable = (
                 <div className="panel col-xs-10 col-xs-offset-1">
                 {getHeading(userInstance)}
