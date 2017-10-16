@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {getHeading, getFriends, getGameHistory } from './controller';
 import user from '../../lib/user';
-// import Users from './users';
 
 
 import './style.css';

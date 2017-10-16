@@ -1,10 +1,7 @@
 import React from 'react';
-import user from '../../lib/user';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 import DisplayFriends from '../ProfileUser/DisplayFriends';
-
-//Get every user in the db to see if it matches anyone
 
 
 export function getHeading(u) {

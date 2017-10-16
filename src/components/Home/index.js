@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import user from '../../lib/user';
 
 class Home extends Component {
 
@@ -54,15 +53,5 @@ export const appRoutes = (() => {
   path += ')/';
   return path;
 })();
-
-/** Similair to appRoutes except with users */
-// export const userRoutes = (() => {
-//   let path = '/user/(';
-//   for (let userRoutes of new user().getAllUsers().result){
-//     path+= userRoutes.Username + '|'
-//   }
-//   path += ')/';
-//   return path;
-// })();
 
 export default Home;
