@@ -10,26 +10,32 @@ class ViewUser extends Component{
         super(props);
 
         this.render = this.render.bind(this);
+        this.getUser = this.getUser.bind(this);
     }
 
     componentWillMount(){
+        this.getUser();
+    }
 
+    async getUser() {
+        const u = await user(this.props.match.params.username);
+        console.log("U: ", u);
+        this.setState({
+            userObj: u
+        })
     }
 
     render(){
-        let userInstance = {};
         let returnable;
+
         try{
-             userInstance = user.getUser(this.props.match.params.username);
-             while(!userInstance){
-                 console.log("User doesnt exist")
-             }
+             console.log("this.state.userObj: ", this.state.userObj)
             returnable = (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                {getHeading(userInstance)}
+                {getHeading(this.state.userObj)}
                 <div className="row">
-                    {getFriends(userInstance)}
-                    {getGameHistory(userInstance)}
+                    {getFriends(this.state.userObj)}
+                    {getGameHistory(this.state.userObj)}
                 </div>
             </div >
             )

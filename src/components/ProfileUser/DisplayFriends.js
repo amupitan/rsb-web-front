@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import RSBButton from '../ui/RSBButton';
-import { Link } from 'react-router-dom';
 import RSBLabel from '../ui/RSBLabel';
-
 import redirect from '../../lib/navigator';
 
 import './style.css';
