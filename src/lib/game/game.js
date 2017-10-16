@@ -26,6 +26,20 @@ async function _joinAndGetGame(game, byId) {
     return res.data;
 }
 
+// leaves a game and redirects
+export async function _leaveGame(gameId) {
+    const res = await yoda.post('/game/leave', (new YodaRequest({}, {
+        id: gameId,
+    })).toString(), true);
+    if (res.error) {
+        const err = _handleError(res.data);
+        showError({ message: err.error });
+        redirect();
+    }
+    session.removeItem('game');
+    redirect({ path: '/' });
+}
+
 // gets games based on a location
 export async function _getGamesNearLocation({ lat, lng }) {
     const res = await yoda.get(`/games/l/lng/${lng}/lat/${lat}`, true);

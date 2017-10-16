@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import Game, { sports } from '../../lib/game';
+import Game, { sports, leaveGame } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
 
@@ -104,7 +104,8 @@ class CurrentGame extends Notifiable(Component) {
                     text="Exit Game"
                     buttonType="danger"
                     onClickFunction={() => {
-                        console.log("User wants to leave the game");
+                        console.log(this.game.id);
+                        leaveGame(this.game.id);
                     }}
                 />
             </div>
