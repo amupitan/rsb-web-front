@@ -29,7 +29,7 @@ export default () => <div />
     
 def create_ui_component(component):
     component = component[0].upper() + component[1:]
-    path = "./ui/" + component + ".js"
+    path = "./ui/" + component + ".jsx"
     file = open(path, "w")
     file.write(index_js_template)
     file.close()
@@ -72,7 +72,7 @@ it('renders without crashing', () => {{
     file.close()
     
     #create index.js
-    fpath = "./" + component + "/index.js"
+    fpath = "./" + component + "/index.jsx"
     file = open(fpath, "w")
                          
     file.write(index_js_template)

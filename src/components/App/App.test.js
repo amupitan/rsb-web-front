@@ -6,12 +6,8 @@ import App from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  try {
-    ReactDOM.render(
-      <BrowserRouter >
-        <App />
-      </BrowserRouter>, div);
-  } catch (err) {
-    if (err.code !== 'NOTNOTIFIABLE') throw err;
-  }
+  ReactDOM.render(
+    <BrowserRouter >
+      <App />
+    </BrowserRouter>, div);
 });

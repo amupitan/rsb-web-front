@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Redirect} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
@@ -32,8 +32,8 @@ class Home extends Component {
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
             {/* Default route when url is '/' */}
-            <Redirect to={defaultPath} />          
-            </Switch>
+            <Redirect to={defaultPath} />
+          </Switch>
         </div>
       </div>
     );

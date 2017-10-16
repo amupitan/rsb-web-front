@@ -13,9 +13,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         if (!this.props.notify ||
             typeof this.props.notify.show !== 'function' ||
             typeof this.props.notify.hide !== 'function') {
-            let error = new Error('Notifiable props must contain notify object contains hide() and show() methods');
-            error.code = 'NOTNOTIFIABLE';
-            throw error;
+            throw new Error('Notifiable props must contain notify object contains hide() and show() methods');
         }
     }
 
@@ -36,30 +34,25 @@ const Notifiable = (Notifiable) => class extends Notifiable {
         this.renderError();
     }
 
-    renderNotification() {
+    _renderInformation(item = 'info', content = () => ({})) {
         if (!window.localStorage) return;
         if (super.renderNotification) {
             super.renderNotification();
         }
 
-        const message = session.getItem('info');
+        const message = session.getItem(item);
         if (message) {
-            session.removeItem('info');
-            this.props.notify.show({ message: message });
+            session.removeItem(item);
+            return this.props.notify.show(content(message));
         }
     }
 
-    renderError() {
-        if (!window.localStorage) return;
-        if (super.renderError) {
-            super.renderError();
-        }
+    renderNotification() {
+        this._renderInformation('info', (info) => ({ message: info }));
+    }
 
-        const error = session.getItem('error');
-        if (error) {
-            session.removeItem('error');
-            this.props.notify.show({ title: error.title, message: error.message, type: 'danger' });
-        }
+    renderError() {
+        this._renderInformation('error', (error) => ({ title: error.title, message: error.message, type: 'danger' }));
     }
 };
 

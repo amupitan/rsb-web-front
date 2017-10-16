@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 import Game, { sports } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
@@ -8,7 +9,7 @@ import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 
-import defaultImg from '../../dummy/default.jpg';//'.././default.jpg';
+import defaultImg from '../../dummy/default.jpg';
 import './style.css';
 
 class CurrentGame extends Notifiable(Component) {
@@ -34,29 +35,24 @@ class CurrentGame extends Notifiable(Component) {
     }
 
     renderUsers() {
-        const mem = {
-            firstname: 'Walter',
-            lastname: 'Seymour',
-            username: 'wseymour',
-            profilepic: defaultImg,
-        };
         const members = this.game.members && this.game.members.map((player, i) => {
-            return <UserLabel key={i} {...mem} />
+            return <UserLabel key={i} {...player} profilepic={defaultImg} />
         });
         return members;
     }
 
+    // TODO: reuse game-info from maps
     renderGameInfo() {
         const { host, startTime, location, sport, agerange } = this.game;
-
+        const { firstname, lastname, username } = host;
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
                     <h2>General Game Info</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <span><b>Host</b>: {host}</span><br />
-                    <span><b>StartTime</b>: {DateUtils.getReadbaleTime(startTime)}</span><br />
+                    <span><b>Host</b>: <Link to={`/user/i/${username}`}>{firstname} {lastname}</Link></span><br />
+                    <span><b>StartTime</b>: {DateUtils.getReadableTime(startTime)}</span><br />
                     <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
                     <span><b>Sport</b>: {sports[sport]}</span><br />
                     <span><b>Age Range</b>:Min: {agerange[0]}  Max: {agerange[1]}</span><br />
@@ -124,7 +120,7 @@ const UserLabel = ({ profilepic, firstname, lastname, username }) => {
             </div>
             <div className="col-sm-4">
                 <RSBLabel
-                    name={firstname}
+                    name={`${firstname || ''} ${lastname || ''}`}
                     onClickFunction={() => {
                         console.log("Pressed ", firstname, lastname);
                     }}

@@ -1,3 +1,5 @@
+import { deepFreeze } from '../utils';
+
 const _invalidUsernamePassword = {
     'Invalid username': 'The username is invalid',
     'Passwords do not match': 'The passwords do not match',
@@ -11,4 +13,4 @@ const _yodaErrors = {
     7: _invalidUsernamePassword,
 }
 
-export default _yodaErrors;
+export default deepFreeze(_yodaErrors);

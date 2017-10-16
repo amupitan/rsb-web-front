@@ -11,6 +11,7 @@ export default class session {
     }
 
     static setItem(key, value) {
+        if (!window.localStorage) return;
         if (isObject(value)) {
             localStorage.setItem(key, JSON.stringify(value));
             return;
