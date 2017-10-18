@@ -23,7 +23,7 @@ class ViewUser extends Component{
     async getUser() {
         const u = await user(this.props.match.params.username);
         this.setState({
-            userObj: u
+            user: u
         })
     }
 
@@ -101,10 +101,10 @@ class ViewUser extends Component{
         try{
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                {this.getHeading(this.state.userObj)}
+                {this.getHeading(this.state.user)}
                 <div className="row">
-                    {this.getFriends(this.state.userObj.Friends)}
-                    {this.getGameHistory(this.state.userObj)}
+                    {this.getFriends(this.state.user.Friends)}
+                    {this.getGameHistory(this.state.user)}
                 </div>
             </div >
             )
