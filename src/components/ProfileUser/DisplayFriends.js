@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
+
+
+
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 import redirect from '../../lib/navigator';
@@ -17,7 +21,15 @@ export default class DisplayFriends extends Component {
             users.push(
                 <div className="populate-requests row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
-                        {/*Using redirect instead of links because links require to be under Router error came up*/}
+
+                        {/*This sets the url to the user, but it doesn't refresh the page*/}
+                        {/* <Router>
+                            <span className="">
+                                <Link to={`/user/${el.Username}`} >
+                                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                                </Link>
+                            </span>
+                        </Router> */}
                         <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs"
                             onClick={() => {
                                 redirect({ path: '/user/' + el.Username });
@@ -25,6 +37,13 @@ export default class DisplayFriends extends Component {
 
                     </div>
                     <div className="col-sm-4">
+                        {/* <Router>
+                            <span className="">
+                                <Link to={`/user/` + el.Username} >
+                                    {el.Username}
+                                </Link>
+                            </span>
+                        </Router> */}
                         <RSBLabel
                             name={el.Username}
                             onClickFunction={() => {
