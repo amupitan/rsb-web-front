@@ -47,8 +47,9 @@ class Home extends Component {
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
 // which is when there's only a slash
+// The user route is viewUser component
 export const appRoutes = (() => {
-  let path = '/(';
+  let path = '/(user|';
   for (let route of views) {
     path += route.path + '|'
   }
