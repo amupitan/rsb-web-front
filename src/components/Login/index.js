@@ -29,8 +29,6 @@ class Login extends Notifiable(Component) {
     }
 
     // This should handle displaying errors on the form
-
-    // This should handle displayong errors on the form
     onError(error) {
         this.setState({
             errors: error,
