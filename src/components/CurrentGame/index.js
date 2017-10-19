@@ -84,6 +84,11 @@ class CurrentGame extends Notifiable(Component) {
         }//else something really bad happened. TODO: handle
     }
 
+    handleLeaveGame(id) {
+        leaveGame(id);
+    }
+
+
     componentDidMount() {
         this.getCurrentGame();
     }
@@ -104,7 +109,7 @@ class CurrentGame extends Notifiable(Component) {
                     text="Exit Game"
                     buttonType="danger"
                     onClickFunction={() => {
-                        leaveGame(this.game.id);
+                        this.handleLeaveGame(this.game.id);
                     }}
                 />
             </div>
