@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import Users from './Users';
+import User from './User';
 
 
 class Home extends Component {
@@ -30,7 +30,7 @@ class Home extends Component {
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-            <Route path='/user' component={Users} /> {/** User's profiles */}
+            <Route path='/user' component={User} /> {/** User's profiles */}
             {views.map((view, i) => (
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
