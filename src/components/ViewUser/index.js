@@ -11,6 +11,9 @@ import './style.css';
 class ViewUser extends Component{
     constructor(props) {
         super(props);
+        this.state = {
+            user: null
+        }
 
         this.render = this.render.bind(this);
         this.getUser = this.getUser.bind(this);
@@ -98,7 +101,9 @@ class ViewUser extends Component{
     }
 
     render(){
-        try{
+        if(this.state.user == null){
+            return <LoaderPage />
+        } else {
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
                 {this.getHeading(this.state.user)}
@@ -108,8 +113,6 @@ class ViewUser extends Component{
                 </div>
             </div >
             )
-        } catch(e){
-            return <LoaderPage />
         }
     }
 }
