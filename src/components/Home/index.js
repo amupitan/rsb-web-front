@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import User from './User';
+import ViewUser from '../ViewUser';
 
 
 class Home extends Component {
@@ -41,6 +41,14 @@ class Home extends Component {
       </div>
     );
   }
+}
+
+const User = () => {
+  return (
+    <Route path='/user/:username'
+      render={(props) => (
+        <ViewUser {...props} />)} />
+  )
 }
 
 // Returns a regex representing all the routes
