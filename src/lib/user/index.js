@@ -1,11 +1,5 @@
-import dummy from '../../dummy/allUsers';
+import _getUser from './user';
 
-export default async function getUser(username) {
-    return await new Promise((res, rej) => {
-        setTimeout(() => {
-            res(dummy.result.find((u) => {
-                return (u.Username === username)
-            }))
-        }, 2000)
-    })
-}
+const getUser = _getUser;
+
+export default getUser;
