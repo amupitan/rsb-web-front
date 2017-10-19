@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import Users from '../ViewUser/users';
+import Users from './Users';
 
 
 class Home extends Component {
