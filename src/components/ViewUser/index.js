@@ -24,10 +24,12 @@ class ViewUser extends Component{
     }
 
     async getUser() {
-        const u = await user(this.props.match.params.username);
-        this.setState({
-            user: u
-        })
+        if(this.props.match){
+            const u = await user(this.props.match.params.username);
+            this.setState({
+                user: u
+            })
+        }
     }
 
     getHeading(u) {
