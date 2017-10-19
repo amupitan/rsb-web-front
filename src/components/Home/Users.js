@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import ViewUser from '../ViewUser';
 
@@ -12,11 +12,9 @@ class Users extends Component {
 
     render() {
         return (
-            <Switch>
-                <Route path='/user/:username'
-                    render={(props) => (
-                        <ViewUser {...props} />)} />
-            </Switch>
+            <Route path='/user/:username'
+                render={(props) => (
+                    <ViewUser {...props} />)} />
         )
     }
 }
