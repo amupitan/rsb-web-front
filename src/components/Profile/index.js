@@ -88,7 +88,10 @@ class Profile extends Component {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
-                    <h2>No Friend Requests</h2>
+                    <h2>Friend Requests</h2>
+                </div>
+                <div className="scroll-info panel-body">
+                    <span>No friend requests</span>
                 </div>
             </div>
         )
@@ -167,20 +170,27 @@ class Profile extends Component {
         return users;
     }
 
-    getGameHistory() {
+    getGameHistory(g) {
+        if (g.gameHistory && g.gameHistory.length > 0) {
+            return (
+                <div className="col-sm-6 panel panel-default">
+                    <div className="panel-heading-rsb">
+                        <h2>Game History</h2>
+                    </div>
+                    <div className="scroll-info panel-body">
+                        <span>TODO: Display games</span>
+                    </div>
+                </div>
+            )
+        }
+
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
                     <h2>Game History</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <RSBLabel
-                        name="Game History"
-                        className="game-history-link"
-                        onClickFunction={() => {
-                            console.log("Clicked Game History label")
-                        }}
-                    />
+                    <span>No game history</span>
                 </div>
             </div>
         )
