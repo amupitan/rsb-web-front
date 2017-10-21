@@ -3,7 +3,7 @@ import user from '../../lib/user';
 import { LoaderPage } from '../ui/Loader';
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
-import DisplayFriends from '../ProfileUser/DisplayFriends';
+import DisplayFriends from '../Profile/DisplayFriends';
 
 
 import './style.css';

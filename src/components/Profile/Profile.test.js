@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ProfileUser from './';
+import Profile from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<ProfileUser onCloseFunction={()=>{}} />, div);
+  ReactDOM.render(<Profile onCloseFunction={()=>{}} />, div);
 }); 

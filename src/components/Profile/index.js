@@ -6,7 +6,7 @@ import PopulateRequests from './PopulateRequests';
 
 import './style.css';
 
-function ProfileUser() {
+function Profile() {
     let data = mockServer("/user/p/1");
     let numFriends = "Friends " + data.result[0].Friends.length;
 
@@ -109,4 +109,4 @@ function ProfileUser() {
     )
 }
 
-export default ProfileUser;
+export default Profile;

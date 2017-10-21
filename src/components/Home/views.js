@@ -1,4 +1,4 @@
-import ProfileUser from '../ProfileUser';
+import Profile from '../Profile';
 import CurrentGame from '../CurrentGame';
 import MapPage from '../MapPage';
 import HostPage from '../HostGame';
@@ -28,7 +28,7 @@ const views = [
     {
         name: 'Profile',
         path: 'me',
-        component: ProfileUser,
+        component: Profile,
     },
     {
         name: 'Host',
