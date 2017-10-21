@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import mockServer from '../../dummy';
 import DisplayFriends from './DisplayFriends';
@@ -6,32 +6,44 @@ import PopulateRequests from './PopulateRequests';
 
 import './style.css';
 
-function Profile() {
-    let data = mockServer("/user/p/1");
-    let numFriends = "Friends " + data.result[0].Friends.length;
+class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: mockServer("/user/p/1"),
+        }
+    
+    }
 
-    function heading() {
+    componentWillMount() {
+        // this.getUser();
+    }
+
+    
+
+
+    heading() {
         return (
             <div className="row">
                 <div className="col-sm-6 text-right">
-                    <img src={data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
+                    <img src={this.state.data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
                 </div>
                 <div className="col-sm-6 text-left">
-                    <h4>{data.result[0].Username}</h4>
-                    <RSBLabel
-                        name={numFriends}
+                    <h4>{this.state.data.result[0].Username}</h4>
+                    {/* <RSBLabel
+                        name={this.state.data.numFriends}
                         className="friend-link"
                         onClickFunction={() => {
                             console.log("Clicked friends label")
                         }}
-                    />
-                    <span>Full Name: {data.result[0].Firstname} {data.result[0].Lastname}</span>
+                    /> */}
+                    <span>Full Name: {this.state.data.result[0].Firstname} {this.state.data.result[0].Lastname}</span>
                 </div>
             </div>
         )
     }
 
-    function FriendRequest() {
+    FriendRequest() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -39,14 +51,14 @@ function Profile() {
                 </div>
                 <div className="scroll-info panel-body">
                     <PopulateRequests
-                        info={data.result[0].FriendRequests}
+                        info={this.state.data.result[0].FriendRequests}
                     />
                 </div>
             </div>
         )
     }
 
-    function GameInvites() {
+    GameInvites() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -54,14 +66,14 @@ function Profile() {
                 </div>
                 <div className="scroll-info panel-body">
                     <PopulateRequests
-                        info={data.result[0].GameInvites}
+                        info={this.state.data.result[0].GameInvites}
                     />
                 </div>
             </div>
         )
     }
 
-    function Friends() {
+    Friends() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -69,14 +81,14 @@ function Profile() {
                 </div>
                 <div className="scroll-info panel-body">
                     <DisplayFriends
-                        friends={data.result[0].Friends}
+                        friends={this.state.data.result[0].Friends}
                     />
                 </div>
             </div>
         );
     }
 
-    function GameHistory() {
+    GameHistory() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -94,19 +106,21 @@ function Profile() {
             </div>
         )
     }
-    return (
-        <div className="panel col-xs-10 col-xs-offset-1">
-            {heading()}
-            <div className="row">
-                {FriendRequest()}
-                {GameInvites()}
-            </div>
-            <div className="row">
-                {Friends()}
-                {GameHistory()}
-            </div>
-        </div >
-    )
+    render() {
+        return (
+            <div className="panel col-xs-10 col-xs-offset-1">
+                {this.heading()}
+                <div className="row">
+                    {this.FriendRequest()}
+                    {this.GameInvites()}
+                </div>
+                <div className="row">
+                    {this.Friends()}
+                    {this.GameHistory()}
+                </div>
+            </div >
+        )
+    }
 }
 
 export default Profile;

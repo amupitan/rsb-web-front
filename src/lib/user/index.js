@@ -1,5 +1,5 @@
-import _getUser from './user';
+import {_getUserInfo} from './user';
 
-const getUser = _getUser;
+const getUser = _getUserInfo;
 
 export default getUser;
