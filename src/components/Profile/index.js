@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import RSBLabel from '../ui/RSBLabel';
-import mockServer from '../../dummy';
-import DisplayFriends from './DisplayFriends';
+
 import PopulateRequests from './PopulateRequests';
+
 import user, { getUserFriends } from '../../lib/user';
+import redirect from '../../lib/navigator';
+
+import RSBLabel from '../ui/RSBLabel';
+import RSBButton from '../ui/RSBButton';
 import { LoaderPage } from '../ui/Loader';
+
+import defaultImg from '../../dummy/default.jpg';
+import mockServer from '../../dummy';
+
 
 
 
@@ -20,13 +27,13 @@ class Profile extends Component {
     }
 
     componentWillMount() {
-        this.getUserInfo();
+        this.getUserInfo(this.props.match);
     }
 
-    async getUserInfo() {
-        if (this.props.match) {
-            const u = await user(this.props.match.params.username);
-            const friend = await getUserFriends(this.props.match.params.username);
+    async getUserInfo(m) {
+        if (m) {
+            const u = await user(m.params.username);
+            const friend = await getUserFriends(m.params.username);
             this.setState({
                 user: u,
                 friends: friend
@@ -98,12 +105,61 @@ class Profile extends Component {
                     <h2>Friends</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <DisplayFriends
-                        friends={f}
-                    />
+                    {this.displayFriends(f)}
                 </div>
             </div>
         );
+    }
+
+    displayFriends(f){
+        let users = [];
+        f.forEach((el, i) => {
+            users.push(
+                <div className="populate-requests row" key={i}>
+                    <div className="col-sm-4 col-sm-pull">
+
+                        {/*This sets the url to the user, but it doesn't refresh the page*/}
+                        {/* <Router>
+                            <span className="">
+                                <Link to={`/user/${el.Username}`} >
+                                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                                </Link>
+                            </span>
+                        </Router> */}
+                        <img src={el.ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
+                            onClick={() => {
+                                redirect({ path: '/user/' + el.username });
+                            }} />
+
+                    </div>
+                    <div className="col-sm-4">
+                        {/* <Router>
+                            <span className="">
+                                <Link to={`/user/` + el.Username} >
+                                    {el.Username}
+                                </Link>
+                            </span>
+                        </Router> */}
+                        <RSBLabel
+                            name={el.username}
+                            onClickFunction={() => {
+                                redirect({ path: '/user/' + el.username });
+                            }}
+                            key={i}
+                        />
+                    </div>
+                    <div className="col-sm-4">
+                        <RSBButton
+                            glyphicons="glyphicon glyphicon-remove"
+                            className="decline"
+                            onClickFunction={() => {
+                                console.log("Decline!");
+                            }}
+                        />
+                    </div>
+                </div>);
+        });
+        return users;
     }
 
     getGameHistory() {
