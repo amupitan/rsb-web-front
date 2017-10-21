@@ -14,6 +14,14 @@ import Friends from '../Friends';
 // This is because we use React router's component to render our components, if 
 // we ever need the behaviour of 'Bad Component' then we'll have to modify how 
 // we use React-Router
+// Usage:
+//      {
+//           name: 'MyComponent', //name of the component in the menu and as an identifier
+//           path: 'mycomponent', //required: location path to the compoennt
+//           isMenuOption: false, //defaults to false: set this to true if you want the component to appear on the menu
+//           component: MapPage, //required: the component
+//           noRoute: false, //defaults to false: set this to true if you do not want a route to be created for this component
+//      },
 const views = [
     {
         name: 'Map',

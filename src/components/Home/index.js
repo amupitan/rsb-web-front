@@ -29,7 +29,7 @@ class Home extends Component {
         <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-            {views.map((view, i) => (
+            {views.filter((view) => !view.noRoute).map((view, i) => (
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
             {/* Default route when url is '/' */}
@@ -48,6 +48,7 @@ class Home extends Component {
 export const appRoutes = (() => {
   let path = '/(';
   for (let route of views) {
+    if (route.noRoute) continue;
     path += route.path + '|'
   }
   path += ')/';
