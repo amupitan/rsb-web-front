@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
 
-
+import defaultImg from '../../dummy/default.jpg';
 
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
@@ -30,9 +30,9 @@ export default class DisplayFriends extends Component {
                                 </Link>
                             </span>
                         </Router> */}
-                        <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs"
+                        <img src={el.ProfilePic ||  defaultImg} alt="Profile" className="profile-pic-xs"
                             onClick={() => {
-                                redirect({ path: '/user/' + el.Username });
+                                redirect({ path: '/user/' + el.username });
                             }} />
 
                     </div>
@@ -45,9 +45,9 @@ export default class DisplayFriends extends Component {
                             </span>
                         </Router> */}
                         <RSBLabel
-                            name={el.Username}
+                            name={el.username}
                             onClickFunction={() => {
-                                redirect({ path: '/user/' + el.Username });
+                                redirect({ path: '/user/' + el.username });
                             }}
                             key={i}
                         />

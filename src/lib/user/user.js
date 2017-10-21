@@ -9,15 +9,6 @@ function _handleError(error) {
     return { error: errorFormatter(error) };
 }
 
-//  async function _getUser(username) {
-//     return await new Promise((res, rej) => {
-//         setTimeout(() => {
-//             res(dummy.result.find((u) => {
-//                 return (u.Username === username)
-//             }))
-//         }, 2000)
-//     })
-// }
 
 
 export async function _getUserInfo(username) {
@@ -34,5 +25,17 @@ export async function _getUserInfo(username) {
     return res.data;
 }
 
+export async function _getUserFriends(username) {
+    const res = await yoda.post('/user/f/1', (new YodaRequest({}, {
+        username: username,
+    })).toString(), true);
+    if (res.error) {
+        const err = _handleError(res.data);
+        showError({ message: err.error });
+        redirect();
+    }
+    console.log("Friends: ", res);
+    return res.data;
+}
 
 export default _getUserInfo;

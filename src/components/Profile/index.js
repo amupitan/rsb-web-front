@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import RSBLabel from '../ui/RSBLabel';
 import mockServer from '../../dummy';
 import DisplayFriends from './DisplayFriends';
 import PopulateRequests from './PopulateRequests';
-import user from '../../lib/user';
+import user, { getUserFriends } from '../../lib/user';
 import { LoaderPage } from '../ui/Loader';
 
 
@@ -16,32 +16,36 @@ class Profile extends Component {
         this.state = {
             data: mockServer("/user/p/1"),
         }
-    
+
     }
 
-    componentWillMount(){
-        this.getUser();
+    componentWillMount() {
+        this.getUserInfo();
     }
 
-    async getUser() {
-        if(this.props.match){
+    async getUserInfo() {
+        if (this.props.match) {
             const u = await user(this.props.match.params.username);
-            console.log("u:", u);
+            const friend = await getUserFriends(this.props.match.params.username);
             this.setState({
-                user: u
+                user: u,
+                friends: friend
+
             })
         }
     }
 
 
     getHeading(u) {
+        console.log("Head: ", u);
         return (
             <div className="row">
                 <div className="col-sm-6 text-right">
+                    {/*TODO: Don't use this image foolz*/}
                     <img src={this.state.data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
                 </div>
                 <div className="col-sm-6 text-left">
-                    <h4>{u.Username}</h4>
+                    <h4>{u.username}</h4>
                     {/* <RSBLabel
                         name={this.state.data.numFriends}
                         className="friend-link"
@@ -49,7 +53,7 @@ class Profile extends Component {
                             console.log("Clicked friends label")
                         }}
                     /> */}
-                    <span>Full Name: {u.Firstname} {u.Lastname}</span>
+                    <span>Full Name: {u.firstname} {u.lastname}</span>
                 </div>
             </div>
         )
@@ -85,8 +89,9 @@ class Profile extends Component {
         )
     }
 
-    getFriends(u) {
-        console.log("Getting user for: ", u);
+    getFriends(f) {
+        console.log("Friends for: ", f);
+        console.log("Expecting friends: ", this.state.data.result[0].Friends)
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -94,7 +99,7 @@ class Profile extends Component {
                 </div>
                 <div className="scroll-info panel-body">
                     <DisplayFriends
-                        friends={this.state.data.result[0].Friends}
+                        friends={f}
                     />
                 </div>
             </div>
@@ -133,19 +138,31 @@ class Profile extends Component {
         //         </div>
         //     </div >
         // )
-        if(this.state.user == null){
+        if (this.state.user == null) {
             return <LoaderPage />
-        } else {
-            console.log("State: ", this.state.user);
-            
+        } else if (this.state.user.city) { //If there's a city, it's the current user
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                {this.getHeading(this.state.user)}
-                <div className="row">
-                    {this.getFriends(this.state.user.username)}
-                    {this.getGameHistory(this.state.user.username)}
-                </div>
-            </div >
+                    {this.getHeading(this.state.user)}
+                    <div className="row">
+                             {this.getFriendRequest()}
+                             {this.getGameInvites()}
+                         </div>
+                         <div className="row">
+                            {this.getFriends(this.state.friends)}
+                            {this.getGameHistory(this.state.user.username)}
+                         </div>
+                     </div >
+            )
+        } else {
+            return (
+                <div className="panel col-xs-10 col-xs-offset-1">
+                    {this.getHeading(this.state.user)}
+                    <div className="row">
+                        {this.getFriends(this.state.friends)}
+                        {this.getGameHistory(this.state.user.username)}
+                    </div>
+                </div >
             )
         }
     }
