@@ -23,7 +23,7 @@ export async function _getUserInfo(username) {
         redirect();
     }
     const u = session.getItem("username");
-    redirect({ path: `/user/${u}` });  //TODO: This shouldn't be necessary if the path in Home/view sends them there
+    // redirect({ path: `/user/${u}` });  //TODO: This shouldn't be necessary if the path in Home/view sends them there
     return res.data;
 }
 
