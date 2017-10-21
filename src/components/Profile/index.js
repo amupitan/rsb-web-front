@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 
 import PopulateRequests from './PopulateRequests';
 
 import user, { getUserFriends, getName } from '../../lib/user';
-import redirect from '../../lib/navigator';
 
 import RSBLabel from '../ui/RSBLabel';
 import RSBButton from '../ui/RSBButton';
@@ -26,38 +26,30 @@ class Profile extends Component {
 
         console.log("props:", this.props);
         this.displayFriends = this.displayFriends.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
-        this.getUserInfo(props.data);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
     }
 
     static get path() {
         return getName();
     }
 
-    componentWillMount() {
-        // if(this.state.name === this.props.data )
-        //     this.getPath(this.props.data);
-        // this.getUserInfo(this.props.data);
-        // this.getUserInfo();
+    componentDidMount() {
+        this.getUserInfo();
     }
 
-    // async getPath() {
-    //     const path = await getName();
-    //     console.log("Path:", path);
-    //     this.getUserInfo(path);
-    // }
 
     async getUserInfo(m) {
+        let username = (m || this.props.data);
+        const u = await user(username);
+        const friend = await getUserFriends(username);
+        console.log("username:", username);
+        this.setState({
+            user: u,
+            friends: friend,
+        })
 
-        if (m && this.state) {
-            const u = await user(m);
-            const friend = await getUserFriends(m);
-            console.log("m:", m);
-            this.setState({
-                user: u,
-                friends: friend,
-            })
-        }
+
     }
 
 
@@ -135,37 +127,28 @@ class Profile extends Component {
                     <div className="col-sm-4 col-sm-pull">
 
                         {/*This sets the url to the user, but it doesn't refresh the page*/}
-                        {/* <Router>
+                        <Router>
                             <span className="">
-                                <Link to={`/user/${el.Username}`} >
-                                    <img src={el.ProfilePic} alt="Profile" className="profile-pic-xs" />
+                                <Link to={`/user/${el.username}`} >
+                                    <img src={el.ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
+                                        onClick={() => {
+                                            this.getUserInfo(el.username);
+                                        }} />
                                 </Link>
                             </span>
-                        </Router> */}
-                        <img src={el.ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
-                            onClick={() => {
-                                redirect({ path: '/user/' + el.username });
-                                this.getUserInfo(el.username);
-                            }} />
-
+                        </Router>
                     </div>
                     <div className="col-sm-4">
-                        {/* <Router>
+                        <Router>
                             <span className="">
-                                <Link to={`/user/` + el.Username} >
-                                    {el.Username}
+                                <Link to={`/user/${el.username}`}
+                                    onClick={() => {
+                                        this.getUserInfo(el.username);
+                                    }}>
+                                    {el.username}
                                 </Link>
                             </span>
-                        </Router> */}
-                        <RSBLabel
-                            name={el.username}
-                            onClickFunction={() => {
-                                redirect({ path: '/user/' + el.username });
-                                this.getUserInfo(el.username);
-
-                            }}
-                            key={i}
-                        />
+                        </Router>
                     </div>
                     <div className="col-sm-4">
                         <RSBButton
@@ -176,7 +159,7 @@ class Profile extends Component {
                             }}
                         />
                     </div>
-                </div>);
+                </div >);
         });
         return users;
     }
@@ -205,6 +188,7 @@ class Profile extends Component {
         } else if (this.state.user.city) { //If there's a city, it's the current user TODO: Use a different reference
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
+                    {/* <h2>This is you</h2> */}
                     {this.getHeading(this.state.user)}
                     <div className="row">
                         {this.getFriendRequest()}
@@ -219,6 +203,7 @@ class Profile extends Component {
         } else {
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
+                    {/* <h2>You're stalking someone</h2> */}
                     {this.getHeading(this.state.user)}
                     <div className="row">
                         {this.getFriends(this.state.friends)}
