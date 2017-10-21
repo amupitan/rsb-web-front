@@ -12,9 +12,6 @@ import { LoaderPage } from '../ui/Loader';
 import defaultImg from '../../dummy/default.jpg';
 import mockServer from '../../dummy';
 
-
-
-
 import './style.css';
 
 class Profile extends Component {
@@ -23,8 +20,6 @@ class Profile extends Component {
         this.state = {
             data: mockServer("/user/p/1"),
         }
-
-        console.log("props:", this.props);
         this.displayFriends = this.displayFriends.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
@@ -40,10 +35,9 @@ class Profile extends Component {
 
 
     async getUserInfo(m) {
-        let username = (m || this.props.data);
+        let username = (m || this.props.username);
         const u = await user(username);
         const friend = await getUserFriends(username);
-        console.log("username:", username);
         this.setState({
             user: u,
             friends: friend,
@@ -59,7 +53,7 @@ class Profile extends Component {
             <div className="row">
                 <div className="col-sm-6 text-right">
                     {/*TODO: Don't use this image foolz*/}
-                    <img src={this.state.data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
+                    <img src={u.ProfilePic || defaultImg} alt="Profile" className="profile-pic" />
                 </div>
                 <div className="col-sm-6 text-left">
                     <h4>{u.username}</h4>
@@ -76,16 +70,25 @@ class Profile extends Component {
         )
     }
 
-    getFriendRequest() {
+    getFriendRequest(u) {
+        if (u.friendRequests.length > 0) {
+            return (
+                <div className="col-sm-6 panel panel-default">
+                    <div className="panel-heading-rsb">
+                        <h2>Friend Requests</h2>
+                    </div>
+                    <div className="scroll-info panel-body">
+                        <PopulateRequests
+                            info={u.friendRequests}
+                        />
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
-                    <h2>Friend Requests</h2>
-                </div>
-                <div className="scroll-info panel-body">
-                    <PopulateRequests
-                        info={this.state.data.result[0].FriendRequests}
-                    />
+                    <h2>No Friend Requests</h2>
                 </div>
             </div>
         )
@@ -191,7 +194,7 @@ class Profile extends Component {
                     {/* <h2>This is you</h2> */}
                     {this.getHeading(this.state.user)}
                     <div className="row">
-                        {this.getFriendRequest()}
+                        {this.getFriendRequest(this.state.user)}
                         {this.getGameInvites()}
                     </div>
                     <div className="row">
