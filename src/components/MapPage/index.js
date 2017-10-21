@@ -8,6 +8,7 @@ import { getGamesNearLocation, joinGame } from '../../lib/game';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
 import GameInfo from './GameInfo';
+import SearchAddress from '../SearchAddress'
 
 import './style.css';
 
@@ -17,6 +18,7 @@ export class MapPage extends Notifiable(Component) {
         this.render = this.render.bind(this);
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
+        this.onAddressSearch = this.onAddressSearch.bind(this);
         this.handleJoinGame = this.handleJoinGame.bind(this);
         this.fetchPlaces = this.fetchPlaces.bind(this);
         this.renderGameInfoWindow = this.renderGameInfoWindow.bind(this);
@@ -96,6 +98,17 @@ export class MapPage extends Notifiable(Component) {
         });
     }
 
+    onAddressSearch(e) {
+        let newLat = e[0].geometry.location.lat();
+        let newLng = e[0].geometry.location.lng()
+        if (!this._isMounted) return;
+        this.setState({
+            position: { lat: newLat, lng: newLng }
+        });
+        console.log(this.props);
+        console.log(this.state.position);
+    }
+
     // Causes a render of new markers by invalidating the map
     async fetchPlaces(mapProps, map) {
         if (!this._isMounted) return;
@@ -119,6 +132,15 @@ export class MapPage extends Notifiable(Component) {
         </InfoWindow>
     }
 
+
+
+    renderSearchAddress() {
+        return <SearchAddress
+            onPlacesChanged={(e) => this.onAddressSearch(e)}
+        />
+    }
+
+
     // Renders all available markers
     renderMarkers() {
         return this.state.markers.map((marker, i) => {
@@ -139,10 +161,16 @@ export class MapPage extends Notifiable(Component) {
         this._isMounted = false;
     }
 
+    componentDidUpdate() {
+        console.log('I updated');
+    }
+
     render() {
         if (!this.state.position) {
             return <LoaderPage />;
         }
+        console.log('I did render');
+        console.log(this.state.position);
         return (
             <div className="rsb-main-map">
                 <Map
@@ -151,10 +179,12 @@ export class MapPage extends Notifiable(Component) {
                     clickableIcons={false}
                     initialCenter={this.state.position}
                     onDragend={this.fetchPlaces}
+                    center={this.state.position}
                     onReady={this.fetchPlaces}>
 
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
+                    {this.renderSearchAddress()}
                 </Map>
             </div>
         );
