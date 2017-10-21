@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import ViewUser from '../ViewUser';
+import Profile from '../Profile';
 
 
 class Home extends Component {
@@ -47,7 +47,7 @@ const User = () => {
   return (
     <Route path='/user/:username'
       render={(props) => (
-        <ViewUser {...props} />)} />
+        <Profile {...props} />)} />
   )
 }
 

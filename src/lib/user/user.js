@@ -29,9 +29,9 @@ export async function _getUserInfo(username) {
         showError({ message: err.error });
         redirect();
     }
-    const u = session.getItem(username);
-    console.log("Username: ", u);
-    redirect({ path: `/user/${u}` });
+    const u = session.getItem("username");
+    redirect({ path: `/user/${u}` });  //TODO: This shouldn't be necessary if the path in Home/view sends them there
+    return res.data;
 }
 
 

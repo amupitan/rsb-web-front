@@ -3,6 +3,10 @@ import RSBLabel from '../ui/RSBLabel';
 import mockServer from '../../dummy';
 import DisplayFriends from './DisplayFriends';
 import PopulateRequests from './PopulateRequests';
+import user from '../../lib/user';
+import { LoaderPage } from '../ui/Loader';
+
+
 
 import './style.css';
 
@@ -15,21 +19,29 @@ class Profile extends Component {
     
     }
 
-    componentWillMount() {
-        // this.getUser();
+    componentWillMount(){
+        this.getUser();
     }
 
-    
+    async getUser() {
+        if(this.props.match){
+            const u = await user(this.props.match.params.username);
+            console.log("u:", u);
+            this.setState({
+                user: u
+            })
+        }
+    }
 
 
-    heading() {
+    getHeading(u) {
         return (
             <div className="row">
                 <div className="col-sm-6 text-right">
                     <img src={this.state.data.result[0].ProfilePic} alt="Profile" className="profile-pic" />
                 </div>
                 <div className="col-sm-6 text-left">
-                    <h4>{this.state.data.result[0].Username}</h4>
+                    <h4>{u.Username}</h4>
                     {/* <RSBLabel
                         name={this.state.data.numFriends}
                         className="friend-link"
@@ -37,13 +49,13 @@ class Profile extends Component {
                             console.log("Clicked friends label")
                         }}
                     /> */}
-                    <span>Full Name: {this.state.data.result[0].Firstname} {this.state.data.result[0].Lastname}</span>
+                    <span>Full Name: {u.Firstname} {u.Lastname}</span>
                 </div>
             </div>
         )
     }
 
-    FriendRequest() {
+    getFriendRequest() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -58,7 +70,7 @@ class Profile extends Component {
         )
     }
 
-    GameInvites() {
+    getGameInvites() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -73,7 +85,8 @@ class Profile extends Component {
         )
     }
 
-    Friends() {
+    getFriends(u) {
+        console.log("Getting user for: ", u);
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -88,7 +101,7 @@ class Profile extends Component {
         );
     }
 
-    GameHistory() {
+    getGameHistory() {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -107,19 +120,34 @@ class Profile extends Component {
         )
     }
     render() {
-        return (
-            <div className="panel col-xs-10 col-xs-offset-1">
-                {this.heading()}
+        // return (
+        //     <div className="panel col-xs-10 col-xs-offset-1">
+        //         {this.heading()}
+        //         <div className="row">
+        //             {this.getFriendRequest()}
+        //             {this.getGameInvites()}
+        //         </div>
+        //         <div className="row">
+        //             {this.getFriends()}
+        //             {this.getGameHistory()}
+        //         </div>
+        //     </div >
+        // )
+        if(this.state.user == null){
+            return <LoaderPage />
+        } else {
+            console.log("State: ", this.state.user);
+            
+            return (
+                <div className="panel col-xs-10 col-xs-offset-1">
+                {this.getHeading(this.state.user)}
                 <div className="row">
-                    {this.FriendRequest()}
-                    {this.GameInvites()}
-                </div>
-                <div className="row">
-                    {this.Friends()}
-                    {this.GameHistory()}
+                    {this.getFriends(this.state.user.username)}
+                    {this.getGameHistory(this.state.user.username)}
                 </div>
             </div >
-        )
+            )
+        }
     }
 }
 
