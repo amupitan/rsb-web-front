@@ -108,9 +108,8 @@ class CurrentGame extends Notifiable(Component) {
                 <RSBButton
                     text="Exit Game"
                     buttonType="danger"
-                    onClickFunction={() => {
-                        this.handleLeaveGame(this.game.id);
-                    }}
+                    onClickFunction={this.handleLeaveGame(this.game.id)
+                    }
                 />
             </div>
         );
