@@ -84,8 +84,8 @@ class CurrentGame extends Notifiable(Component) {
         }//else something really bad happened. TODO: handle
     }
 
-    handleLeaveGame(id) {
-        leaveGame(id);
+    handleLeaveGame() {
+        leaveGame(this.game.id);
     }
 
 
@@ -108,8 +108,7 @@ class CurrentGame extends Notifiable(Component) {
                 <RSBButton
                     text="Exit Game"
                     buttonType="danger"
-                    onClickFunction={this.handleLeaveGame(this.game.id)
-                    }
+                    onClickFunction={this.handleLeaveGame}
                 />
             </div>
         );
