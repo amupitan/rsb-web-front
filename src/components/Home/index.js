@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-
+import Profile from '../Profile';
 
 class Home extends Component {
 
@@ -24,13 +24,14 @@ class Home extends Component {
 
   render() {
     const defaultPath = this.props.default || (views.length > 0 && views[0].path);
+    const user = Profile.path
     return (
       <div>
         <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
             {views.filter((view) => !view.noRoute).map((view, i) => (
-              <Route key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} data="kerno" />} />
+              <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} username={user} />} />
             ))}
             {/* Default route when url is '/' */}
             <Redirect to={defaultPath} />
