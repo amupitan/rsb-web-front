@@ -14,7 +14,7 @@ function PopulateRequests(props) {
             putas.push(
                 <div key={i} className="populate-requests row">
                     <div className="col-sm-4 col-sm-pull">
-                        <img src={el.Image || defaultImg} alt="Profile" className="profile-pic-xs" />
+                        <img src={el.profilePic || defaultImg} alt="Profile" className="profile-pic-xs" />
                     </div>
                     <div className="col-sm-4">
                         <span>{el.username}</span><br />

@@ -2,6 +2,7 @@ import { isObject, isObjectString } from '../utils';
 
 export default class session {
     static getItem(key) {
+        if (!window.localStorage) return;
         const value = localStorage.getItem(key);
         if (isObjectString(value)) {
             return JSON.parse(value);
