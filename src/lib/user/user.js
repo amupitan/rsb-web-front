@@ -9,7 +9,9 @@ function _handleError(error) {
     return { error: errorFormatter(error) };
 }
 
-
+export function _name() {
+    return session.getItem('username');
+}
 
 export async function _getUserInfo(username) {
     const res = await yoda.post('/user/p/0', (new YodaRequest({}, {
@@ -34,7 +36,6 @@ export async function _getUserFriends(username) {
         showError({ message: err.error });
         redirect();
     }
-    console.log("Friends: ", res);
     return res.data;
 }
 

@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
-import Profile from '../Profile';
 
 
 class Home extends Component {
@@ -30,9 +29,8 @@ class Home extends Component {
         <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-            <Route path='/user' component={User} /> {/** User's profiles */}
             {views.map((view, i) => (
-              <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
+              <Route key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} data="kerno" />} />
             ))}
             {/* Default route when url is '/' */}
             <Redirect to={defaultPath} />
@@ -43,21 +41,13 @@ class Home extends Component {
   }
 }
 
-const User = () => {
-  return (
-    <Route path='/user/:username'
-      render={(props) => (
-        <Profile {...props} />)} />
-  )
-}
-
 // Returns a regex representing all the routes
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
 // which is when there's only a slash
 // The user route is viewUser component
 export const appRoutes = (() => {
-  let path = '/(user|';
+  let path = '/(';
   for (let route of views) {
     path += route.path + '|'
   }

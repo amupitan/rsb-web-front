@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import PopulateRequests from './PopulateRequests';
 
-import user, { getUserFriends } from '../../lib/user';
+import user, { getUserFriends, getName } from '../../lib/user';
 import redirect from '../../lib/navigator';
 
 import RSBLabel from '../ui/RSBLabel';
@@ -24,20 +24,38 @@ class Profile extends Component {
             data: mockServer("/user/p/1"),
         }
 
+        console.log("props:", this.props);
+        this.displayFriends = this.displayFriends.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.getUserInfo(props.data);
+    }
+
+    static get path() {
+        return getName();
     }
 
     componentWillMount() {
-        this.getUserInfo(this.props.match);
+        // if(this.state.name === this.props.data )
+        //     this.getPath(this.props.data);
+        // this.getUserInfo(this.props.data);
+        // this.getUserInfo();
     }
 
+    // async getPath() {
+    //     const path = await getName();
+    //     console.log("Path:", path);
+    //     this.getUserInfo(path);
+    // }
+
     async getUserInfo(m) {
-        if (m) {
-            const u = await user(m.params.username);
-            const friend = await getUserFriends(m.params.username);
+
+        if (m && this.state) {
+            const u = await user(m);
+            const friend = await getUserFriends(m);
+            console.log("m:", m);
             this.setState({
                 user: u,
-                friends: friend
-
+                friends: friend,
             })
         }
     }
@@ -97,8 +115,6 @@ class Profile extends Component {
     }
 
     getFriends(f) {
-        console.log("Friends for: ", f);
-        console.log("Expecting friends: ", this.state.data.result[0].Friends)
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -111,7 +127,7 @@ class Profile extends Component {
         );
     }
 
-    displayFriends(f){
+    displayFriends(f) {
         let users = [];
         f.forEach((el, i) => {
             users.push(
@@ -129,6 +145,7 @@ class Profile extends Component {
                         <img src={el.ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
                             onClick={() => {
                                 redirect({ path: '/user/' + el.username });
+                                this.getUserInfo(el.username);
                             }} />
 
                     </div>
@@ -144,6 +161,8 @@ class Profile extends Component {
                             name={el.username}
                             onClickFunction={() => {
                                 redirect({ path: '/user/' + el.username });
+                                this.getUserInfo(el.username);
+
                             }}
                             key={i}
                         />
@@ -181,34 +200,21 @@ class Profile extends Component {
         )
     }
     render() {
-        // return (
-        //     <div className="panel col-xs-10 col-xs-offset-1">
-        //         {this.heading()}
-        //         <div className="row">
-        //             {this.getFriendRequest()}
-        //             {this.getGameInvites()}
-        //         </div>
-        //         <div className="row">
-        //             {this.getFriends()}
-        //             {this.getGameHistory()}
-        //         </div>
-        //     </div >
-        // )
         if (this.state.user == null) {
             return <LoaderPage />
-        } else if (this.state.user.city) { //If there's a city, it's the current user
+        } else if (this.state.user.city) { //If there's a city, it's the current user TODO: Use a different reference
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
                     {this.getHeading(this.state.user)}
                     <div className="row">
-                             {this.getFriendRequest()}
-                             {this.getGameInvites()}
-                         </div>
-                         <div className="row">
-                            {this.getFriends(this.state.friends)}
-                            {this.getGameHistory(this.state.user.username)}
-                         </div>
-                     </div >
+                        {this.getFriendRequest()}
+                        {this.getGameInvites()}
+                    </div>
+                    <div className="row">
+                        {this.getFriends(this.state.friends)}
+                        {this.getGameHistory(this.state.user.username)}
+                    </div>
+                </div >
             )
         } else {
             return (
