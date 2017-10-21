@@ -1,4 +1,3 @@
-import dummy from '../../dummy/allUsers';
 import yoda, { YodaRequest } from '../yoda/yoda';
 import redirect from '../navigator';
 import session from '../session';
