@@ -97,16 +97,28 @@ class Profile extends Component {
         )
     }
 
-    getGameInvites() {
+    getGameInvites(g) {
+
+        if (g.gameHistory && g.gameHistory.length > 0) {
+            return (
+                <div className="col-sm-6 panel panel-default">
+                    <div className="panel-heading-rsb">
+                        <h2>Game Invites</h2>
+                    </div>
+                    <div className="scroll-info panel-body">
+                        <span>TODO: Display requests using PopulateRequests</span>
+                    </div>
+                </div>
+            )
+        }
+
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
-                    <h2>Games Invites</h2>
+                    <h2>Game Invites</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <PopulateRequests
-                        info={this.state.data.result[0].GameInvites}
-                    />
+                    <span>No game invites</span>
                 </div>
             </div>
         )
@@ -205,7 +217,7 @@ class Profile extends Component {
                     {this.getHeading(this.state.user)}
                     <div className="row">
                         {this.getFriendRequest(this.state.user)}
-                        {this.getGameInvites()}
+                        {this.getGameInvites(this.state.user)}
                     </div>
                     <div className="row">
                         {this.getFriends(this.state.friends)}
