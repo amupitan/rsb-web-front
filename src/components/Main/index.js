@@ -10,7 +10,6 @@ import Login from '../Login'
 import NotFound from '../NotFound';
 
 
-
 // The Main component renders one of matching route
 class Main extends Component {
   constructor(props) {
@@ -47,7 +46,7 @@ class Main extends Component {
         <Switch>
           <Route exact path='/signup' render={(props) => <SignUp notify={notify} {...props} />} />
           <Route exact path='/login' render={(props) => <Login notify={notify} {...props} />} />
-          <Route path={appRoutes} render={(props) => <Home notify={notify} {...props} />} />
+          <Route exact path={appRoutes} render={(props) => <Home notify={notify} {...props} />} />
           <Route path='*' component={NotFound} />
         </Switch>
       </main>

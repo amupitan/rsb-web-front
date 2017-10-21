@@ -41,6 +41,12 @@ const views = [
         component: Profile,
     },
     {
+        name: 'UserPage',
+        path: `user/:username`,
+        component: Profile,
+        isMenuOption: false,
+    },
+    {
         name: 'Host',
         path: 'host',
         isMenuOption: true,
