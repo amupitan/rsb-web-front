@@ -18,11 +18,13 @@ const views = [
     {
         name: 'Map',
         path: 'map',
+        isMenuOption: true,
         component: MapPage,
     },
     {
         name: 'Current Game',
         path: 'game',
+        isMenuOption: true,
         component: CurrentGame,
     },
     {
@@ -33,21 +35,25 @@ const views = [
     {
         name: 'Host',
         path: 'host',
+        isMenuOption: true,
         component: HostPage,
     },
     {
         name: 'Settings',
         path: 'settings',
+        isMenuOption: true,
         component: Settings,
     },
     {
         name: 'Join',
         path: 'join',
+        isMenuOption: true,
         component: Join,
     },
     {
         name: 'Friends',
         path: 'friends',
+        isMenuOption: true,
         component: Friends,
     }
 ];

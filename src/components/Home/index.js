@@ -26,7 +26,7 @@ class Home extends Component {
     const defaultPath = this.props.default || (views.length > 0 && views[0].path);
     return (
       <div>
-        <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
+        <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
             {views.map((view, i) => (
@@ -41,7 +41,6 @@ class Home extends Component {
   }
 }
 
-//{/* <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={props => <view.component {...props} />} /> */}
 // Returns a regex representing all the routes
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
