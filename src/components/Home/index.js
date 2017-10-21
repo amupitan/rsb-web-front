@@ -26,10 +26,10 @@ class Home extends Component {
     const defaultPath = this.props.default || (views.length > 0 && views[0].path);
     return (
       <div>
-        <HamburgerMenu views={views} onClick={this.toggeleMenu} menu={this.state.showMenu} />
+        <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
-            {views.map((view, i) => (
+            {views.filter((view) => !view.noRoute).map((view, i) => (
               <Route key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} data="kerno" />} />
             ))}
             {/* Default route when url is '/' */}
@@ -49,6 +49,7 @@ class Home extends Component {
 export const appRoutes = (() => {
   let path = '/(';
   for (let route of views) {
+    if (route.noRoute) continue;
     path += route.path + '|'
   }
   path += ')/';

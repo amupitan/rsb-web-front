@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import Game, { sports } from '../../lib/game';
+import Game, { sports, leaveGame } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
 
@@ -84,6 +84,11 @@ class CurrentGame extends Notifiable(Component) {
         }//else something really bad happened. TODO: handle
     }
 
+    handleLeaveGame() {
+        leaveGame(this.game.id);
+    }
+
+
     componentDidMount() {
         this.getCurrentGame();
     }
@@ -103,9 +108,7 @@ class CurrentGame extends Notifiable(Component) {
                 <RSBButton
                     text="Exit Game"
                     buttonType="danger"
-                    onClickFunction={() => {
-                        console.log("User wants to leave the game");
-                    }}
+                    onClickFunction={this.handleLeaveGame}
                 />
             </div>
         );
