@@ -53,7 +53,7 @@ class Profile extends Component {
     }
 
     getFriendRequest(u) {
-        if (u.friendRequests.length > 0) {
+        if (u && u.friendRequests && u.friendRequests.length > 0) {
             return (
                 <div className="col-sm-6 panel panel-default">
                     <div className="panel-heading-rsb">
@@ -80,7 +80,7 @@ class Profile extends Component {
     }
 
     getGameInvites(g) {
-        if (g.gameHistory && g.gameHistory.length > 0) {
+        if (g && g.gameHistory && g.gameHistory.length > 0) {
             return (
                 <div className="col-sm-6 panel panel-default">
                     <div className="panel-heading-rsb">
@@ -120,7 +120,8 @@ class Profile extends Component {
 
     displayFriends(f) {
         let users = [];
-        f.forEach((el, i) => {
+        let i = 0;
+        for (let el in f) {
             users.push(
                 <div className="populate-requests row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
@@ -157,12 +158,14 @@ class Profile extends Component {
                         />
                     </div>
                 </div >);
-        });
+            i++;
+        };
+
         return users;
     }
 
     getGameHistory(g) {
-        if (g.gameHistory && g.gameHistory.length > 0) {
+        if (g && g.gameHistory && g.gameHistory.length > 0) {
             return (
                 <div className="col-sm-6 panel panel-default">
                     <div className="panel-heading-rsb">
