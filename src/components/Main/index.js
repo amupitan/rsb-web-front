@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import { deepFreeze } from "../../lib/utils";
 
-import PrivateRoute from '../containers/PrivateRouter';
+import PrivateRoute from '../containers/PrivateRoute';
 
 import Home, { appRoutes } from '../Home'
 import SignUp from '../SignUp'
