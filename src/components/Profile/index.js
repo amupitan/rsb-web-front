@@ -1,55 +1,53 @@
 import React, { Component } from 'react';
-import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import user, { getName } from '../../lib/user';
+import { Notifiable } from '../../mixins';
 
 import PopulateRequests from './PopulateRequests';
-
-import user, { getUserFriends, getName } from '../../lib/user';
-
 import RSBButton from '../ui/RSBButton';
 import { LoaderPage } from '../ui/Loader';
 
+import './style.css';
 import defaultImg from '../../dummy/default.jpg';
 
-import './style.css';
 
-class Profile extends Component {
+class Profile extends Notifiable(Component) {
     constructor(props) {
         super(props);
+
         this.displayFriends = this.displayFriends.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
+        this.state = {
+
+        }
     }
 
-    static get path() {
+    static get name() {
         return getName();
     }
 
-    componentDidMount() {
-        this.getUserInfo();
+    componentWillReceiveProps(nextProps) {
+        if (this.props === nextProps) return;
+        this.getUserInfo(nextProps.match.params);
     }
 
-    async getUserInfo(m) {
-        let username = (m || this.props.username);
-        const u = await user(username);
-        const friend = await getUserFriends(username);
+    componentDidMount() {
+        this.getUserInfo(this.props.match.params);
+    }
+
+    async getUsername() {
+        return await getName();
+    }
+
+    async getUserInfo({ username }) {
+        const u = await user(username, { populate: 1 });
+        console.log("U", u);
         this.setState({
             user: u,
-            friends: friend,
-        })
-    }
-
-    getHeading(u) {
-        return (
-            <div className="row">
-                <div className="col-sm-6 text-right">
-                    <img src={u.ProfilePic || defaultImg} alt="Profile" className="profile-pic" />
-                </div>
-                <div className="col-sm-6 text-left">
-                    <h4>{u.username}</h4>
-                    <span>Full Name: {u.firstname} {u.lastname}</span>
-                </div>
-            </div>
-        )
+            friends: u.friends,
+        });
     }
 
     getFriendRequest(u) {
@@ -124,28 +122,20 @@ class Profile extends Component {
             users.push(
                 <div className="populate-requests row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
-                        <Router>
-                            <span className="">
-                                <Link to={`/user/${f[i].username}`} >
-                                    <img src={f[i].ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
-                                        onClick={() => {
-                                            this.getUserInfo(f[i].username);
-                                        }} />
-                                </Link>
-                            </span>
-                        </Router>
+                        <span className="">
+                            <Link to={`/user/${f[i].username}`} >
+                                <img src={f[i].ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
+                                />
+                            </Link>
+                        </span>
                     </div>
                     <div className="col-sm-4">
-                        <Router>
-                            <span className="">
-                                <Link to={`/user/${f[i].username}`}
-                                    onClick={() => {
-                                        this.getUserInfo(f[i].username);
-                                    }}>
-                                    {f[i].username}
-                                </Link>
-                            </span>
-                        </Router>
+                        <span className="">
+                            <Link to={`/user/${f[i].username}`}
+                            >
+                                {f[i].username}
+                            </Link>
+                        </span>
                     </div>
                     <div className="col-sm-4">
                         <RSBButton
@@ -192,7 +182,7 @@ class Profile extends Component {
         } else if (this.state.user.friendRequests) { //If you can see friendRequesets, you are the current user.
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                    {this.getHeading(this.state.user)}
+                    <Heading {...this.state.user} defaultImg={defaultImg} />
                     <div className="row">
                         {this.getFriendRequest(this.state.user)}
                         {this.getGameInvites(this.state.user)}
@@ -206,7 +196,7 @@ class Profile extends Component {
         } else {
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                    {this.getHeading(this.state.user)}
+                    <Heading {...this.state.user} defaultImg={defaultImg} />
                     <div className="row">
                         {this.getFriends(this.state.friends)}
                         {this.getGameHistory(this.state.user.username)}
@@ -215,6 +205,20 @@ class Profile extends Component {
             )
         }
     }
+}
+
+const Heading = ({ profilePic, defaultImg, lastname, firstname, username }) => {
+    return (
+        <div className="row">
+            <div className="col-sm-6 text-right">
+                <img src={profilePic || defaultImg} alt="Profile" className="profile-pic" />
+            </div>
+            <div className="col-sm-6 text-left">
+                <h4>{username}</h4>
+                <span>Full Name: {firstname} {lastname}</span>
+            </div>
+        </div>
+    )
 }
 
 export default Profile;
