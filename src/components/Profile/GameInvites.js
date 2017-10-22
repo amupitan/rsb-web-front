@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default (g) => {
-    if (g && g.gameHistory && g.gameHistory.length > 0) {
+export default (game) => {
+    if (game && game.gameHistory && game.gameHistory.length > 0) {
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">

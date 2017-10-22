@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PopulateRequests from './PopulateRequests';
+import UserRequests from './UserRequests';
 
 
 export default ({ friendRequests }) => {
@@ -11,7 +11,7 @@ export default ({ friendRequests }) => {
                     <h2>Friend Requests</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <PopulateRequests
+                    <UserRequests
                         info={friendRequests}
                     />
                 </div>
