@@ -7,7 +7,7 @@ import './style.css';
 
 class SearchAddress extends Component {
 
-    static propTypes = {
+    static PropTypes = {
         placeholder: PropTypes.string,
         onPlacesChanged: PropTypes.func
     }
