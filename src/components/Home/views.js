@@ -37,7 +37,7 @@ const views = [
     },
     {
         name: 'Profile',
-        path: `user/${Profile.path}`,
+        path: `user/${Profile.name}`,
         component: Profile,
         isMenuOption: true,
         noRoute: true,
