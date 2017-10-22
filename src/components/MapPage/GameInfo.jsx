@@ -18,7 +18,7 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host }) => {
             <p><strong>Host: </strong>
                 <Router>
                     <span className="">
-                        <Link to={`/user/i/${username}`} >{firstname} {lastname}</Link>
+                        <Link to={`/user/${username}`} >{firstname} {lastname}</Link>
                     </span>
                 </Router>
             </p>

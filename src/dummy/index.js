@@ -1,4 +1,3 @@
-import userWithFriends from './user';
 import friendData from './friends';
 import getMarkers from './mapMarkers';
 import game from './game';
@@ -6,8 +5,6 @@ import games from './games';
 
 export default (url) => {
     switch (url) {
-        case "/user/p/1":
-            return userWithFriends
         case "games/l/lng/0/lat/0":
             return getMarkers;
         case "/game/g/123":

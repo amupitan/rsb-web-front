@@ -1,0 +1,25 @@
+import yoda, { YodaRequest } from '../yoda/yoda';
+import redirect from '../navigator';
+import session from '../session';
+import errorFormatter from '../errors';
+import { showError } from '../../mixins/notifiable';
+
+function _handleError(error) {
+    const err = { error: errorFormatter(error) }
+    showError({ message: err.error });
+    redirect();
+}
+
+export function _name() {
+    return session.getItem('username');
+}
+
+export default async function _getUserInfo(username, { populate = '0' } = {}) {
+    const res = await yoda.post(`/user/p/${populate}`, (new YodaRequest({}, {
+        username: username,
+    })).toString(), true);
+    if (res.error) {
+        _handleError(res.data);
+    }
+    return res.data;
+}
