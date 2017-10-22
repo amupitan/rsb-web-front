@@ -21,6 +21,7 @@ export default class session {
     }
 
     static contains(key) {
+        if (!window.localStorage) return;
         return localStorage.getItem(key) ? true : false;
     }
 
