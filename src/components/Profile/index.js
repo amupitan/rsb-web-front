@@ -120,17 +120,16 @@ class Profile extends Component {
 
     displayFriends(f) {
         let users = [];
-        let i = 0;
-        for (let el in f) {
+        for (let i in f) {
             users.push(
                 <div className="populate-requests row" key={i}>
                     <div className="col-sm-4 col-sm-pull">
                         <Router>
                             <span className="">
-                                <Link to={`/user/${el.username}`} >
-                                    <img src={el.ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
+                                <Link to={`/user/${f[i].username}`} >
+                                    <img src={f[i].ProfilePic || defaultImg} alt="Profile" className="profile-pic-xs"
                                         onClick={() => {
-                                            this.getUserInfo(el.username);
+                                            this.getUserInfo(f[i].username);
                                         }} />
                                 </Link>
                             </span>
@@ -139,11 +138,11 @@ class Profile extends Component {
                     <div className="col-sm-4">
                         <Router>
                             <span className="">
-                                <Link to={`/user/${el.username}`}
+                                <Link to={`/user/${f[i].username}`}
                                     onClick={() => {
-                                        this.getUserInfo(el.username);
+                                        this.getUserInfo(f[i].username);
                                     }}>
-                                    {el.username}
+                                    {f[i].username}
                                 </Link>
                             </span>
                         </Router>
@@ -158,9 +157,7 @@ class Profile extends Component {
                         />
                     </div>
                 </div >);
-            i++;
         };
-
         return users;
     }
 

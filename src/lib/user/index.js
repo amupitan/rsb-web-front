@@ -1,4 +1,4 @@
-import _getUserInfo ,{_getUserFriends, _name} from './user';
+import _getUserInfo, { _name, _getUserFriends, } from './user';
 
 export const getUser = _getUserInfo;
 export const getUserFriends = _getUserFriends

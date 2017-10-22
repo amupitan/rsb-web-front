@@ -5,21 +5,21 @@ import errorFormatter from '../errors';
 import { showError } from '../../mixins/notifiable';
 
 function _handleError(error) {
-    return { error: errorFormatter(error) };
+    const err = { error: errorFormatter(error) }
+    showError({ message: err.error });
+    redirect();
 }
 
 export function _name() {
     return session.getItem('username');
 }
 
-export async function _getUserInfo(username) {
+export default async function _getUserInfo(username) {
     const res = await yoda.post('/user/p/0', (new YodaRequest({}, {
         username: username,
     })).toString(), true);
     if (res.error) {
-        const err = _handleError(res.data);
-        showError({ message: err.error });
-        redirect();
+        _handleError(res.data);
     }
     return res.data;
 }
@@ -29,11 +29,7 @@ export async function _getUserFriends(username) {
         username: username,
     })).toString(), true);
     if (res.error) {
-        const err = _handleError(res.data);
-        showError({ message: err.error });
-        redirect();
+        _handleError(res.data);
     }
     return res.data;
 }
-
-export default _getUserInfo;
