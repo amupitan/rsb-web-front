@@ -17,3 +17,11 @@
     width: 100px;
     height: 100px;
   }
+
+  .rsb-map-search-bar{
+    position: fixed;
+    top: 10%;
+    margin: 0.4em;
+    display: block;
+    width: 31.250em;
+  }

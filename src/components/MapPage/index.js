@@ -100,12 +100,10 @@ export class MapPage extends Notifiable(Component) {
 
     onAddressSearch(e) {
         let newLat = e[0].geometry.location.lat();
-        let newLng = e[0].geometry.location.lng()
-        if (!this._isMounted) return;
+        let newLng = e[0].geometry.location.lng();
         this.setState({
             position: { lat: newLat, lng: newLng }
         });
-        console.log(this.props);
         console.log(this.state.position);
     }
 
@@ -137,6 +135,7 @@ export class MapPage extends Notifiable(Component) {
     renderSearchAddress() {
         return <SearchAddress
             onPlacesChanged={(e) => this.onAddressSearch(e)}
+            className='rsb-map-search-bar'
         />
     }
 
@@ -161,16 +160,10 @@ export class MapPage extends Notifiable(Component) {
         this._isMounted = false;
     }
 
-    componentDidUpdate() {
-        console.log('I updated');
-    }
-
     render() {
         if (!this.state.position) {
             return <LoaderPage />;
         }
-        console.log('I did render');
-        console.log(this.state.position);
         return (
             <div className="rsb-main-map">
                 <Map
@@ -182,9 +175,9 @@ export class MapPage extends Notifiable(Component) {
                     center={this.state.position}
                     onReady={this.fetchPlaces}>
 
+                    {this.renderSearchAddress()}
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
-                    {this.renderSearchAddress()}
                 </Map>
             </div>
         );

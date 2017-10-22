@@ -26,7 +26,7 @@ class SearchAddress extends Component {
     }
 
     render() {
-        return <input className="rsb-search-bar form-control" ref="rsbSearchBar" type="text" placeholder="Search Places" />;
+        return <input className={"form-control " + this.props.className} ref="rsbSearchBar" type="text" placeholder="Search Places" />;
     }
 
 }
