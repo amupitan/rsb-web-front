@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom'
 
 import { deepFreeze } from "../../lib/utils";
-import Notify from '../ui/Notify';
 
 import Home, { appRoutes } from '../Home'
 import SignUp from '../SignUp'
 import Login from '../Login'
 import NotFound from '../NotFound';
 
+import Notify from '../ui/Notify';
 
 // The Main component renders one of matching route
 class Main extends Component {

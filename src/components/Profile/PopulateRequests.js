@@ -5,13 +5,13 @@ import defaultImg from '../../dummy/default.jpg';
 
 function PopulateRequests(props) {
     function iterateInfo() {
-        let putas = [];
+        let totalArray = [];
         props.info.forEach((el, i) => {
             let displaySport
             if (el.Sport) {
                 displaySport = <span><i>{el.Sport}</i></span>;
             }
-            putas.push(
+            totalArray.push(
                 <div key={i} className="populate-requests row">
                     <div className="col-sm-4 col-sm-pull">
                         <img src={el.profilePic || defaultImg} alt="Profile" className="profile-pic-xs" />
@@ -42,7 +42,7 @@ function PopulateRequests(props) {
                     </div>
                 </div>);
         });
-        return putas;
+        return totalArray;
     }
 
     return (
