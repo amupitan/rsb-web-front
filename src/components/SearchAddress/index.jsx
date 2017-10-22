@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import './style.css';
 
 class SearchAddress extends Component {
+
     static propTypes = {
         placeholder: PropTypes.string,
         onPlacesChanged: PropTypes.func
@@ -17,12 +18,16 @@ class SearchAddress extends Component {
         }
     }
     componentDidMount() {
-        var input = ReactDOM.findDOMNode(this.refs.rsbSearchBar);
-        this.searchBox = new window.google.maps.places.SearchBox(input);
-        this.searchBoxListener = this.searchBox.addListener('places_changed', this.onPlacesChanged);
+        if (window.google) {
+            var input = ReactDOM.findDOMNode(this.refs.rsbSearchBar);
+            this.searchBox = new window.google.maps.places.SearchBox(input);
+            this.searchBoxListener = this.searchBox.addListener('places_changed', this.onPlacesChanged);
+        }
     }
     componentWillUnmount() {
-        window.google.maps.event.removeListener(this.searchBoxListener);
+        if (window.google) {
+            window.google.maps.event.removeListener(this.searchBoxListener);
+        }
     }
 
     render() {

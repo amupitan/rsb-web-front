@@ -19,9 +19,10 @@
   }
 
   .rsb-map-search-bar{
-    position: fixed;
-    top: 10%;
-    margin: 0.4em;
+    position: absolute;
+    top: 2%;
+    margin-left: 25%;
+    margin-right: 25%;
     display: block;
-    width: 31.250em;
+    width: 50%;
   }

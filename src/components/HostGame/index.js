@@ -4,6 +4,7 @@ import { DateUtils } from '../../lib/utils';
 import { sports, getDuration, createGame } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 import SearchAddress from '../SearchAddress'
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -47,6 +48,13 @@ class HostPage extends Notifiable(Component) {
         };
 
         this.hasSetEndTime = false;
+    }
+
+    checkIfGoogleLoad() {
+        if (!window.google) {
+            console.log("this should redirect now");
+            return <Redirect to={'/map'} />
+        }
     }
 
     handleNameChange(event) {
@@ -140,6 +148,7 @@ class HostPage extends Notifiable(Component) {
 
 
     render() {
+
         let sportsOptions = [];
         sports.forEach((sport, i) => {
             sportsOptions.push(
@@ -150,6 +159,7 @@ class HostPage extends Notifiable(Component) {
 
         return (
             <div className="col-xs-6 col-xs-offset-3">
+                {this.checkIfGoogleLoad()}
                 <br />
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">
