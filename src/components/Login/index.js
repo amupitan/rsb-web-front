@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
 import { Notifiable } from '../../mixins';
@@ -14,6 +15,7 @@ class Login extends Notifiable(Component) {
         super(props);
         this.state = {
             errors: null,
+            redirectToReferrer: false,
         }
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -25,7 +27,13 @@ class Login extends Notifiable(Component) {
         if (res.error) {
             return this.onError(res.error);
         }
-        return onLogin(res);
+
+        await onLogin(res);
+
+        this.setState({
+            redirectToReferrer: true,
+            referrer: onLogin(res),
+        });
     }
 
     // This should handle displaying errors on the form
@@ -36,6 +44,7 @@ class Login extends Notifiable(Component) {
     }
 
     getForm() {
+        //TODO: use session and actually make this work
         let username = loginForm[0];
         username.value = this.props.location.state && this.props.location.state.username;
         return [username, ...loginForm.slice(1)];
@@ -43,6 +52,11 @@ class Login extends Notifiable(Component) {
 
 
     render() {
+        if (this.state.redirectToReferrer) {
+            const { from } = this.props.location.state || { from: { pathname: '/' } };
+            return <Redirect to={from} />
+        }
+
         return (
             <div className="container " >
                 <div className="smart">

@@ -51,7 +51,7 @@ class CurrentGame extends Notifiable(Component) {
                     <h2>General Game Info</h2>
                 </div>
                 <div className="scroll-info panel-body">
-                    <span><b>Host</b>: <Link to={`/user/i/${username}`}>{firstname} {lastname}</Link></span><br />
+                    <span><b>Host</b>: <Link to={`/user/${username}`}>{firstname} {lastname}</Link></span><br />
                     <span><b>StartTime</b>: {DateUtils.getReadableTime(startTime)}</span><br />
                     <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
                     <span><b>Sport</b>: {sports[sport]}</span><br />

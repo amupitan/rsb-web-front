@@ -52,7 +52,7 @@ export async function _logout(data) {
 };
 
 export function _onLogin(loginInfo) {
-    redirect({ path: loginInfo.data, state: { username: loginInfo.username } });
+    session.setItem('username', loginInfo.username)
 }
 
 export default _login;
