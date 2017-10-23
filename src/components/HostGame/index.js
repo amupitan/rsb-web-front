@@ -141,7 +141,7 @@ class HostPage extends Notifiable(Component) {
 
     renderSearchAddress() {
         return <SearchAddress
-            onPlacesChanged={(position) => this.onSearchAddress(position)}
+            onPlacesChanged={this.onSearchAddress}
         />
     }
 
@@ -158,7 +158,7 @@ class HostPage extends Notifiable(Component) {
 
         return (
             <div className="col-xs-6 col-xs-offset-3">
-                {this.checkIfGoogleLoad()}
+                {/* {this.checkIfGoogleLoad()} */}
                 <br />
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">

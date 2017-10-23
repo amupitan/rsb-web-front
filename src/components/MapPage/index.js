@@ -97,9 +97,9 @@ export class MapPage extends Notifiable(Component) {
         });
     }
 
-    onAddressSearch(e) {
-        let newLat = e[0].geometry.location.lat();
-        let newLng = e[0].geometry.location.lng();
+    onAddressSearch(position) {
+        const newLat = position[0].geometry.location.lat();
+        const newLng = position[0].geometry.location.lng();
         this.setState({
             position: { lat: newLat, lng: newLng }
         });
@@ -132,7 +132,7 @@ export class MapPage extends Notifiable(Component) {
 
     renderSearchAddress() {
         return <SearchAddress
-            onPlacesChanged={(e) => this.onAddressSearch(e)}
+            onPlacesChanged={this.onAddressSearch}
             className='rsb-map-search-bar'
         />
     }
