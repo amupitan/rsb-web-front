@@ -52,7 +52,6 @@ class HostPage extends Notifiable(Component) {
 
     checkIfGoogleLoad() {
         if (!window.google) {
-            console.log("this should redirect now");
             return <Redirect to={'/map'} />
         }
     }
