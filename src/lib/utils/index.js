@@ -1,6 +1,7 @@
 import datetime from "./datetime";
 import _makeCancelable from './makeCancelable';
 import _scriptLoader from './scriptLoader';
+import _deepFreeze from './deepFreeze';
 
 //TODO: rename this class
 export function isObject(item) {
@@ -44,26 +45,11 @@ export const DateUtils = datetime;
 
 export const makeCancelable = _makeCancelable;
 
-export const loadScript = _scriptLoader;
+export const scriptHandler = _scriptLoader;
 
 export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-export const deepFreeze = obj => {
-    // Retrieve the property names defined on obj
-    const propNames = Object.getOwnPropertyNames(obj);
-
-    // Freeze properties before freezing self
-    for (let name of propNames) {
-        const prop = obj[name];
-
-        // Freeze prop if it is an object
-        if (typeof prop === 'object' && prop !== null)
-            deepFreeze(prop);
-    }
-
-    // Freeze self (no-op if already frozen)
-    return Object.freeze(obj);
-};
+export const deepFreeze = _deepFreeze;
 
 export default {
     mergeDeep: mergeDeep,

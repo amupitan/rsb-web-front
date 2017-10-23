@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-import { loadGoogleMaps } from '../../lib/map';
+import { loadGoogleMaps, removeGoogleMaps } from '../../lib/map';
 
 import Loader from '../ui/Loader';
 
@@ -19,26 +21,22 @@ class SearchAddress extends Component {
     }
 
     onPlacesChanged = () => {
-        if (this.props.onPlacesChanged) {
-            this.props.onPlacesChanged(this.searchBox.getPlaces());
-        }
+        this.props.onPlacesChanged(this.searchBox.getPlaces());
     }
 
     componentDidMount() {
-        if (!window.google) {
+        if (window.google) return this.initMap();
 
-            loadGoogleMaps().then(() => {
-                this.setState({
-                    googleLoaded: true,
-                });
-                this.initMap();
-
-            }).catch((err) => {
-                //TODO: handle error
-                console.error(err);
+        loadGoogleMaps().then(() => {
+            this.setState({
+                googleLoaded: true,
             });
+            this.initMap();
 
-        }
+        }).catch((err) => {
+            //TODO: handle error
+            console.error(err);
+        });
     }
 
     initMap() {
@@ -52,15 +50,26 @@ class SearchAddress extends Component {
     componentWillUnmount() {
         if (window.google) {
             window.google.maps.event.removeListener(this.searchBoxListener);
+            removeGoogleMaps();
         }
     }
 
     render() {
         if (!this.state.googleLoaded)
             return <Loader height={40} width={40} thickness={3} />;
-        return <input className={"form-control " + this.props.className} ref="rsbSearchBar" type="text" placeholder="Search Places" />;
+        return <input className={classnames('form-control', this.props.className)} ref="rsbSearchBar" type="text" placeholder={this.props.placeholder} />;
     }
 
+}
+
+SearchAddress.propTypes = {
+    placeholder: PropTypes.string,
+    onPlacesChanged: PropTypes.func,
+}
+
+SearchAddress.defaultProps = {
+    placeholder: 'Enter an address',
+    onPlacesChanged: console.log,
 }
 
 export default SearchAddress;
