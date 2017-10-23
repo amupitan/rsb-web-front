@@ -1,5 +1,6 @@
 import { showError } from '../../mixins/notifiable';
 import redirect from '../navigator';
+import { loadScript } from '../utils';
 
 export async function getCurrentLocation() {
     let position = {};
@@ -31,4 +32,9 @@ const _getCurrentLocation = () => {
         //TODO: check if browser supports navigator.geolocation
         navigator.geolocation.getCurrentPosition(resolve, reject);
     });
-}
+};
+
+export const googleApiKey = 'AIzaSyABplRWPbn89WsMUko7bMI83SXCiWVTHLY';
+export const googleApiVersion = '3.28';
+
+export const loadGoogleMaps = () => loadScript(`https://maps.googleapis.com/maps/api/js?v=${googleApiVersion}&key=${googleApiKey}&libraries=places`, { async: true });
