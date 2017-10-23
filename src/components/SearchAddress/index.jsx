@@ -6,12 +6,6 @@ import classnames from 'classnames';
 import './style.css';
 
 class SearchAddress extends Component {
-
-    static PropTypes = {
-        placeholder: PropTypes.string,
-        onPlacesChanged: PropTypes.func
-    }
-
     onPlacesChanged = () => {
         if (this.props.onPlacesChanged) {
             this.props.onPlacesChanged(this.searchBox.getPlaces());
