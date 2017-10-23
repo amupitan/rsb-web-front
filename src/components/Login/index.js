@@ -44,7 +44,7 @@ class Login extends Notifiable(Component) {
     }
 
     getForm() {
-        //TODO: use sessiona and actually make this work
+        //TODO: use session and actually make this work
         let username = loginForm[0];
         username.value = this.props.location.state && this.props.location.state.username;
         return [username, ...loginForm.slice(1)];

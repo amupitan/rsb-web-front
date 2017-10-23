@@ -6,7 +6,7 @@ import session from '../session';
 const redirect = ({ path = history.location.pathname, state = {} } = {}) => {
     state.from = history.location.pathname;
     session.setState(state);
-    history.push(path, state)
+    history.push(path, state);
 }
 
 export default redirect;
