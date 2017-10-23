@@ -100,10 +100,8 @@ export class MapPage extends Notifiable(Component) {
     }
 
     onAddressSearch(position) {
-        const newLat = position[0].geometry.location.lat();
-        const newLng = position[0].geometry.location.lng();
         this.setState({
-            position: { lat: newLat, lng: newLng }
+            position: position,
         });
     }
 

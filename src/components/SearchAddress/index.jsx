@@ -21,7 +21,15 @@ class SearchAddress extends Component {
     }
 
     onPlacesChanged = () => {
-        this.props.onPlacesChanged(this.searchBox.getPlaces());
+        const places = this.searchBox.getPlaces();
+        if (places.length === 0) return;
+
+        const position = {
+            lat: places[0].geometry.location.lat(),
+            lng: places[0].geometry.location.lng(),
+        }
+
+        this.props.onPlacesChanged(position);
     }
 
     componentDidMount() {

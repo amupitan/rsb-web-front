@@ -86,14 +86,9 @@ class HostPage extends Notifiable(Component) {
         });
     }
 
-    onSearchAddress(places) {
-        if (places.length === 0) return;
-
-        const lat = places[0].geometry.location.lat(),
-            lng = places[0].geometry.location.lng();
-
+    onSearchAddress(position) {
         this.setState({
-            position: { lat, lng },
+            position: position,
         });
 
     }
