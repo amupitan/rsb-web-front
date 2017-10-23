@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { DateUtils } from '../../lib/utils';
 import { sports, getDuration, createGame } from '../../lib/game';
+import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
-import SearchAddress from '../SearchAddress'
-import { Switch, Route, Redirect } from 'react-router-dom';
 
+import SearchAddress from '../SearchAddress';
 import RSBButton from '../ui/RSBButton';
 
 import './style.css';
-
-/**
- * Modals are different because we don't have to rerender the page for it to show.
- * 
- * Every modal you use should be visible by the browser at all times
- * 
- * This modal is specifically to host a game
- * 
- */
 
 class HostPage extends Notifiable(Component) {
     constructor(props) {
@@ -105,11 +96,13 @@ class HostPage extends Notifiable(Component) {
     }
 
     onSearchAddress(position) {
-        const newLat = position[0].geometry.location.lat();
-        const newLng = position[0].geometry.location.lng()
+        const lat = position[0].geometry.location.lat(),
+            lng = position[0].geometry.location.lng();
+
         this.setState({
-            position: { lat: newLat, lng: newLng }
+            position: { lat, lng },
         });
+
     }
 
     handleDateChange(event) {

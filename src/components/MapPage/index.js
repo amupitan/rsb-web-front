@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
 import { getGamesNearLocation, joinGame } from '../../lib/game';
+import { googleApiKey, googleApiVersion } from '../../lib/map';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
@@ -187,7 +188,7 @@ const toGame = (game) => game;
 
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyABplRWPbn89WsMUko7bMI83SXCiWVTHLY',
-    version: '3.28'
+    apiKey: googleApiKey,
+    version: googleApiVersion,
 })(MapPage)
 
