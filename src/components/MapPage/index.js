@@ -60,6 +60,7 @@ export class MapPage extends Notifiable(Component) {
         const result = await getGamesNearLocation({ lat, lng });
         if (result.error) {
             //TODO notify user of error
+            console.error(result.error);
             return [];
         }
         return result;

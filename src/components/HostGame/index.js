@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { sports, getDuration, createGame } from '../../lib/game';
 import { DateUtils } from '../../lib/utils';
@@ -23,7 +22,6 @@ class HostPage extends Notifiable(Component) {
         this.handleHostSubmit = this.handleHostSubmit.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.onSearchAddress = this.onSearchAddress.bind(this);
-        this.renderSearchAddress = this.renderSearchAddress.bind(this);
 
         this.state = {
             gameName: "",
@@ -39,13 +37,6 @@ class HostPage extends Notifiable(Component) {
         };
 
         this.hasSetEndTime = false;
-    }
-
-    checkIfGoogleLoad() {
-        if (!window.google) {
-            // window.google.load("maps", 3, { other_params: "sensor=false" });
-            return <Redirect to={'/map'} />
-        }
     }
 
     handleNameChange(event) {
@@ -95,9 +86,11 @@ class HostPage extends Notifiable(Component) {
         });
     }
 
-    onSearchAddress(position) {
-        const lat = position[0].geometry.location.lat(),
-            lng = position[0].geometry.location.lng();
+    onSearchAddress(places) {
+        if (places.length === 0) return;
+
+        const lat = places[0].geometry.location.lat(),
+            lng = places[0].geometry.location.lng();
 
         this.setState({
             position: { lat, lng },
@@ -132,26 +125,15 @@ class HostPage extends Notifiable(Component) {
         }
     }
 
-    renderSearchAddress() {
-        return <SearchAddress
-            onPlacesChanged={this.onSearchAddress}
-        />
-    }
-
-
     render() {
 
-        let sportsOptions = [];
-        sports.forEach((sport, i) => {
-            sportsOptions.push(
-                <option key={i} value={i} label={sport}>
-
-                </option>)
-        })
+        const sportsOptions = [];
+        for (const i in sports) {
+            sportsOptions.push(<option key={i} value={i} label={sports[i]}></option>);
+        }
 
         return (
             <div className="col-xs-6 col-xs-offset-3">
-                {/* {this.checkIfGoogleLoad()} */}
                 <br />
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">
@@ -168,8 +150,7 @@ class HostPage extends Notifiable(Component) {
                         <select className="form-control" value={this.state.sport} onChange={this.handleSportChange}>
                             {sportsOptions}
                         </select>
-                        <br />
-                        <br />
+                        <br /><br />
                         {/* Start time / End Time */}
                         <label htmlFor="timeInputs">Duration: </label>
                         <br />
@@ -214,7 +195,7 @@ class HostPage extends Notifiable(Component) {
 
                         <div className="row" name="location" id="location">
                             <div className="col-xs-12">
-                                {this.renderSearchAddress()}
+                                <SearchAddress onPlacesChanged={this.onSearchAddress} />
                             </div>
                         </div>
 
