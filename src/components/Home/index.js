@@ -4,7 +4,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
 
-
 class Home extends Component {
 
   constructor(props) {
@@ -45,6 +44,7 @@ class Home extends Component {
 // An example is /(map|game|friends|)/
 // The reason for the last '|' is to match '/'
 // which is when there's only a slash
+// The user route is viewUser component
 export const appRoutes = (() => {
   let path = '/(';
   for (let route of views) {

@@ -10,7 +10,6 @@ import NotFound from '../NotFound';
 
 import Notify from '../ui/Notify';
 
-
 // The Main component renders one of matching route
 class Main extends Component {
   constructor(props) {
@@ -48,6 +47,7 @@ class Main extends Component {
           <Route exact path='/signup' render={(props) => <SignUp notify={notify} {...props} />} />
           <Route exact path='/login' render={(props) => <Login notify={notify} {...props} />} />
           <Route exact path={appRoutes} render={(props) => <Home notify={notify} {...props} />} />
+          <Route exact path='/user/:username' render={(props) => <Home notify={notify} {...props} />} />
           <Route path='*' component={NotFound} />
         </Switch>
       </main>
