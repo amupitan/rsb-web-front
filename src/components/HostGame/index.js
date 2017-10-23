@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 
-import { DateUtils } from '../../lib/utils';
 import { sports, getDuration, createGame } from '../../lib/game';
+import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
 
+import SearchAddress from '../SearchAddress';
 import RSBButton from '../ui/RSBButton';
 
 import './style.css';
-
-/**
- * Modals are different because we don't have to rerender the page for it to show.
- * 
- * Every modal you use should be visible by the browser at all times
- * 
- * This modal is specifically to host a game
- * 
- */
 
 class HostPage extends Notifiable(Component) {
     constructor(props) {
@@ -27,10 +19,9 @@ class HostPage extends Notifiable(Component) {
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleMinAgeChange = this.handleMinAgeChange.bind(this);
         this.handleMaxAgeChange = this.handleMaxAgeChange.bind(this);
-        this.handleLatChange = this.handleLatChange.bind(this);
-        this.handleLngChange = this.handleLngChange.bind(this);
         this.handleHostSubmit = this.handleHostSubmit.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.onSearchAddress = this.onSearchAddress.bind(this);
 
         this.state = {
             gameName: "",
@@ -39,8 +30,7 @@ class HostPage extends Notifiable(Component) {
             endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[0]) }), // 15 mins + sport duration after the current time
             minimumAge: "",
             maximumAge: "",
-            lat: "",
-            lng: "",
+            position: { lat: null, lng: null },
             date: DateUtils.yyyymmdd(),
 
             error: null,
@@ -96,16 +86,11 @@ class HostPage extends Notifiable(Component) {
         });
     }
 
-    handleLatChange(event) {
+    onSearchAddress(position) {
         this.setState({
-            lat: event.target.value
+            position: position,
         });
-    }
 
-    handleLngChange(event) {
-        this.setState({
-            lng: event.target.value
-        });
     }
 
     handleDateChange(event) {
@@ -123,8 +108,8 @@ class HostPage extends Notifiable(Component) {
             sport: +this.state.sport,
             maxAge: +this.state.maximumAge,
             minAge: +this.state.minimumAge,
-            lat: +this.state.lat,
-            lng: +this.state.lng
+            lat: +this.state.position.lat,
+            lng: +this.state.position.lng
         }
 
         //We will send the result to the server, don't know how yet
@@ -135,15 +120,12 @@ class HostPage extends Notifiable(Component) {
         }
     }
 
-
     render() {
-        let sportsOptions = [];
-        sports.forEach((sport, i) => {
-            sportsOptions.push(
-                <option key={i} value={i} label={sport}>
 
-                </option>)
-        })
+        const sportsOptions = [];
+        for (const i in sports) {
+            sportsOptions.push(<option key={i} value={i} label={sports[i]}></option>);
+        }
 
         return (
             <div className="col-xs-6 col-xs-offset-3">
@@ -163,8 +145,7 @@ class HostPage extends Notifiable(Component) {
                         <select className="form-control" value={this.state.sport} onChange={this.handleSportChange}>
                             {sportsOptions}
                         </select>
-                        <br />
-                        <br />
+                        <br /><br />
                         {/* Start time / End Time */}
                         <label htmlFor="timeInputs">Duration: </label>
                         <br />
@@ -206,35 +187,14 @@ class HostPage extends Notifiable(Component) {
                         {/*Location based on Latitude and Longitude*/}
                         <label htmlFor="location">Location: </label>
                         <br />
+
                         <div className="row" name="location" id="location">
-                            <div className="col-xs-4">
-                                <label htmlFor="rsbLatitude">Latitude</label>
-                                <input className="form-control" name="rsbLatitude" type="number" value={this.state.lat} onChange={this.handleLatChange} />
-                            </div>
-                            <div className="col-xs-4">
-                                <label htmlFor="rsbLongitude">Longitude</label>
-                                <input className="form-control" name="rsbLongitude" type="number" value={this.state.lng} onChange={this.handleLngChange} />
+                            <div className="col-xs-12">
+                                <SearchAddress onPlacesChanged={this.onSearchAddress} />
                             </div>
                         </div>
 
                         <br /><br />
-
-
-                        {/* We will use this div below for finding based on location later*/}
-
-                        {/* Search Location
-                        <div className="row">
-
-                            <div className="col-xs-10"><input type="text" className="form-control" placeholder="Search Location" name="srch-term" id="srch-term" /></div>
-                            <div className="col-xs-2">
-                                <RSBButton
-                                    glyphicons="glyphicon glyphicon-map-marker"
-                                    onClickFunction={() => {
-                                        console.log("Go to map to drop pin!");
-                                    }}
-                                />
-                            </div>
-                        </div> */}
 
                     </div>
                     <div className="modal-footer">

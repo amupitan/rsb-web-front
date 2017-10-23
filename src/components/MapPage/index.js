@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom'
 import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
 import { getGamesNearLocation, joinGame } from '../../lib/game';
+import { googleApiKey, googleApiVersion } from '../../lib/map';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
 import GameInfo from './GameInfo';
+import SearchAddress from '../SearchAddress'
 
 import './style.css';
 
@@ -17,6 +19,7 @@ export class MapPage extends Notifiable(Component) {
         this.render = this.render.bind(this);
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
+        this.onAddressSearch = this.onAddressSearch.bind(this);
         this.handleJoinGame = this.handleJoinGame.bind(this);
         this.fetchPlaces = this.fetchPlaces.bind(this);
         this.renderGameInfoWindow = this.renderGameInfoWindow.bind(this);
@@ -57,7 +60,7 @@ export class MapPage extends Notifiable(Component) {
         const result = await getGamesNearLocation({ lat, lng });
         if (result.error) {
             //TODO notify user of error
-            console.log(result.error);
+            console.error(result.error);
             return [];
         }
         return result;
@@ -96,6 +99,12 @@ export class MapPage extends Notifiable(Component) {
         });
     }
 
+    onAddressSearch(position) {
+        this.setState({
+            position: position,
+        });
+    }
+
     // Causes a render of new markers by invalidating the map
     async fetchPlaces(mapProps, map) {
         if (!this._isMounted) return;
@@ -118,6 +127,16 @@ export class MapPage extends Notifiable(Component) {
             </div>
         </InfoWindow>
     }
+
+
+
+    renderSearchAddress() {
+        return <SearchAddress
+            onPlacesChanged={this.onAddressSearch}
+            className='rsb-map-search-bar'
+        />
+    }
+
 
     // Renders all available markers
     renderMarkers() {
@@ -151,8 +170,10 @@ export class MapPage extends Notifiable(Component) {
                     clickableIcons={false}
                     initialCenter={this.state.position}
                     onDragend={this.fetchPlaces}
+                    center={this.state.position}
                     onReady={this.fetchPlaces}>
 
+                    {this.renderSearchAddress()}
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
                 </Map>
@@ -166,7 +187,7 @@ const toGame = (game) => game;
 
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyABplRWPbn89WsMUko7bMI83SXCiWVTHLY',
-    version: '3.28'
+    apiKey: googleApiKey,
+    version: googleApiVersion,
 })(MapPage)
 

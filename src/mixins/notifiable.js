@@ -26,10 +26,16 @@ const Notifiable = (Notifiable) => class extends Notifiable {
     }
 
     componentWillMount() {
+        if (super.componentWillMount) {
+            super.componentWillMount();
+        }
         this.props.notify.hide();
     }
 
     componentDidMount() {
+        if (super.componentDidMount) {
+            super.componentDidMount();
+        }
         this.renderNotification();
         this.renderError();
     }
