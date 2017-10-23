@@ -103,7 +103,6 @@ export class MapPage extends Notifiable(Component) {
         this.setState({
             position: { lat: newLat, lng: newLng }
         });
-        console.log(this.state.position);
     }
 
     // Causes a render of new markers by invalidating the map

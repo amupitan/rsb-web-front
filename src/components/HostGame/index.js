@@ -52,6 +52,7 @@ class HostPage extends Notifiable(Component) {
 
     checkIfGoogleLoad() {
         if (!window.google) {
+            // window.google.load("maps", 3, { other_params: "sensor=false" });
             return <Redirect to={'/map'} />
         }
     }
@@ -103,9 +104,9 @@ class HostPage extends Notifiable(Component) {
         });
     }
 
-    onSearchAddress(e) {
-        let newLat = e[0].geometry.location.lat();
-        let newLng = e[0].geometry.location.lng()
+    onSearchAddress(position) {
+        const newLat = position[0].geometry.location.lat();
+        const newLng = position[0].geometry.location.lng()
         this.setState({
             position: { lat: newLat, lng: newLng }
         });
@@ -140,8 +141,7 @@ class HostPage extends Notifiable(Component) {
 
     renderSearchAddress() {
         return <SearchAddress
-            onPlacesChanged={(e) => this.onSearchAddress(e)}
-            className=''
+            onPlacesChanged={(position) => this.onSearchAddress(position)}
         />
     }
 
@@ -218,7 +218,6 @@ class HostPage extends Notifiable(Component) {
                         {/*Location based on Latitude and Longitude*/}
                         <label htmlFor="location">Location: </label>
                         <br />
-
 
                         <div className="row" name="location" id="location">
                             <div className="col-xs-12">
