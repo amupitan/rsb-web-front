@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import { getFriends, getName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
 import RSBUserImage from '../ui/RSBUserImage';
+import { LoaderPage } from '../ui/Loader';
 import mockServer from '../../dummy';
+import defaultImg from '../../dummy/default.jpg';
 
 import './style.css';
 
@@ -19,11 +22,26 @@ class Friends extends Notifiable(Component) {
         this.handleFriendSearch = this.handleFriendSearch.bind(this);
         this.handleRecentSearch = this.handleRecentSearch.bind(this);
         this.state = {
-            currentFriends: data.result[0].Friends,
-            currentRecents: data.result[0].RecentPlayers,
-            friendSearch: "",
-            recentSearch: ""
+            //     currentRecents: data.result[0].RecentPlayers,
+            //     friendSearch: "",
+            //     recentSearch: ""
         }
+    }
+
+    componentWillMount() {
+        this.getAllFriends();
+    }
+
+    async getAllFriends() {
+        const username = getName();
+        console.log("username: ", username)
+        const friends = await getFriends(username);
+        console.log("Friends: ", friends);
+        this.setState({
+            userFriends: friends
+        });
+        console.log("state: ", this.state)
+        return friends;
     }
 
     filterUsers(array, keyword, arrayName) {
@@ -35,7 +53,7 @@ class Friends extends Notifiable(Component) {
         }
         if (arrayName === 'friends') {
             this.setState({
-                currentFriends: newArray
+                userFriends: newArray
             });
         }
         if (arrayName === "recents") {
@@ -48,8 +66,8 @@ class Friends extends Notifiable(Component) {
     renderUsers(array) {
         return array.map((user, i) => {
             return <RSBUserImage
-                name={user.Username}
-                imgUrl={user.ImageURL}
+                name={user.username}
+                imgUrl={user.ImageURL || defaultImg}
                 imgHeight="85px"
                 imgWidth="85px"
                 className="col-xs-3 text-center"
@@ -71,6 +89,9 @@ class Friends extends Notifiable(Component) {
     }
 
     render() {
+        if (!this.state || !this.state.userFriends) {
+            return <LoaderPage />
+        }
         return (
             <div className="panel-group col-xs-10 col-xs-offset-1">
                 <div className="panel panel-default rsb-friends-panel">
@@ -90,11 +111,11 @@ class Friends extends Notifiable(Component) {
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {this.renderUsers(this.state.currentFriends)}
+                            {this.renderUsers(this.state.userFriends)}
                         </div>
                     </div>
                 </div>
-                <div className="panel panel-default rsb-recent-players-panel">
+                {/* <div className="panel panel-default rsb-recent-players-panel">
                     <div className="panel-heading text-center">
                         <h3 className="">Recent Players</h3>
                         <input className="" type="search" value={this.state.recentSearch} id="rsb-recent-players-search-bar" placeholder="Search Recent.." onChange={this.handleRecentSearch} />
@@ -113,9 +134,9 @@ class Friends extends Notifiable(Component) {
                         <div className="row">
                             {this.renderUsers(this.state.currentRecents)}
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div> */}
+                {/* </div> */}
+            </div >
         )
     }
 }
