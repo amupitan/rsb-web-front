@@ -31,6 +31,5 @@ export async function _getUserFriends(username) {
     if (res.error) {
         _handleError(res.data);
     }
-    console.log("Res: ", res.data);
     return res.data;
 }
