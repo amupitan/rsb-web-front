@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import user, { getName } from '../../lib/user';
+import user, { getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from '../../mixins';
 
 import { LoaderPage } from '../ui/Loader';
@@ -20,17 +20,10 @@ class Profile extends Notifiable(Component) {
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
-        this.state = {
-
-        }
-    }
-
-    static get name() {
-        return getName();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props === nextProps) return;
+        if (this.props.match.params.username === nextProps.match.params.username) return;
         this.getUserInfo(nextProps.match.params);
     }
 
@@ -38,15 +31,16 @@ class Profile extends Notifiable(Component) {
         this.getUserInfo(this.props.match.params);
     }
 
-    async getUsername() {
-        return await getName();
-    }
+    async getUserInfo({ username = getLoggedInUserName() }) {
+        const userInfo = await user(username, { populate: 1 });
+        if (userInfo.error) {
+            // TODO: might want to handle error. It's already handled tho
+            return console.error(userInfo);
+        }
 
-    async getUserInfo({ username }) {
-        const u = await user(username, { populate: 1 });
         this.setState({
-            user: u,
-            friends: u.friends,
+            user: userInfo,
+            friends: userInfo.friends,
         });
     }
 

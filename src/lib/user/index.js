@@ -1,6 +1,6 @@
-import _getUserInfo, { _name } from './user';
+import _getUserInfo, { _getLoggedInUserName } from './user';
 
 export const getUser = _getUserInfo;
-export const getName = _name;
+export const getLoggedInUserName = _getLoggedInUserName;
 
 export default getUser
