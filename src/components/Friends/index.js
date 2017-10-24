@@ -5,12 +5,9 @@ import { Notifiable } from "../../mixins";
 
 import RSBUserImage from '../ui/RSBUserImage';
 import { LoaderPage } from '../ui/Loader';
-import mockServer from '../../dummy';
 import defaultImg from '../../dummy/default.jpg';
 
 import './style.css';
-
-let data = mockServer("/user/f/1");
 
 class Friends extends Notifiable(Component) {
 
@@ -37,7 +34,8 @@ class Friends extends Notifiable(Component) {
         return friends;
     }
 
-    filterUsers(array, keyword) {
+    filterUsers(keyword) {
+        const array = this.state.userFriends;
         let newArray = [];
         for (let i = 0; i < array.length; ++i) {
             if (array[i].username.toLowerCase().includes(keyword.toLowerCase())) {
@@ -45,7 +43,8 @@ class Friends extends Notifiable(Component) {
             }
         }
         this.setState({
-            userFriends: newArray
+            filterFriends: newArray,
+            friendSearch: keyword
         });
 
     }
@@ -64,9 +63,7 @@ class Friends extends Notifiable(Component) {
     }
 
     handleFriendSearch(event) {
-        this.setState({
-            friendSearch: event.target.value
-        });
+        this.filterUsers(event.target.value)
     }
 
     render() {
@@ -79,19 +76,10 @@ class Friends extends Notifiable(Component) {
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
                         <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch} />
-                        <button type="submit"
-                            onClick={
-                                () => {
-                                    this.filterUsers(this.state.userFriends,
-                                        this.state.friendSearch)
-                                }
-                            }>
-                            <span className="glyphicon glyphicon-search"></span>
-                        </button>
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {this.renderUsers(this.state.userFriends)}
+                            {this.renderUsers(this.state.filterFriends || this.state.userFriends)}
                         </div>
                     </div>
                 </div>
