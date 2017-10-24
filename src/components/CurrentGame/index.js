@@ -21,6 +21,7 @@ class CurrentGame extends Notifiable(Component) {
             hasGame: false,
         }
         this.getCurrentGame = this.getCurrentGame.bind(this);
+        this.handleLeaveGame = this.handleLeaveGame.bind(this);
     }
 
     heading() {
