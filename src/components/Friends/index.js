@@ -13,12 +13,12 @@ class Friends extends Notifiable(Component) {
 
     constructor(props) {
         super(props);
-        this.render = this.render.bind(this);
-        this.filterUsers = this.filterUsers.bind(this);
-        this.handleFriendSearch = this.handleFriendSearch.bind(this);
         this.state = {
             friendSearch: ""
         }
+
+        this.render = this.render.bind(this);
+        this.filterUsers = this.filterUsers.bind(this);
     }
 
     componentWillMount() {
@@ -34,8 +34,9 @@ class Friends extends Notifiable(Component) {
         return friends;
     }
 
-    filterUsers(keyword) {
+    filterUsers(event) {
         const array = this.state.userFriends;
+        const keyword = event.target.value
         let newArray = [];
         for (let i = 0; i < array.length; ++i) {
             if (array[i].username.toLowerCase().includes(keyword.toLowerCase())) {
@@ -43,10 +44,9 @@ class Friends extends Notifiable(Component) {
             }
         }
         this.setState({
-            filterFriends: newArray,
+            filteredFriends: newArray,
             friendSearch: keyword
         });
-
     }
 
     renderUsers(array) {
@@ -62,10 +62,6 @@ class Friends extends Notifiable(Component) {
         })
     }
 
-    handleFriendSearch(event) {
-        this.filterUsers(event.target.value)
-    }
-
     render() {
         if (!this.state || !this.state.userFriends) {
             return <LoaderPage />
@@ -75,11 +71,11 @@ class Friends extends Notifiable(Component) {
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch} />
+                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.filterUsers} />
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {this.renderUsers(this.state.filterFriends || this.state.userFriends)}
+                            {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
                     </div>
                 </div>
