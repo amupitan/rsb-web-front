@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getFriends, getName } from '../../lib/user';
+import { getFriends, getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
 import RSBUserImage from '../ui/RSBUserImage';
@@ -26,7 +26,7 @@ class Friends extends Notifiable(Component) {
     }
 
     async getAllFriends() {
-        const username = getName();
+        const username = getLoggedInUserName();
         const friends = await getFriends(username);
         this.setState({
             userFriends: friends
