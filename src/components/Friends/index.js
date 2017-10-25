@@ -35,22 +35,22 @@ class Friends extends Notifiable(Component) {
     }
 
     filterUsers(event) {
-        const array = this.state.userFriends;
+        const allFriends = this.state.userFriends;
         const keyword = event.target.value
-        let newArray = [];
-        for (let i = 0; i < array.length; ++i) {
-            if (array[i].username.toLowerCase().includes(keyword.toLowerCase())) {
-                newArray.push(array[i]);
+        let filteredFriends = [];
+        for (let i = 0; i < allFriends.length; ++i) {
+            if (allFriends[i].username.toLowerCase().includes(keyword.toLowerCase())) {
+                filteredFriends.push(allFriends[i]);
             }
         }
         this.setState({
-            filteredFriends: newArray,
+            filteredFriends: filteredFriends,
             friendSearch: keyword
         });
     }
 
-    renderUsers(array) {
-        return array.map((user, i) => {
+    renderUsers(displayFriends) {
+        return displayFriends.map((user, i) => {
             return <RSBUserImage
                 name={user.username}
                 imgUrl={user.ImageURL || defaultImg}
@@ -75,6 +75,7 @@ class Friends extends Notifiable(Component) {
                     </div>
                     <div className="panel-body">
                         <div className="row">
+                            {/*This either displays the filtered array of friends or all the friends */}
                             {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
                     </div>
