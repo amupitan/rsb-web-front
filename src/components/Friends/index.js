@@ -14,7 +14,8 @@ class Friends extends Notifiable(Component) {
     constructor(props) {
         super(props);
         this.state = {
-            friendSearch: ""
+            friendSearch: '',
+            userFriends: [],
         }
 
         this.render = this.render.bind(this);
@@ -28,10 +29,12 @@ class Friends extends Notifiable(Component) {
     async getAllFriends() {
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
-        this.setState({
-            userFriends: friends
-        });
-        return friends;
+        if (!friends.error) {
+            this.setState({
+                userFriends: friends
+            });
+        }
+
     }
 
     filterUsers(event) {
@@ -50,6 +53,7 @@ class Friends extends Notifiable(Component) {
     }
 
     renderUsers(displayFriends) {
+
         return displayFriends.map((user, i) => {
             return <RSBUserImage
                 name={user.username}
@@ -75,6 +79,8 @@ class Friends extends Notifiable(Component) {
                     </div>
                     <div className="panel-body">
                         <div className="row">
+                            {/* {console.log(this.state.filteredFriends)} */}
+                            {/* {console.log(this.state.userFriends)} */}
                             {/*This either displays the filtered array of friends or all the friends */}
                             {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
