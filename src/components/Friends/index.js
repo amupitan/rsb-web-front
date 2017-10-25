@@ -34,7 +34,6 @@ class Friends extends Notifiable(Component) {
                 userFriends: friends
             });
         }
-
     }
 
     filterUsers(event) {
@@ -53,7 +52,6 @@ class Friends extends Notifiable(Component) {
     }
 
     renderUsers(displayFriends) {
-
         return displayFriends.map((user, i) => {
             return <RSBUserImage
                 name={user.username}
@@ -79,8 +77,6 @@ class Friends extends Notifiable(Component) {
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {/* {console.log(this.state.filteredFriends)} */}
-                            {/* {console.log(this.state.userFriends)} */}
                             {/*This either displays the filtered array of friends or all the friends */}
                             {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
