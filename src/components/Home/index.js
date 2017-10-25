@@ -15,6 +15,10 @@ class Home extends Component {
     this.toggeleMenu = this.toggeleMenu.bind(this);
   }
 
+  name() {
+    return this.state.user.username;
+  }
+
   toggeleMenu() {
     this.setState({
       showMenu: !this.state.showMenu,
@@ -22,7 +26,7 @@ class Home extends Component {
   }
 
   render() {
-    const defaultPath = this.props.default || (views.length > 0 && views[1].path);
+    const defaultPath = this.props.default || (views.length > 0 && views[2].path);
     return (
       <div>
         <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />

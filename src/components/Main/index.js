@@ -49,7 +49,7 @@ class Main extends Component {
           <Route exact path='/signup' render={(props) => <SignUp notify={notify} {...props} />} />
           <Route exact path='/login' render={(props) => <Login notify={notify} {...props} />} />
           <PrivateRoute exact path={appRoutes} component={Home} componentProps={{ notify: notify }} />
-          <PrivateRoute exact path='/user/:username' component={Home} componentProps={{ notify: notify }} />
+          <PrivateRoute exact path='/user/:username?' component={Home} componentProps={{ notify: notify }} />
           <Route path='*' component={NotFound} />
         </Switch>
       </main>

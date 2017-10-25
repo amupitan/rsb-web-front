@@ -8,9 +8,10 @@ function _handleError(error) {
     const err = { error: errorFormatter(error) }
     showError({ message: err.error });
     redirect();
+    return err;
 }
 
-export function _name() {
+export function _getLoggedInUserName() {
     return session.getItem('username');
 }
 
@@ -19,7 +20,7 @@ export default async function _getUserInfo(username, { populate = '0' } = {}) {
         username: username,
     })).toString(), true);
     if (res.error) {
-        _handleError(res.data);
+        return _handleError(res.data);
     }
     return res.data;
 }
