@@ -21,8 +21,7 @@ class Profile extends Notifiable(Component) {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.state = {
-            user: null,
-            friends: null
+
         }
     }
 

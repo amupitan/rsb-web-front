@@ -24,6 +24,13 @@ import Profile from '../Profile';
 //      },
 const views = [
     {
+        name: `${Profile.name}`,
+        path: `user/${Profile.name}`,
+        component: Profile,
+        isMenuOption: true,
+        noRoute: true,
+    },
+    {
         name: 'Map',
         path: 'map',
         isMenuOption: true,
@@ -34,13 +41,6 @@ const views = [
         path: 'game',
         isMenuOption: true,
         component: CurrentGame,
-    },
-    {
-        name: 'Profile',
-        path: `user/${Profile.name}`,
-        component: Profile,
-        isMenuOption: true,
-        noRoute: true,
     },
     {
         name: 'UserPage',
