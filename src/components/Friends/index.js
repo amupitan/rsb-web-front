@@ -21,7 +21,7 @@ class Friends extends Notifiable(Component) {
         this.filterUsers = this.filterUsers.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getAllFriends();
     }
 
@@ -63,7 +63,7 @@ class Friends extends Notifiable(Component) {
     }
 
     render() {
-        if (!this.state || !this.state.userFriends) {
+        if (!this.state.userFriends) {
             return <LoaderPage />
         }
         return (

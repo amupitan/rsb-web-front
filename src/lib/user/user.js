@@ -30,7 +30,7 @@ export async function _getUserFriends(username) {
         username: username,
     })).toString(), true);
     if (res.error) {
-        _handleError(res.data);
+        return _handleError(res.data);
     }
     return res.data;
 }
