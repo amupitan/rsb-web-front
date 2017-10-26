@@ -15,10 +15,6 @@ class Home extends Component {
     this.toggeleMenu = this.toggeleMenu.bind(this);
   }
 
-  name() {
-    return this.state.user.username;
-  }
-
   toggeleMenu() {
     this.setState({
       showMenu: !this.state.showMenu,
