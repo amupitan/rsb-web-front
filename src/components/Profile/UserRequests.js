@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import RSBButton from '../ui/RSBButton';
 import defaultImg from '../../dummy/default.jpg';
@@ -14,15 +15,17 @@ function UserRequests(props) {
             }
             userRequests.push(
                 <div key={i} className="populate-requests row">
-                    <div className="col-sm-4 col-sm-pull">
-                        <img src={el.profilePic || defaultImg} alt="Profile" className="profile-pic-xs" />
-                    </div>
-                    <div className="col-sm-4">
-                        <span>{el.username}</span><br />
-                        <span>{el.firstname} {el.lastname}</span><br />
-                        {displaySport}<br />
-                        <span>{el.Time}</span>
-                    </div>
+                    <Link to={`/user/${el.username}`} key={i} >
+                        <div className="col-sm-4 col-sm-pull">
+                            <img src={el.profilePic || defaultImg} alt="Profile" className="profile-pic-xs" />
+                        </div>
+                        <div className="col-sm-4">
+                            <span>{el.username}</span><br />
+                            <span>{el.firstname} {el.lastname}</span><br />
+                            {displaySport}<br />
+                            <span>{el.Time}</span>
+                        </div>
+                    </Link>
                     <ReviewRequest accept />
                     <ReviewRequest accept={false} />
                 </div>);

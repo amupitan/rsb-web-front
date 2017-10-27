@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { getFriends, getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
@@ -53,14 +54,16 @@ class Friends extends Notifiable(Component) {
 
     renderUsers(displayFriends) {
         return displayFriends.map((user, i) => {
-            return <RSBUserImage
-                name={user.username}
-                imgUrl={user.ImageURL || defaultImg}
-                imgHeight="85px"
-                imgWidth="85px"
-                className="col-xs-3 text-center"
-                key={i}
-            />
+            return (
+                <Link to={`/user/${user.username}`} key={i} >
+                    <RSBUserImage
+                        name={user.username}
+                        imgUrl={user.ImageURL || defaultImg}
+                        imgHeight="85px"
+                        imgWidth="85px"
+                        className="col-xs-3 text-center"
+                    />
+                </Link>)
         })
     }
 
