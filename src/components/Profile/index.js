@@ -11,8 +11,6 @@ import Heading from './Heading';
 import FriendsList from './FriendsList';
 
 import './style.css';
-import defaultImg from '../../dummy/default.jpg';
-
 
 class Profile extends Notifiable(Component) {
     constructor(props) {
@@ -50,13 +48,13 @@ class Profile extends Notifiable(Component) {
         } else if (this.state.user.friendRequests) { //If you can see friendRequesets, you are the current user.
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                    <Heading {...this.state.user} defaultImg={defaultImg} />
+                    <Heading {...this.state.user} />
                     <div className="row">
                         <FriendRequest {...this.state.user} />
                         <GameInvites {...this.state.user} />
                     </div>
                     <div className="row">
-                        <FriendsList {...this.state} defaultImg={defaultImg} />
+                        <FriendsList {...this.state} />
                         <GameHistory {...this.state.user.username} />
                     </div>
                 </div >
@@ -64,9 +62,9 @@ class Profile extends Notifiable(Component) {
         } else {
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                    <Heading {...this.state.user} defaultImg={defaultImg} />
+                    <Heading {...this.state.user} />
                     <div className="row">
-                        <FriendsList {...this.state} defaultImg={defaultImg} />
+                        <FriendsList {...this.state} />
                         <GameHistory {...this.state.user.username} />
                     </div>
                 </div >

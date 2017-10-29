@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import { getFriends, getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
-import RSBUserImage from '../ui/RSBUserImage';
 import { LoaderPage } from '../ui/Loader';
-import defaultImg from '../../dummy/default.jpg';
+import Avatar from '../ui/Avatar';
 
 import './style.css';
 
@@ -52,19 +51,18 @@ class Friends extends Notifiable(Component) {
         });
     }
 
-    renderUsers(displayFriends) {
-        return displayFriends.map((user, i) => {
-            return (
+    renderUsers(users) {
+        if (users.length === 0) 
+            return <div>No friends with the name '{this.state.friendSearch}' were found</div>
+
+        return users.map((user, i) => (
                 <Link to={`/user/${user.username}`} key={i} >
-                    <RSBUserImage
-                        name={user.username}
-                        imgUrl={user.ImageURL || defaultImg}
-                        imgHeight="85px"
-                        imgWidth="85px"
-                        className="col-xs-3 text-center"
-                    />
-                </Link>)
-        })
+                    <div className='col-xs-3 text-center'>
+                        <Avatar avatar={user.avatar} alt='profile-pic' className='rsb-friend-icon' />
+                        <span className='rsb-friend-name'>{user.username}</span>
+                    </div>
+                </Link>
+        ));
     }
 
     render() {
@@ -76,7 +74,7 @@ class Friends extends Notifiable(Component) {
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.filterUsers} />
+                        <input type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends..." onChange={this.filterUsers} />
                     </div>
                     <div className="panel-body">
                         <div className="row">
