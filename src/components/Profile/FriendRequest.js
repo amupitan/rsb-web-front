@@ -11,9 +11,9 @@ export default ({ friendRequests }) => {
         <div className="col-sm-6 panel panel-default">
             <div className="panel-heading-rsb">
                 <h2>Friend Requests</h2>
-                <div className="scroll-info panel-body">
-                    {requests}
-                </div>
+            </div>
+            <div className="scroll-info panel-body">
+                {requests}
             </div>
         </div>
     );
