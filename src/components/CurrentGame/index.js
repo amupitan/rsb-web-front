@@ -117,7 +117,6 @@ class CurrentGame extends Notifiable(Component) {
 }
 
 const UserLabel = ({ avatar, firstname, lastname, username }) => {
-    console.log(avatar);
     return (
         <div className="row" >
             <Link to={`/user/${username}`} >
