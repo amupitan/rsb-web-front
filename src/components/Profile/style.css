@@ -58,8 +58,15 @@ button{
     margin-top: 20px;
 }
 
+.rsb-profile-card .upload-pic{
+    display:none;
+}
+
 .rsb-profile-card:hover {
     box-shadow: 0 9px 18px 0 rgba(0,0,0,0.2);
+}
+.rsb-profile-card:hover .upload-pic{
+    display:inline;
 }
 
 .rsb-profile-img {
@@ -70,11 +77,13 @@ button{
 .rsb-profile-info-container {
     padding: 2px 16px;
 }
-
-.profile-box{
-
+#image-upload{
+    display: none;
 }
 
 .upload-pic{
-    display:none;
+    background-color: #E89C46;
+    border: 1px solid black;   
+    border-radius: 4em 2em;            
+    
 }
