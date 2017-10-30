@@ -30,16 +30,15 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        const userInfo = await user(username, { populate: 1 });
+        let userInfo = await user(username, { populate: 1 });
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
             return console.error(userInfo);
         }
-
+        userInfo.handleImageChange = handleImageChange;
         this.setState({
             user: userInfo,
             friends: userInfo.friends,
-            handleImageChange: handleImageChange
         });
     }
 

@@ -66,7 +66,7 @@ export default class Yoda {
         return new YodaResponse(res, true);
     }
 
-    static async post(path, body, isRelative = false) {
+    static async post(path, body, isRelative = false, contentType = 'application/json') {
         let temp;
         if (isRelative) {
             // TODO: check if prefix slash was added from path
@@ -76,7 +76,7 @@ export default class Yoda {
             const res = await fetch(path, {
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                    'Content-Type': contentType,
                 },
                 credentials: 'include',
                 method: 'POST',

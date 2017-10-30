@@ -36,14 +36,11 @@ export async function _getUserFriends(username) {
 }
 
 export async function _handleImageChange(e) {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-
-    reader.onloadend = () => {
-        console.log("Loaded!");
-        console.log(reader);
-        //Upload to file
+    if (e.target.files[0]) {
+        let file = e.target.files[0];
+        await yoda.post('/upload', (new YodaRequest({}, {
+            file: file,
+        })).toString(), true, undefined);
     }
-
-    reader.readAsDataURL(file)
 }
+
