@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '../ui/Avatar';
 
 class UserDisplay extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const user = this.props.profileInfo;

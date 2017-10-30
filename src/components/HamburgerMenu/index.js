@@ -20,7 +20,6 @@ const HamburgerMenu = ({ userInfo, views, onClick, menu, width }) => {
 
 const menuGenerator = (width) => {
   return (userInfo, views, onClick) => {
-    console.log(userInfo);
     return (
       <div className="rsb-menu" style={{ width: width }}>
         <UserDisplay
