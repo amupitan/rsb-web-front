@@ -29,12 +29,9 @@ class Home extends Component {
       // TODO: might want to handle error. It's already handled tho
       return console.error(userData);
     }
-
     this.setState({
       userInfo: userData,
     });
-    console.log(this.state.userInfo);
-
   };
 
   toggeleMenu() {

@@ -36,6 +36,14 @@ const views = [
         component: CurrentGame,
     },
     {
+        name: 'Profile',
+        path: 'user',
+        component: Profile,
+        isMenuOption: false,
+        noRoute: false,
+    },
+
+    {
         name: 'UserPage',
         path: 'user/:username?',
         component: Profile,

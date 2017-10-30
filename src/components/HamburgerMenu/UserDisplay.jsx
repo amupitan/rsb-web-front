@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Avatar from '../ui/Avatar';
 
 class UserDisplay extends Component {
-
     render() {
         const user = this.props.profileInfo;
         if (user) {
@@ -14,14 +13,16 @@ class UserDisplay extends Component {
                             <Avatar avatar={user.avatar} alt='' className='rsb-user-picture' />
                         </div>
                         <div className="text-center">
-                            <h1 className='rsb-menu-username'>{user.firstname + ' ' + user.lastname + ' @' + user.username}</h1>
+                            <h1 className='rsb-menu-username'>{user.firstname + ' ' + user.lastname}</h1>
+                        </div>
+                        <div className="text-center">
+                            <h1 className='rsb-menu-name'>{'@' + user.username}</h1>
                         </div>
                     </Link>
-                </div >
+                </div>
             );
         }
         return null;
-
     }
 }
 
