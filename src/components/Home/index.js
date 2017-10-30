@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
+import user, { getLoggedInUserName } from '../../lib/user';
 
 class Home extends Component {
 
@@ -10,10 +11,31 @@ class Home extends Component {
     super(props);
     this.state = {
       showMenu: false,
+      userInfo: null,
     }
 
+    this.getUserInfo = this.getUserInfo.bind(this);
     this.toggeleMenu = this.toggeleMenu.bind(this);
   }
+
+  componentWillMount() {
+    this.getUserInfo();
+  }
+
+  async getUserInfo() {
+    const username = getLoggedInUserName();
+    const userData = await user(username, { populate: 1 });
+    if (userData.error) {
+      // TODO: might want to handle error. It's already handled tho
+      return console.error(userData);
+    }
+
+    this.setState({
+      userInfo: userData,
+    });
+    console.log(this.state.userInfo);
+
+  };
 
   toggeleMenu() {
     this.setState({
@@ -22,10 +44,10 @@ class Home extends Component {
   }
 
   render() {
-    const defaultPath = this.props.default || (views.length > 0 && views[2].path);
+    const defaultPath = this.props.default || (views.length > 0 && views[0].path);
     return (
       <div>
-        <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
+        <HamburgerMenu userInfo={this.state.userInfo} views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
             {views.filter((view) => !view.noRoute).map((view, i) => (

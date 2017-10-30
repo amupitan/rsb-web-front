@@ -5,7 +5,6 @@ import Settings from '../Settings';
 import Join from '../Join';
 import Friends from '../Friends';
 import Profile from '../Profile';
-import { getLoggedInUserName } from '../../lib/user';
 
 // Represents the views displayed by links from the hamburger menu
 // the [component] should always be a React.Component and not a callback
@@ -25,19 +24,6 @@ import { getLoggedInUserName } from '../../lib/user';
 //      },
 const views = [
     {
-        name: `${getLoggedInUserName()}`,
-        path: 'user',
-        component: Profile,
-        isMenuOption: true,
-        noRoute: true,
-    },
-    {
-        name: 'UserPage',
-        path: 'user/:username?',
-        component: Profile,
-        isMenuOption: false,
-    },
-    {
         name: 'Map',
         path: 'map',
         isMenuOption: true,
@@ -48,6 +34,12 @@ const views = [
         path: 'game',
         isMenuOption: true,
         component: CurrentGame,
+    },
+    {
+        name: 'UserPage',
+        path: 'user/:username?',
+        component: Profile,
+        isMenuOption: false,
     },
     {
         name: 'Host',
