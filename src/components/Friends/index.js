@@ -1,121 +1,89 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
+import { getFriends, getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
-import RSBUserImage from '../ui/RSBUserImage';
-import mockServer from '../../dummy';
+import { LoaderPage } from '../ui/Loader';
+import Avatar from '../ui/Avatar';
 
 import './style.css';
-
-let data = mockServer("/user/f/1");
 
 class Friends extends Notifiable(Component) {
 
     constructor(props) {
         super(props);
-        this.render = this.render.bind(this);
-        this.renderUsers = this.renderUsers.bind(this);
-        this.filterUsers = this.filterUsers.bind(this);
-        this.handleFriendSearch = this.handleFriendSearch.bind(this);
-        this.handleRecentSearch = this.handleRecentSearch.bind(this);
         this.state = {
-            currentFriends: data.result[0].Friends,
-            currentRecents: data.result[0].RecentPlayers,
-            friendSearch: "",
-            recentSearch: ""
+            friendSearch: '',
+            userFriends: [],
+        }
+
+        this.render = this.render.bind(this);
+        this.filterUsers = this.filterUsers.bind(this);
+    }
+
+    componentDidMount() {
+        this.getAllFriends();
+    }
+
+    async getAllFriends() {
+        const username = getLoggedInUserName();
+        const friends = await getFriends(username);
+        if (!friends.error) {
+            this.setState({
+                userFriends: friends
+            });
         }
     }
 
-    filterUsers(array, keyword, arrayName) {
-        let newArray = [];
-        for (let i = 0; i < array.length; ++i) {
-            if (array[i].Username.toLowerCase().includes(keyword.toLowerCase())) {
-                newArray.push(array[i]);
+    filterUsers(event) {
+        const allFriends = this.state.userFriends;
+        const keyword = event.target.value
+        let filteredFriends = [];
+        for (let i = 0; i < allFriends.length; ++i) {
+            if (allFriends[i].username.toLowerCase().includes(keyword.toLowerCase())) {
+                filteredFriends.push(allFriends[i]);
             }
         }
-        if (arrayName === 'friends') {
-            this.setState({
-                currentFriends: newArray
-            });
-        }
-        if (arrayName === "recents") {
-            this.setState({
-                currentRecents: newArray
-            });
-        }
-    }
-
-    renderUsers(array) {
-        return array.map((user, i) => {
-            return <RSBUserImage
-                name={user.Username}
-                imgUrl={user.ImageURL}
-                imgHeight="85px"
-                imgWidth="85px"
-                className="col-xs-3 text-center"
-                key={i}
-            />
-        })
-    }
-
-    handleFriendSearch(event) {
         this.setState({
-            friendSearch: event.target.value
+            filteredFriends: filteredFriends,
+            friendSearch: keyword
         });
     }
 
-    handleRecentSearch(event) {
-        this.setState({
-            recentSearch: event.target.value
-        });
+    renderUsers(users) {
+        if (users.length === 0) 
+            return <div>No friends with the name '{this.state.friendSearch}' were found</div>
+
+        return users.map((user, i) => (
+                <Link to={`/user/${user.username}`} key={i} >
+                    <div className='col-xs-3 text-center'>
+                        <Avatar avatar={user.avatar} alt='profile-pic' className='rsb-friend-icon' />
+                        <span className='rsb-friend-name'>{user.username}</span>
+                    </div>
+                </Link>
+        ));
     }
 
     render() {
+        if (!this.state.userFriends) {
+            return <LoaderPage />
+        }
         return (
             <div className="panel-group col-xs-10 col-xs-offset-1">
                 <div className="panel panel-default rsb-friends-panel">
                     <div className="panel-heading text-center">
                         <h3>Your Friends</h3>
-                        <input className="" type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends.." onChange={this.handleFriendSearch} />
-                        <button type="submit"
-                            onClick={
-                                () => {
-                                    this.filterUsers(data.result[0].Friends,
-                                        this.state.friendSearch,
-                                        "friends")
-                                }
-                            }>
-                            <span className="glyphicon glyphicon-search"></span>
-                        </button>
+                        <input className='rsb-friend-search' type="search" value={this.state.friendSearch} id="rsb-friends-search-bar" placeholder="Search Friends..." onChange={this.filterUsers} />
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {this.renderUsers(this.state.currentFriends)}
+                            {/*This either displays the filtered array of friends or all the friends */}
+                            {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
                     </div>
                 </div>
-                <div className="panel panel-default rsb-recent-players-panel">
-                    <div className="panel-heading text-center">
-                        <h3 className="">Recent Players</h3>
-                        <input className="" type="search" value={this.state.recentSearch} id="rsb-recent-players-search-bar" placeholder="Search Recent.." onChange={this.handleRecentSearch} />
-                        <button type="submit"
-                            onClick={
-                                () => {
-                                    this.filterUsers(data.result[0].RecentPlayers,
-                                        this.state.recentSearch,
-                                        "recents")
-                                }
-                            }>
-                            <span className="glyphicon glyphicon-search"></span>
-                        </button>
-                    </div>
-                    <div className="panel-body">
-                        <div className="row">
-                            {this.renderUsers(this.state.currentRecents)}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div >
         )
     }
 }

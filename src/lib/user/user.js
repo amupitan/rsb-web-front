@@ -24,3 +24,13 @@ export default async function _getUserInfo(username, { populate = '0' } = {}) {
     }
     return res.data;
 }
+
+export async function _getUserFriends(username) {
+    const res = await yoda.post('/user/f/1', (new YodaRequest({}, {
+        username: username,
+    })).toString(), true);
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    return res.data;
+}

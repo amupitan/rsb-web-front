@@ -1,36 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import RSBButton from '../ui/RSBButton';
-import defaultImg from '../../dummy/default.jpg';
+import Avatar from '../ui/Avatar';
 
 
-function UserRequests(props) {
-    const userRequestsElement = () => {
-        let userRequests = [];
-        props.info.forEach((el, i) => {
-            let displaySport
-            if (el.Sport) {
-                displaySport = <span><i>{el.Sport}</i></span>;
+const UserRequests = ({ requests }) => {
+    return (
+        <div>
+            {
+                requests.map((request, i) => {
+                    const { username, firstname, lastname, avatar, sport, time, } = request;
+
+                    return (
+                        <div key={i} className="populate-requests row">
+                            <Link to={`/user/${username}`} key={i} >
+                                <div className="col-sm-4 col-sm-pull">
+                                    <Avatar avatar={avatar} alt='profile-pic' className='profile-pic-xs' />
+                                </div>
+                                <div className="col-sm-4">
+                                    <span>{username}</span><br />
+                                    <span>{firstname} {lastname}</span><br />
+                                    {sport && <span><i>{sport}</i></span>}<br />
+                                    <span>{time}</span>
+                                </div>
+                            </Link>
+                            <ReviewRequest accept />
+                            <ReviewRequest accept={false} />
+                        </div>
+                    );
+                })
             }
-            userRequests.push(
-                <div key={i} className="populate-requests row">
-                    <div className="col-sm-4 col-sm-pull">
-                        <img src={el.profilePic || defaultImg} alt="Profile" className="profile-pic-xs" />
-                    </div>
-                    <div className="col-sm-4">
-                        <span>{el.username}</span><br />
-                        <span>{el.firstname} {el.lastname}</span><br />
-                        {displaySport}<br />
-                        <span>{el.Time}</span>
-                    </div>
-                    <ReviewRequest accept />
-                    <ReviewRequest accept={false} />
-                </div>);
-        });
-        return userRequests;
-    }
-
-    return <div>{userRequestsElement()}</div>;
+        </div>
+    );
 
 }
 

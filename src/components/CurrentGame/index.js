@@ -8,8 +8,8 @@ import { Notifiable } from "../../mixins";
 import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
+import Avatar from '../ui/Avatar';
 
-import defaultImg from '../../dummy/default.jpg';
 import './style.css';
 
 class CurrentGame extends Notifiable(Component) {
@@ -37,7 +37,7 @@ class CurrentGame extends Notifiable(Component) {
 
     renderUsers() {
         const members = this.game.members && this.game.members.map((player, i) => {
-            return <UserLabel key={i} {...player} profilepic={defaultImg} />
+            return <UserLabel key={i} {...player} />
         });
         return members;
     }
@@ -116,20 +116,22 @@ class CurrentGame extends Notifiable(Component) {
     }
 }
 
-const UserLabel = ({ profilepic, firstname, lastname, username }) => {
+const UserLabel = ({ avatar, firstname, lastname, username }) => {
     return (
         <div className="row" >
-            <div className="col-sm-4 col-sm-pull">
-                <img src={profilepic} alt="Profile" className="profile-pic-xs" />
-            </div>
-            <div className="col-sm-4">
-                <RSBLabel
-                    name={`${firstname || ''} ${lastname || ''}`}
-                    onClickFunction={() => {
-                        console.log("Pressed ", firstname, lastname);
-                    }}
-                />
-            </div>
+            <Link to={`/user/${username}`} >
+                <div className="col-sm-4 col-sm-pull">
+                    <Avatar avatar={avatar} alt='profile-pic' className='profile-pic-xs' />
+                </div>
+                <div className="col-sm-4">
+                    <RSBLabel
+                        name={`${firstname || ''} ${lastname || ''}`}
+                        onClickFunction={() => {
+                            console.log("Pressed ", firstname, lastname);
+                        }}
+                    />
+                </div>
+            </Link>
         </div>
     );
 };
