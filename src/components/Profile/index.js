@@ -9,6 +9,7 @@ import GameInvites from './GameInvites';
 import GameHistory from './GameHistory';
 import Heading from './Heading';
 import FriendsList from './FriendsList';
+import AddOrRemove from './AddOrRemove';
 
 import './style.css';
 
@@ -43,6 +44,7 @@ class Profile extends Notifiable(Component) {
     }
 
     render() {
+        console.log(this.state);
         if (!this.state || this.state.user == null) {
             return <LoaderPage />
         } else if (this.state.user.friendRequests) { //If you can see friendRequesets, you are the current user.
@@ -67,6 +69,10 @@ class Profile extends Notifiable(Component) {
                         <FriendsList {...this.state} />
                         <GameHistory {...this.state.user.username} />
                     </div>
+                    <AddOrRemove
+                        currentUsername={getLoggedInUserName()}
+                        friendsList={this.state.friends}
+                    />
                 </div >
             )
         }
