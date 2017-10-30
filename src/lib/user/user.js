@@ -34,3 +34,16 @@ export async function _getUserFriends(username) {
     }
     return res.data;
 }
+
+export async function _handleImageChange(e) {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+        console.log("Loaded!");
+        console.log(reader);
+        //Upload to file
+    }
+
+    reader.readAsDataURL(file)
+}

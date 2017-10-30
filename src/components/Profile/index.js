@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import user, { getLoggedInUserName } from '../../lib/user';
+import user, { getLoggedInUserName, handleImageChange } from '../../lib/user';
 import { Notifiable } from '../../mixins';
 
 import { LoaderPage } from '../ui/Loader';
@@ -39,6 +39,7 @@ class Profile extends Notifiable(Component) {
         this.setState({
             user: userInfo,
             friends: userInfo.friends,
+            handleImageChange: handleImageChange
         });
     }
 
