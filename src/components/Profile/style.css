@@ -67,6 +67,7 @@ button{
 }
 .rsb-profile-card:hover .upload-pic{
     display:inline;
+    cursor: pointer;
 }
 
 .rsb-profile-img {
