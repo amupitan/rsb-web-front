@@ -15,7 +15,7 @@ export function _getLoggedInUserName() {
     return session.getItem('username');
 }
 
-export default async function _getUserInfo(username, { populate = '0' } = {}) {
+export default async function _getUserInfo({ username, populate = '0' } = {}) {
     const res = await yoda.post(`/user/p/${populate}`, (new YodaRequest({}, {
         username: username,
     })).toString(), true);

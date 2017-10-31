@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 /**
  * How to use: 
@@ -35,32 +35,17 @@ import React, { Component } from 'react';
  * 
  */
 
-class RSBButton extends Component {
-    constructor(prop) {
-        super(prop);
+const RSBButton = ({ text, buttonType, onClickFunction, glyphicons, modalName, className }) => {
+    return (
+        <div>
+            <button type="button"
+                className={"btn btn-" + buttonType + " " + glyphicons + " " + className}
+                onClick={onClickFunction}
+                data-toggle="modal" data-target={"#" + modalName}
 
-        this.state = {
-            text: prop.text,
-            buttonType: prop.buttonType,
-            onClickFunction: prop.onClickFunction ? prop.onClickFunction : " ",
-            glyphicons: prop.glyphicons ? prop.glyphicons : " ",
-            modalName: prop.modalName,
-            className: prop.className
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <button type="button" 
-                        className={"btn btn-" + this.state.buttonType + " " + this.state.glyphicons + " " + this.state.className} 
-                        onClick={this.state.onClickFunction}
-                        data-toggle="modal" data-target={"#"+ this.state.modalName}
-                        
-                        >{this.state.text}</button>
-            </div>
-        );
-    }
+            >{text}</button>
+        </div>
+    );
 }
 
 export default RSBButton;

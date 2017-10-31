@@ -70,3 +70,7 @@ button{
 .rsb-profile-info-container {
     padding: 2px 16px;
 }
+
+.rsb-add-or-remove-btn{
+    margin-bottom: 15px;
+}

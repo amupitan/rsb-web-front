@@ -3,63 +3,73 @@ import React, { Component } from 'react';
 import RSBButton from '../ui/RSBButton';
 
 class AddOrRemove extends Component {
+    //We are checking buttonStatus, which will swap: add, remove, pending
+    //if buttonStatus == 0, pending
+    //1 -> add, 2 -> remove
+
+
     constructor(props) {
         super(props);
 
         this.state = {
-            currentUsername: props.currentUsername,
-            friendsList: props.friendsList,
-            isFriend: false,
+            buttonStatus: -1,
         }
+
+        this.render = this.render.bind(this);
+        this.onAddClick = this.onAddClick.bind(this);
+        this.onRemoveClick = this.onRemoveClick.bind(this);
     }
 
     onAddClick() {
-        //call for add friend
+        //TODO: call for friend request
 
         this.setState({
-            isFriend: true
+            buttonStatus: 0
         });
     }
 
     onRemoveClick() {
-        //call for remove friend
+        //TODO: call for remove friend
 
         this.setState({
-            isFriend: false
+            buttonStatus: 1
         });
     }
 
     componentWillMount() {
-        console.log(this.state.friendsList);
-        for (var i = 0; i < this.state.friendsList.length; ++i) {
-            if (this.state.currentUsername === this.state.friendsList[i].username) {
-                this.setState({
-                    isFriend: true
-                });
-            }
-        }
+        //TODO: backend call to check if friends
+        //if friends, set buttonState to 'add'
+        //if not friends, check if there is a friend request pending
+        //if they are friends AND there is a pending request and the currentUser sent it, set buttonState to 'pending'
+        //if they are just friends, set buttonState to 'remove'
+
+        this.setState({
+            buttonStatus: 2,
+        });
+
     }
 
+
     render() {
-        if (this.state.isFriend) {
-            return (
-                <div>
-                    <RSBButton
-                        text="Remove"
-                        glyphicons="glyphicon glyphicon glyphicon-minus"
-                        onClickFunction={this.onRemoveClick}
-                        className="test-hamburger"
-                    />
-                </div>
-            );
+        let buttonInfo = {};
+        const curButton = this.state.buttonStatus;
+        if (curButton === 2) {
+            buttonInfo = { text: ' Unfriend', buttonType: "danger", glyphicons: "glyphicon glyphicon-minus", onClickFunction: this.onRemoveClick };
         }
+        else if (curButton === 1) {
+            buttonInfo = { text: ' Add', buttonType: "success", glyphicons: "glyphicon glyphicon-plus", onClickFunction: this.onAddClick };
+        }
+        else {
+            buttonInfo = { text: ' Pending', buttonType: "info", glyphicons: "glyphicon glyphicon-envelope", onClickFunction: '' };
+        }
+
         return (
-            <div>
+            <div className="text-center rsb-add-or-remove-btn">
                 <RSBButton
-                    text="Add"
-                    glyphicons="glyphicon glyphicon glyphicon-plus"
-                    onClickFunction={this.onAddClick}
-                    className="test-hamburger"
+                    text={buttonInfo.text}
+                    glyphicons={buttonInfo.glyphicons}
+                    onClickFunction={buttonInfo.onClickFunction}
+                    buttonType={buttonInfo.buttonType}
                 />
             </div>
         );

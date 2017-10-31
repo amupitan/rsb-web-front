@@ -17,6 +17,9 @@ class Profile extends Notifiable(Component) {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isCurrentUser: false
+        }
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
     }
@@ -31,7 +34,19 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        const userInfo = await user(username, { populate: 1 });
+
+        var userInfo = await user({ username, populate: 1 });
+
+        if (userInfo.username === getLoggedInUserName()) {
+            this.setState({
+                isCurrentUser: true
+            });
+        }
+        else {
+            this.setState({
+                isCurrentUser: false
+            });
+        }
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
             return console.error(userInfo);
@@ -39,15 +54,14 @@ class Profile extends Notifiable(Component) {
 
         this.setState({
             user: userInfo,
-            friends: userInfo.friends,
+            friends: userInfo.friends || [],
         });
     }
 
     render() {
-        console.log(this.state);
         if (!this.state || this.state.user == null) {
             return <LoaderPage />
-        } else if (this.state.user.friendRequests) { //If you can see friendRequesets, you are the current user.
+        } else if (this.state.isCurrentUser) { //If you can see friendRequesets, you are the current user.
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
                     <Heading {...this.state.user} />
@@ -62,17 +76,21 @@ class Profile extends Notifiable(Component) {
                 </div >
             )
         } else {
+            console.log(this.state);
+            console.log("should not get here");
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
-                    <Heading {...this.state.user} />
+                    <div className="row">
+                        <Heading {...this.state.user} />
+                        <AddOrRemove
+                            currentUsername={this.state.user.username}
+                            friendsList={this.state.friends}
+                        />
+                    </div>
                     <div className="row">
                         <FriendsList {...this.state} />
                         <GameHistory {...this.state.user.username} />
                     </div>
-                    <AddOrRemove
-                        currentUsername={getLoggedInUserName()}
-                        friendsList={this.state.friends}
-                    />
                 </div >
             )
         }
