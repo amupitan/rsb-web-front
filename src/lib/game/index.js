@@ -1,5 +1,5 @@
 import session from '../session';
-import _joinAndGetGame, { _getGamesNearLocation, _joinGame, _createGame, _leaveGame } from './game';
+import _joinAndGetGame, { _getGamesNearLocation, _joinGame, _createGame, _leaveGame, _getGameHistory } from './game';
 import { showError } from "../../mixins/notifiable";
 import redirect from '../navigator';
 import constraints from "../constraints";
@@ -23,6 +23,7 @@ export const getGamesNearLocation = _getGamesNearLocation;
 export const joinGame = _joinGame;
 export const createGame = _createGame;
 export const leaveGame = _leaveGame;
+export const getGameHistory = _getGameHistory
 
 // Returns the current game wrapped in Promise or an error if there is no current game
 export default async function () {

@@ -1,47 +1,43 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const GameHistory = game => {
-    // const hasGames = game.gameHistory && game.gameHistory.length > 0;
-
-    const hasGames = [{
-        name: "Game Name",
-        // startTime: (new Date(1 + ":" + 0)).toISOString(),
-        // endTime: (new Date(2 + ":" + 0)).toISOString(),
-        sport: "soccer",
-        maxAge: 12,
-        minAge: 14,
-        lat: 42,
-        lng: -93.5,
-        rating: 0
-    }]
 
     return (
         <div className="col-sm-6 panel panel-default">
             <div className="panel-heading-rsb">
                 <h2>Game History</h2>
             </div>
-            {(hasGames && Games(hasGames)) || NoGame}
+            {(game && Games(game)) || NoGame}
         </div>
     );
 }
 
-const Games = (hasGames) => {
+const Games = (games) => {
+    let extractedGames = [];
+
+    for (let key in games) {
+        let indivisualGame = games[key];
+        extractedGames.push(indivisualGame);
+    }
+
     return (
         <div className="scroll-info panel-body">
             {
-                hasGames.map((game, i) => {
+                extractedGames.map((game, i) => {
                     const { name, sport, lat, lng } = game;
                     return (
                         <div key={i} className="populate-requests row">
-                            {/* <Link to={`/user/${username}`} key={i} > */}
-                            <div className="col-sm-4 col-sm-pull">
-                                <span><b>{name}</b></span>
-                            </div>
-                            <div className="col-sm-4">
-                                <span>{lat} {lng}</span><br />
-                                <span>{sport}</span><br />
-                            </div>
-                            {/* </Link> */}
+                            <Link to={`/games`} key={i} >
+                                <div className="col-sm-4 col-sm-pull">
+                                    <span><b>{name}</b></span>
+                                </div>
+                                <div className="col-sm-4">
+                                    <span>{lat} {lng}</span><br />
+                                    <span>{sport}</span><br />
+                                </div>
+                            </Link>
                         </div>
                     );
                 })

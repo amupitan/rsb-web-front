@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import user, { getLoggedInUserName } from '../../lib/user';
+import { getGameHistory } from '../../lib/game';
 import { Notifiable } from '../../mixins';
 
 import { LoaderPage } from '../ui/Loader';
@@ -36,9 +37,15 @@ class Profile extends Notifiable(Component) {
             return console.error(userInfo);
         }
 
+        const gameHistory = await getGameHistory(username);
+        if (gameHistory.error) {
+            return console.log(gameHistory);
+        }
+
         this.setState({
             user: userInfo,
             friends: userInfo.friends,
+            gameHistory: gameHistory.res
         });
     }
 
@@ -55,7 +62,7 @@ class Profile extends Notifiable(Component) {
                     </div>
                     <div className="row">
                         <FriendsList {...this.state} />
-                        <GameHistory {...this.state.user.username} />
+                        <GameHistory {...this.state.gameHistory} />
                     </div>
                 </div >
             )

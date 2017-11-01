@@ -89,4 +89,21 @@ export async function _createGame(data) {
     redirect({ path: '/game', state: { game: res.data } });
 };
 
+export async function _getGameHistory(username) {
+    //TODO get backend info to get this doooone
+    return {
+        res: [{
+            name: "Game Name",
+            // startTime: (new Date(1 + ":" + 0)).toISOString(),
+            // endTime: (new Date(2 + ":" + 0)).toISOString(),
+            sport: "soccer",
+            maxAge: 12,
+            minAge: 14,
+            lat: 42,
+            lng: -93.5,
+            rating: 0
+        }]
+    }
+}
+
 export default _joinAndGetGame;
