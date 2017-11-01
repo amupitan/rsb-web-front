@@ -15,8 +15,12 @@ const GameHistory = game => {
 }
 
 const Games = (games) => {
+    /** If I do games.map, I get a games.map not a function error. 
+     * That is because games is set to {0:{...}}. 
+     * I need to extract the games, and I'm doing that by using the key to get the games.
+     * From that array, I can map it. 
+     */
     let extractedGames = [];
-
     for (let key in games) {
         let indivisualGame = games[key];
         extractedGames.push(indivisualGame);

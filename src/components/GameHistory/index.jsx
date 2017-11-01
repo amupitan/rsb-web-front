@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import { getLoggedInUserName } from '../../lib/user';
 import { getGameHistory } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 
+import displayGames from './displayGames';
 import { LoaderPage } from '../ui/Loader';
 
 import './style.css';
@@ -38,7 +38,20 @@ class GameHistory extends Notifiable(Component) {
     renderGames(games) {
         if (games.length === 0) return <div>No games in History</div>
 
-        return (<div>Games go here </div>)
+        let extractedGames = [];
+        for (let key in games) {
+            let indivisualGame = games[key];
+            extractedGames.push(indivisualGame);
+        }
+        let gameDisplays = [];
+
+        extractedGames[0].forEach((element, i) => {
+            gameDisplays.push(
+                <tbody key={i} className={'col' + (i % 2)}>
+                    {displayGames(element)}
+                </tbody>)
+        }, this);
+        return gameDisplays;
     }
 
     render() {
@@ -53,13 +66,20 @@ class GameHistory extends Notifiable(Component) {
                     </div>
                     <div className="panel-body">
                         <div className="row">
-                            {this.renderGames(this.state.games)}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Game Name</th>
+                                        <th>Sport</th>
+                                    </tr>
+                                </thead>
+                                {this.renderGames(this.state.games)}
+                            </table>
+
                         </div>
                     </div>
                 </div>
             </div >
-
-
         )
     }
 }
