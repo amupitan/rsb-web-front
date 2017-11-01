@@ -42,7 +42,6 @@ const views = [
         isMenuOption: false,
         noRoute: false,
     },
-
     {
         name: 'UserPage',
         path: 'user/:username?',

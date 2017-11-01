@@ -23,7 +23,7 @@ const menuGenerator = (width) => {
     return (
       <div className="rsb-menu" style={{ width: width }}>
         <UserDisplay
-          profileInfo={userInfo}
+          user={userInfo}
         />
         <div className='menu-option'>
           {views.map((view, i) => (
