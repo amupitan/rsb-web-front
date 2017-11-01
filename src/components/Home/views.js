@@ -5,6 +5,7 @@ import Settings from '../Settings';
 import Join from '../Join';
 import Friends from '../Friends';
 import Profile from '../Profile';
+import GameHistory from '../GameHistory';
 
 // Represents the views displayed by links from the hamburger menu
 // the [component] should always be a React.Component and not a callback
@@ -71,6 +72,11 @@ const views = [
         path: 'friends',
         isMenuOption: true,
         component: Friends,
+    }, {
+        name: 'Game History',
+        path: 'games',
+        isMenuOption: false,
+        component: GameHistory
     }
 ];
 
