@@ -58,7 +58,7 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        let userInfo = await user(username, { populate: 1 });
+        const userInfo = await user(username, { populate: 1 });
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
             return console.error(userInfo);
