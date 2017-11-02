@@ -8,7 +8,7 @@ import UserDisplay from './UserDisplay';
 const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
   if (menu) {
     return (
-      <div>
+      <div className="rsb-menu" style={{ width: width }}>
         <UserDisplay {...user} />
         {menuGenerator(width)(views, onClick)}
       </div>
@@ -26,7 +26,7 @@ const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
 const menuGenerator = (width) => {
   return (views, onClick) => {
     return (
-      <div className="rsb-menu" style={{ width: width }}>
+      <div >
         <div className='menu-option'>
           {views.map((view, i) => (
             <MenuOption key={`${view.name}-menu-${i}`} name={view.name} path={view.path} onClick={onClick} />
