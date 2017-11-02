@@ -55,6 +55,7 @@ const Notifiable = (Notifiable) => class extends Notifiable {
 
     renderNotification() {
         this._renderInformation('info', (info) => ({ message: info }));
+        this._renderInformation('success', (msg) => ({ message: msg, type: 'success' }));
     }
 
     renderError() {
