@@ -4,6 +4,13 @@ import session from '../session';
 import errorFormatter from '../errors';
 import { showError } from '../../mixins/notifiable';
 
+export const FriendStatus = {
+    IS_USER: 'isUser',
+    ARE_FRIENDS: 'areFriends',
+    SENT_R: 'sentRequest',
+    RECEIVED_R: 'receivedRequest',
+}
+
 function _handleError(error) {
     const err = { error: errorFormatter(error) }
     showError({ message: err.error });
@@ -35,12 +42,11 @@ export async function _getUserFriends(username) {
     return res.data;
 }
 
-export async function _handleImageChange(e) {
-    if (e.target.files[0]) {
-        let file = e.target.files[0];
-        await yoda.post('/upload', (new YodaRequest({}, {
-            file: file,
-        })).toString(), true, undefined);
+export async function uploadProfilePhoto(file) {
+    const res = await yoda.postFile('/upload', file, { isRelative: true });
+    if (res.error) {
+        return _handleError(res.data);
     }
+    return res.data;
 }
 

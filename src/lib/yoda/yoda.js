@@ -95,6 +95,31 @@ export default class Yoda {
         }
     }
 
+    static async postFile(path, file, { isRelative = false }) {
+        if (isRelative) path = `${url}${path}`;
+
+        const body = new FormData();
+        body.append('file', file);
+
+        try {
+            const res = await fetch(path, {
+                headers: {
+                    'Accept': 'application/json',
+                },
+                credentials: 'include',
+                method: 'POST',
+                body: body,
+            });
+            if (res.status < 200 || res.status >= 300) {
+                return this.handleHTTPError(await res.json());
+            }
+            return new YodaResponse(await res.json());
+        } catch (err) {
+            console.error(err);
+            return this.handleHTTPError({});
+        }
+    }
+
     static async get(path, isRelative = false) {
         if (isRelative) {
             // TODO: check if prefix slash was added from path
