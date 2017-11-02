@@ -74,7 +74,7 @@ const views = [
         component: Friends,
     }, {
         name: 'Game History',
-        path: 'games',
+        path: 'history',
         isMenuOption: false,
         component: GameHistory
     }

@@ -33,7 +33,7 @@ const Games = (games) => {
                     const { name, sport, lat, lng } = game;
                     return (
                         <div key={i} className="populate-requests row">
-                            <Link to={`/games`} key={i} >
+                            <Link to={`/history`} key={i} >
                                 <div className="col-sm-4 col-sm-pull">
                                     <span><b>{name}</b></span>
                                 </div>
