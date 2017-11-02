@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import session from '../session';
 
 //TODO: get these from somewhere else
 const remoteServerAddress = 'http://proj-309-rb-b-5.cs.iastate.edu';
@@ -61,13 +62,15 @@ export default class Yoda {
 
     static handleHTTPError(res) {
         //TODO: do some error handling
+        if (res.status === 401 || (res.result && res.result.code === 10)) { //TODO: remove hard-coded 10
+            session.logOut();
+        }
         res.meta = res.meta || {};
-        res.result = res.result || {};
+        res.result = res.result || { code: 10, message: 'unauthorized' };
         return new YodaResponse(res, true);
     }
 
     static async post(path, body, isRelative = false) {
-        let temp;
         if (isRelative) {
             // TODO: check if prefix slash was added from path
             path = `${url}${path}`;
@@ -82,20 +85,42 @@ export default class Yoda {
                 method: 'POST',
                 body: body,
             });
-            temp = res;
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
             return new YodaResponse(await res.json());
         } catch (err) {
-            console.log(temp);
+            console.error(err);
+            return this.handleHTTPError({});
+        }
+    }
+
+    static async postFile(path, file, { isRelative = false }) {
+        if (isRelative) path = `${url}${path}`;
+
+        const body = new FormData();
+        body.append('file', file);
+
+        try {
+            const res = await fetch(path, {
+                headers: {
+                    'Accept': 'application/json',
+                },
+                credentials: 'include',
+                method: 'POST',
+                body: body,
+            });
+            if (res.status < 200 || res.status >= 300) {
+                return this.handleHTTPError(await res.json());
+            }
+            return new YodaResponse(await res.json());
+        } catch (err) {
             console.error(err);
             return this.handleHTTPError({});
         }
     }
 
     static async get(path, isRelative = false) {
-        let temp;
         if (isRelative) {
             // TODO: check if prefix slash was added from path
             path = `${url}${path}`
@@ -109,13 +134,11 @@ export default class Yoda {
                 credentials: 'include',
                 method: 'GET',
             });
-            temp = res;
             if (res.status < 200 || res.status >= 300) {
                 return this.handleHTTPError(await res.json());
             }
             return new YodaResponse(await res.json());
         } catch (err) {
-            console.log(temp);
             console.error(err);
             return this.handleHTTPError({});
         }
