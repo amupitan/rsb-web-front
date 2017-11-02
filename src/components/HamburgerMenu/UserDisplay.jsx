@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Avatar from '../ui/Avatar';
 
-const UserDisplay = ({ user }) => {
-    if (!user) return null;
+const UserDisplay = ({ username, firstname, lastname, avatar }) => {
     return (
         <div>
             <Link to='/user' >
                 <div className="text-center">
-                    <Avatar avatar={user.avatar} alt='' className='rsb-user-picture' />
+                    <Avatar avatar={avatar} alt='' className='rsb-user-picture' />
                 </div>
                 <div className="text-center">
-                    <h1 className='rsb-menu-username'>{user.firstname + ' ' + user.lastname}</h1>
+                    <h1 className='rsb-menu-username'>{`${firstname} ${lastname}`}</h1>
                 </div>
                 <div className="text-center">
-                    <h1 className='rsb-menu-name'>{'@' + user.username}</h1>
+                    <h1 className='rsb-menu-name'>{`@${username}`}</h1>
                 </div>
             </Link>
         </div>

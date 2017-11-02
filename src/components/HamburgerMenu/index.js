@@ -5,9 +5,14 @@ import RSBButton from '../ui/RSBButton';
 import './style.css';
 import UserDisplay from './UserDisplay';
 
-const HamburgerMenu = ({ views, onClick, menu, width, userInfo }) => {
+const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
   if (menu) {
-    return menuGenerator(width)(views, onClick, userInfo)
+    return (
+      <div>
+        <UserDisplay {...user} />
+        {menuGenerator(width)(views, onClick)}
+      </div>
+    );
   }
   return (
     <RSBButton
@@ -19,12 +24,9 @@ const HamburgerMenu = ({ views, onClick, menu, width, userInfo }) => {
 }
 
 const menuGenerator = (width) => {
-  return (views, onClick, userInfo) => {
+  return (views, onClick) => {
     return (
       <div className="rsb-menu" style={{ width: width }}>
-        <UserDisplay
-          user={userInfo}
-        />
         <div className='menu-option'>
           {views.map((view, i) => (
             <MenuOption key={`${view.name}-menu-${i}`} name={view.name} path={view.path} onClick={onClick} />
