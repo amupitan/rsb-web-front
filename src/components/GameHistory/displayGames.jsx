@@ -1,13 +1,14 @@
 import React from 'react';
 import Rater from '../ui/Rater/Rater';
 
-export default function displayGames({ name, sport }, onchange) {
+export default function displayGames({ name, sport }, onchange, rate) {
 
     return (
         <tr>
             <td>{name}</td>
             <td>{sport}</td>
-            <Rater rating={4} onchange={onchange} />
+            <td>Haven't done this yet</td>
+            <Rater rating={rate} onchange={onchange} />
         </tr>
     )
 }

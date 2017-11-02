@@ -15,13 +15,12 @@ export default class Rater extends Component {
         let stars = []
         for (let i = 0; i < 5; i++) {
             let starColor = (numStars !== 0) ? ((numStars > i) ? "checked" : "") : "unrated";
-            stars[i] = (<span key={i} onClick={this.props.onchange} className={`fa fa-star ${starColor}`}></span>)
+            stars[i] = (<span key={i} onClick={() => { this.props.onchange(i + 1) }} className={`fa fa-star ${starColor}`}></span>)
         }
         return stars;
     }
 
     render() {
-        console.log(this.props);
         return (
             <td>
                 {this.getStars(this.props.rating, this.props.onChange)}
