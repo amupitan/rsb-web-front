@@ -34,3 +34,25 @@ export async function _getUserFriends(username) {
     }
     return res.data;
 }
+
+//ask kern
+export async function _removeFriend(username) {
+    const res = await yoda.post('/remove/f', (new YodaRequest({}, {
+        "unfriend": "username",
+    })).toString(), true);
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    return res.data;
+}
+
+export async function _sendFriendRequest(username) {
+    const res = await yoda.post('/invite/m/send/t/0', (new YodaRequest({}, {
+        to: username,
+    })).toString(), true);
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    return res.data;
+}
+

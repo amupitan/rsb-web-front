@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import user, { getUser, removeFriend, sendFriendRequest } from '../../lib/user';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -13,46 +14,65 @@ class AddOrRemove extends Component {
 
         this.state = {
             buttonStatus: -1,
+            friendStatus: null,
         }
 
         this.render = this.render.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
         this.onRemoveClick = this.onRemoveClick.bind(this);
+        this.getThisUser = this.getThisUser.bind(this);
+    }
+
+    async getThisUser() {
+        const res = await getUser({ username: this.props.currentUsername });
+        const status = res.friendStatus;
+        this.setState({
+            friendStatus: status,
+        });
     }
 
     onAddClick() {
-        //TODO: call for friend request
-
+        sendFriendRequest(this.props.currentUsername);
         this.setState({
             buttonStatus: 0
         });
     }
 
     onRemoveClick() {
-        //TODO: call for remove friend
-
+        removeFriend(this.props.currentUsername);
         this.setState({
             buttonStatus: 1
         });
     }
 
     componentWillMount() {
-        //TODO: backend call to check if friends
-        //if friends, set buttonState to 'add'
-        //if not friends, check if there is a friend request pending
-        //if they are friends AND there is a pending request and the currentUser sent it, set buttonState to 'pending'
-        //if they are just friends, set buttonState to 'remove'
+        this.getThisUser();
+    }
 
-        this.setState({
-            buttonStatus: 2,
-        });
-
+    componentWillUpdate() {
+        //check the button status so the function doesn't continuously rerender
+        if (this.state.friendStatus === "areFriends" && this.state.buttonStatus !== 2) {
+            this.setState({
+                buttonStatus: 2,
+            });
+        }
+        else if ((this.state.friendStatus === "receivedRequest" || this.state.friendStatus === "sentRequest") && this.state.buttonStatus !== 0) {
+            this.setState({
+                buttonStatus: 0,
+            });
+        }
+        else if (this.state.friendStatus == null && this.state.buttonStatus !== 1) {
+            this.setState({
+                buttonStatus: 1,
+            });
+        }
     }
 
 
     render() {
         let buttonInfo = {};
         const curButton = this.state.buttonStatus;
+
         if (curButton === 2) {
             buttonInfo = { text: ' Unfriend', buttonType: "danger", glyphicons: "glyphicon glyphicon-minus", onClickFunction: this.onRemoveClick };
         }

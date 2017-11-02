@@ -76,8 +76,6 @@ class Profile extends Notifiable(Component) {
                 </div >
             )
         } else {
-            console.log(this.state);
-            console.log("should not get here");
             return (
                 <div className="panel col-xs-10 col-xs-offset-1">
                     <div className="row">
