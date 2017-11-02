@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 
-<<<<<<< HEAD
-import user, { getLoggedInUserName } from '../../lib/user';
 import { getGameHistory } from '../../lib/game';
-=======
 import user, { getLoggedInUserName, uploadProfilePhoto, FriendStatus } from '../../lib/user';
 import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
->>>>>>> master
 import { Notifiable } from '../../mixins';
 
 import { LoaderPage } from '../ui/Loader';
