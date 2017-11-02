@@ -32,8 +32,8 @@ async function _login(data) {
     if (res.error) {
         return _handleError(res.data)
     }
-    return { data: '/', username: data.username };
 
+    return { data: '/', user: res.data };
 };
 
 function _handleError(error) {
@@ -51,8 +51,9 @@ export async function _logout(data) {
     redirect({ path: '/login' });
 };
 
-export function _onLogin(loginInfo) {
-    session.setItem('username', loginInfo.username)
+export function _onLogin({ user }) {
+    session.user = user;
+    session.setItem('username', user.username); // for backward compatibility DO NOT USE
 }
 
 export default _login;
