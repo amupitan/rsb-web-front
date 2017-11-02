@@ -35,6 +35,10 @@ class GameHistory extends Notifiable(Component) {
         }
     }
 
+    onchange() {
+        console.log("Boi boi boi boi")
+    }
+
     renderGames(games) {
         if (games.length === 0) return <div>No games in History</div>
 
@@ -48,7 +52,7 @@ class GameHistory extends Notifiable(Component) {
         extractedGames[0].forEach((element, i) => {
             gameDisplays.push(
                 <tbody key={i} className={'col' + (i % 2)}>
-                    {displayGames(element)}
+                    {displayGames(element, this.onchange)}
                 </tbody>)
         }, this);
         return gameDisplays;
@@ -71,6 +75,7 @@ class GameHistory extends Notifiable(Component) {
                                     <tr>
                                         <th>Game Name</th>
                                         <th>Sport</th>
+                                        <th>Rating</th>
                                     </tr>
                                 </thead>
                                 {this.renderGames(this.state.games)}
