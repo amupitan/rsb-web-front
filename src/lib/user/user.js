@@ -35,7 +35,6 @@ export async function _getUserFriends(username) {
     return res.data;
 }
 
-//ask kern
 export async function _removeFriend(username) {
     const res = await yoda.post('/remove/f', (new YodaRequest({}, {
         "unfriend": "username",

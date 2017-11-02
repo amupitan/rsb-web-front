@@ -42,11 +42,6 @@ class Profile extends Notifiable(Component) {
                 isCurrentUser: true
             });
         }
-        else {
-            this.setState({
-                isCurrentUser: false
-            });
-        }
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
             return console.error(userInfo);

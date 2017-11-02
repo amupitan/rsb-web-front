@@ -34,14 +34,16 @@ class AddOrRemove extends Component {
     onAddClick() {
         sendFriendRequest(this.props.currentUsername);
         this.setState({
-            buttonStatus: 0
+            buttonStatus: 0,
+            friendStatus: 'sentRequest'
         });
     }
 
     onRemoveClick() {
         removeFriend(this.props.currentUsername);
         this.setState({
-            buttonStatus: 1
+            buttonStatus: 1,
+            friendStatus: null
         });
     }
 
