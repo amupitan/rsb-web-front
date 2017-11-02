@@ -27,6 +27,11 @@ class Profile extends Notifiable(Component) {
     componentWillReceiveProps(nextProps) {
         if (this.props.match.params.username === nextProps.match.params.username) return;
         this.getUserInfo(nextProps.match.params);
+        if (nextProps.match.params.username !== getLoggedInUserName()) {
+            this.state = {
+                isCurrentUser: false
+            }
+        }
     }
 
     componentDidMount() {

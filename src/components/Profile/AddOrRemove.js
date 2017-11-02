@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import user, { getUser, removeFriend, sendFriendRequest } from '../../lib/user';
+import { getUser, removeFriend, sendFriendRequest } from '../../lib/user';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -43,7 +43,7 @@ class AddOrRemove extends Component {
         removeFriend(this.props.currentUsername);
         this.setState({
             buttonStatus: 1,
-            friendStatus: null
+            friendStatus: null,
         });
     }
 
