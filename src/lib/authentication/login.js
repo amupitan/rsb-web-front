@@ -39,7 +39,7 @@ async function _login(data) {
 function _handleError(error) {
     if (error.code === 9) {
         // user is already logged in
-        return { data: '/' };
+        return { data: '/', user: {} };
     }
     return { error: errorFormatter(error) };
 }
@@ -52,8 +52,10 @@ export async function _logout(data) {
 };
 
 export function _onLogin({ user }) {
-    session.user = user;
-    session.setItem('username', user.username); // for backward compatibility DO NOT USE
+    if (user.username) {
+        session.user = user;
+        session.setItem('username', user.username); // for backward compatibility DO NOT USE
+    }
 }
 
 export default _login;
