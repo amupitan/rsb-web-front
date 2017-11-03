@@ -26,7 +26,6 @@ class AddOrRemove extends Component {
 
     async getThisUser() {
         const res = await getUser({ username: this.props.currentUsername });
-        console.log(res);
         const status = res.friendStatus;
         let buttonVal = -1;
         if (status === FriendStatus.ARE_FRIENDS) {

@@ -93,7 +93,6 @@ class Profile extends Notifiable(Component) {
         const { user, errorMessage } = this.state;
         const isMe = user.friendStatus === FriendStatus.IS_USER;
 
-        console.log(this.state.user.username);
         return (
             <div className="panel col-xs-10 col-xs-offset-1">
                 <Heading onImageChange={isMe && this.handleChangePhoto} {...user} errorMessage={errorMessage} />
