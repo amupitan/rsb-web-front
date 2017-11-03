@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RSBButton from '../ui/RSBButton';
 import './style.css';
+import UserDisplay from './UserDisplay';
 
-const HamburgerMenu = ({ views, onClick, menu, width }) => {
+const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
   if (menu) {
-    return menuGenerator(width)(views, onClick)
+    return (
+      <div className="rsb-menu" style={{ width: width }}>
+        <UserDisplay {...user} />
+        {menuGenerator(width)(views, onClick)}
+      </div>
+    );
   }
   return (
     <RSBButton
@@ -20,7 +26,7 @@ const HamburgerMenu = ({ views, onClick, menu, width }) => {
 const menuGenerator = (width) => {
   return (views, onClick) => {
     return (
-      <div className="rsb-menu" style={{ width: width }}>
+      <div >
         <div className='menu-option'>
           {views.map((view, i) => (
             <MenuOption key={`${view.name}-menu-${i}`} name={view.name} path={view.path} onClick={onClick} />
@@ -45,6 +51,7 @@ HamburgerMenu.propTypes = {
   onClick: PropTypes.func,
   menu: PropTypes.bool.isRequired,
   width: PropTypes.string,
+  userInfo: PropTypes.object
 }
 
 HamburgerMenu.defaultProps = {

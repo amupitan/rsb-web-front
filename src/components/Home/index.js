@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+import session from '../../lib/session';
+
 import HamburgerMenu from '../HamburgerMenu';
 import views from './views';
 
@@ -12,7 +14,14 @@ class Home extends Component {
       showMenu: false,
     }
 
+    this.userInfo = session.user;
+
+    this.componentWillUpdate = this.componentWillUpdate.bind(this);
     this.toggeleMenu = this.toggeleMenu.bind(this);
+  }
+
+  componentWillUpdate() {
+    this.userInfo = session.user;
   }
 
   toggeleMenu() {
@@ -25,7 +34,7 @@ class Home extends Component {
     const defaultPath = this.props.default || (views.length > 0 && views[0].path);
     return (
       <div>
-        <HamburgerMenu views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
+        <HamburgerMenu user={this.userInfo} views={views.filter((view) => view.isMenuOption)} onClick={this.toggeleMenu} menu={this.state.showMenu} />
         <div className='display'>
           <Switch>
             {views.filter((view) => !view.noRoute).map((view, i) => (

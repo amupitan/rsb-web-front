@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getUser, removeFriend, sendFriendRequest } from '../../lib/user';
+import { getLoggedInUserName, FriendStatus } from '../../lib/user';
 
 import RSBButton from '../ui/RSBButton';
 
@@ -25,9 +26,21 @@ class AddOrRemove extends Component {
 
     async getThisUser() {
         const res = await getUser({ username: this.props.currentUsername });
+        console.log(res);
         const status = res.friendStatus;
+        let buttonVal = -1;
+        if (status === FriendStatus.ARE_FRIENDS) {
+            buttonVal = 2;
+        }
+        else if (status === FriendStatus.RECEIVED_R || status === FriendStatus.SENT_R) {
+            buttonVal = 0;
+        }
+        else {
+            buttonVal = 1;
+        }
         this.setState({
             friendStatus: status,
+            buttonStatus: buttonVal
         });
     }
 
@@ -35,7 +48,7 @@ class AddOrRemove extends Component {
         sendFriendRequest(this.props.currentUsername);
         this.setState({
             buttonStatus: 0,
-            friendStatus: 'sentRequest'
+            friendStatus: FriendStatus.SENT_R
         });
     }
 
@@ -51,29 +64,13 @@ class AddOrRemove extends Component {
         this.getThisUser();
     }
 
-    componentWillUpdate() {
-        //check the button status so the function doesn't continuously rerender
-        if (this.state.friendStatus === "areFriends" && this.state.buttonStatus !== 2) {
-            this.setState({
-                buttonStatus: 2,
-            });
-        }
-        else if ((this.state.friendStatus === "receivedRequest" || this.state.friendStatus === "sentRequest") && this.state.buttonStatus !== 0) {
-            this.setState({
-                buttonStatus: 0,
-            });
-        }
-        else if (this.state.friendStatus == null && this.state.buttonStatus !== 1) {
-            this.setState({
-                buttonStatus: 1,
-            });
-        }
-    }
-
-
     render() {
         let buttonInfo = {};
         const curButton = this.state.buttonStatus;
+
+        if (this.props.currentUsername === getLoggedInUserName()) {
+            return null;
+        }
 
         if (curButton === 2) {
             buttonInfo = { text: ' Unfriend', buttonType: "danger", glyphicons: "glyphicon glyphicon-minus", onClickFunction: this.onRemoveClick };

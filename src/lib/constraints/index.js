@@ -5,7 +5,8 @@ const constraints = {
         BASKETBALL: 120,
         VOLLEYBALL: 60,
         OTHERS: 60,
-    }
+    },
+    MAX_FILE_SIZE: 2 * 1024 * 1024, //2 MB
 }
 
 export default Object.freeze(constraints);

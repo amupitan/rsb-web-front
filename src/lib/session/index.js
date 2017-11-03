@@ -33,7 +33,7 @@ export default class session {
         localStorage.clear();
     }
 
-    static async setState(state) {
+    static setState(state) {
         if (typeof state !== 'object') return;
         const keys = Object.keys(state);
         for (const key of keys) {
@@ -47,6 +47,22 @@ export default class session {
 
     static get isLoggedIn() {
         return this.contains('username');
+    }
+
+    static get user() {
+        return this.getItem('user');
+    }
+
+    static set user({ firstname, lastname, username, avatar, rating }) {
+        return this.setState({
+            user: {
+                username,
+                firstname,
+                lastname,
+                avatar,
+                rating,
+            }
+        });
     }
 
 }
