@@ -40,8 +40,8 @@ const views = [
         name: 'Profile',
         path: 'user',
         component: Profile,
-        isMenuOption: true,
-        noRoute: true,
+        isMenuOption: false,
+        noRoute: false,
     },
     {
         name: 'UserPage',
