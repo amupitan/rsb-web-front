@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import { getLoggedInUserName } from '../../lib/user';
-import { getGameHistory } from '../../lib/game';
+import { getLoggedInUserName, getGameHistory } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
 import displayGames from './displayGames';

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import { getGameHistory } from '../../lib/game';
-import user, { getLoggedInUserName, uploadProfilePhoto, FriendStatus } from '../../lib/user';
+import user, { getLoggedInUserName, uploadProfilePhoto, FriendStatus, getGameHistory } from '../../lib/user';
 import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
