@@ -3,14 +3,11 @@ import React from 'react';
 import UserRequests from './UserRequests';
 
 
-export default ({ friendRequests, handleClick, removeRequest }) => {
-    function handleOnClick(e) {
-        handleClick(e);
-    }
-
+const FriendRequest = ({ friendRequests, onReview }) => {
     const requests = friendRequests && friendRequests.length > 0 ?
-        <UserRequests requests={friendRequests} handleClick={handleOnClick} /> :
+        <UserRequests requests={friendRequests} onReview={onReview} /> :
         <span>No friend requests</span>;
+
     return (
         <div className="col-sm-6 panel panel-default">
             <div className="panel-heading-rsb">
@@ -21,4 +18,6 @@ export default ({ friendRequests, handleClick, removeRequest }) => {
             </div>
         </div>
     );
-}
+};
+
+export default FriendRequest;

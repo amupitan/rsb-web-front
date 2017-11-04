@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
 
-const UserRequests = ({ requests, handleClick }) => {
-    function handleOnClick(e) {
-        handleClick(e)
-    }
+const UserRequests = ({ requests, onReview }) => {
 
     return (
         <div>
@@ -28,8 +25,8 @@ const UserRequests = ({ requests, handleClick }) => {
                                     <span>{time}</span>
                                 </div>
                             </Link>
-                            <ReviewRequest accept handleClick={handleOnClick} username={username} />
-                            <ReviewRequest accept={false} handleClick={handleOnClick} username={username} />
+                            <ReviewRequest accept onClick={onReview} username={username} />
+                            <ReviewRequest onClick={onReview} username={username} />
                         </div>
                     );
                 })
@@ -39,12 +36,7 @@ const UserRequests = ({ requests, handleClick }) => {
 
 }
 
-const ReviewRequest = ({ accept = false, handleClick, username }) => {
-    function handleOnClick() {
-        handleClick({ username, accept });
-    }
-
-
+const ReviewRequest = ({ accept = false, onClick, username }) => {
     const { glyph, className } = accept ?
         { glyph: 'ok', className: 'accept' } :
         { glyph: 'remove', className: 'decline' };
@@ -54,7 +46,7 @@ const ReviewRequest = ({ accept = false, handleClick, username }) => {
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
                 className={className}
-                onClickFunction={handleOnClick}
+                onClickFunction={() => onClick({ accept, username })}
             />
         </div>
     );
