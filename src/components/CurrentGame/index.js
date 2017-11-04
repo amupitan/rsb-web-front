@@ -10,6 +10,8 @@ import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 import Avatar from '../ui/Avatar';
 
+import hoops from '../../assets/hoop.gif';
+
 import './style.css';
 
 class CurrentGame extends Notifiable(Component) {
@@ -18,7 +20,8 @@ class CurrentGame extends Notifiable(Component) {
 
         this.game = null;
         this.state = {
-            hasGame: false,
+            gameLoaded: false,
+            errorMessage: null,
         }
         this.getCurrentGame = this.getCurrentGame.bind(this);
         this.handleLeaveGame = this.handleLeaveGame.bind(this);
@@ -77,12 +80,18 @@ class CurrentGame extends Notifiable(Component) {
 
     async getCurrentGame() {
         const game = await Game();
-        if (game) {
-            this.game = game;
+        if (game.error) {
             this.setState({
-                hasGame: true,
+                errorMessage: game.error,
             });
-        }//else something really bad happened. TODO: handle
+            return;
+        }
+
+        this.game = game;
+        this.setState({
+            gameLoaded: true,
+            errorMessage: null,
+        });
     }
 
     handleLeaveGame() {
@@ -95,7 +104,10 @@ class CurrentGame extends Notifiable(Component) {
     }
 
     render() {
-        if (!this.state.hasGame) {
+        if (this.state.errorMessage) {
+            return <ErrorBox message={this.state.errorMessage} />;
+        }
+        if (!this.state.gameLoaded) {
             return <LoaderPage />;
         }
 
@@ -135,5 +147,15 @@ const UserLabel = ({ avatar, firstname, lastname, username }) => {
         </div>
     );
 };
+
+const ErrorBox = ({ message }) => (
+    <div className='rsb-current-game-error-box'>
+        <img src={hoops} alt='stick man throwing hoops' width={350} />
+        <p className='rsb-current-game-error-message'>{message}</p>
+        <Link to='/join'>
+            <button className='rsb-current-game-error-button'><span>Join Game </span></button>
+        </Link>
+    </div>
+);
 
 export default CurrentGame;

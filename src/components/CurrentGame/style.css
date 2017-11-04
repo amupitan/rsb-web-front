@@ -25,3 +25,62 @@
     margin-right: 15px;
     margin-bottom: 20px;
 }
+
+.rsb-current-game-error-box {
+    margin: auto;
+    font-family: arial;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 10%;
+    text-align: center;
+
+}
+
+.rsb-current-game-error-button {
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: #503e41;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    width: 210px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .rsb-current-game-error-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .rsb-current-game-error-button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .rsb-current-game-error-button:hover span {
+    padding-right: 25px;
+  }
+  
+  .rsb-current-game-error-button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+.rsb-current-game-error-message{
+    font-size: xx-large;
+    font-family: monospace;
+    color: #503e41;
+}

@@ -12,9 +12,10 @@ const _invalidUsernamePassword = {
 const _yodaErrors = {
     7: _invalidUsernamePassword,
     10: {
-        'unauthorized': 'Your session has timed out. Login to continue',
         'User not logged in': 'Your session has timed out. Login to continue',
+        '*': 'Your session has timed out. Login to continue',
     },
+    30: { '*': 'You are not in a game' },
 }
 
 export default deepFreeze(_yodaErrors);

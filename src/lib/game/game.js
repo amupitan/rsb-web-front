@@ -5,8 +5,9 @@ import errorFormatter from '../errors';
 import { showError } from '../../mixins/notifiable';
 
 //make request to get game
-async function _getGame({ value }) {
-    return await yoda.get(`/game/g/${value}`, true);
+async function _getGame({ value } = {}) {
+    const path = value ? `/game/g/${value}` : '/game';
+    return await yoda.get(path, true);
 }
 
 function _handleError(error) {
@@ -14,7 +15,7 @@ function _handleError(error) {
 }
 
 // joins a game and returns it
-async function _joinAndGetGame(game, byId) {
+export async function joinAndGetGame(game, byId) {
     const { mode, value } = byId ? { mode: 'i', value: game.id } : { mode: 'j', value: game.joincode };
 
     const res = await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
@@ -41,7 +42,7 @@ export async function _leaveGame(gameId) {
 }
 
 // gets games based on a location
-export async function _getGamesNearLocation({ lat, lng }) {
+export async function getGamesNearLocation({ lat, lng }) {
     const res = await yoda.get(`/games/l/lng/${lng}/lat/${lat}`, true);
     if (res.error) {
         const errorToDisplay = _handleError(res.data);
@@ -64,7 +65,7 @@ export async function _joinGame(game, { byId = true, source = '/' }) {
         return redirect('/login', { info: 'You have to be signed in to join a game' });
     }
 
-    const joinedGame = await _joinAndGetGame(game, byId);
+    const joinedGame = await joinAndGetGame(game, byId);
     if (joinedGame.error) {
         //TODO: notify user of error and redirect them somewhere
         console.log(joinedGame.error);
@@ -89,4 +90,12 @@ export async function _createGame(data) {
     redirect({ path: '/game', state: { game: res.data } });
 };
 
-export default _joinAndGetGame;
+// Returns the user's current game or an error if there's no game
+export default async function Game() {
+    const game = await _getGame();
+    if (game.error) {
+        return _handleError(game.data);
+    }
+
+    return game.data;
+}

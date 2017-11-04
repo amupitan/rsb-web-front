@@ -1,8 +1,5 @@
-import session from '../session';
-import _joinAndGetGame, { _getGamesNearLocation, _joinGame, _createGame, _leaveGame } from './game';
-import { showError } from "../../mixins/notifiable";
-import redirect from '../navigator';
 import constraints from "../constraints";
+import Game, { getGamesNearLocation, _joinGame, _createGame, _leaveGame, joinAndGetGame } from './game';
 
 const DURATION = constraints.GameDuration;
 const _sports = {
@@ -18,39 +15,12 @@ export const sports = Object.freeze(Object.keys(_sports));
 
 export const getDuration = (sport) => _sports[sport].duration;
 
-export const getGame = _joinAndGetGame;
-export const getGamesNearLocation = _getGamesNearLocation;
 export const joinGame = _joinGame;
 export const createGame = _createGame;
 export const leaveGame = _leaveGame;
 
-// Returns the current game wrapped in Promise or an error if there is no current game
-export default async function () {
-    return new Promise((resolve, reject) => {
-        let timeTaken = 0;
+export { getGamesNearLocation, joinAndGetGame as getGame };
 
-        const id = window.setInterval(() => {
-            try {
-                timeTaken += 100;
-
-                // send game if it has been set by the session
-                if (session.getItem('game')) {
-                    window.clearInterval(id);
-                    resolve(session.getItem('game'));
-
-                    // throw error if it takes too long for session to set game
-                } else if (timeTaken === 2000) {
-                    showError({ title: 'Unable to find current game', message: 'You might not be in a game.' });
-                    redirect();
-                }
-            } catch (err) {
-
-                //catch error and return it as Promise.reject
-                window.clearInterval(id);
-                reject(err);
-            }
-        }, 100);
-    });
-}
+export default Game;
 
 
