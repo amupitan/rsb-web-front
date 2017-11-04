@@ -70,6 +70,8 @@ class Profile extends Notifiable(Component) {
     }
 
     async handleUserActionClick(clickResponse) {
+        if (!clickResponse) return;
+
         if (clickResponse.error) {
             this.setState({ errorMessage: clickResponse.error });
             return;

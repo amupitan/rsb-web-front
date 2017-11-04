@@ -5,8 +5,8 @@ import RSBButton from '../ui/RSBButton';
 
 async function handleUserAction({ username, status }) {
     const action = {
-        [FriendStatus.SENT_R]: () => null,
-        [FriendStatus.RECEIVED_R]: () => null,
+        [FriendStatus.SENT_R]: () => null, //TODO: display option to cancel
+        [FriendStatus.RECEIVED_R]: () => null, //TODO: display option to review
         [FriendStatus.NONE]: sendFriendRequest,
         [FriendStatus.ARE_FRIENDS]: removeFriend,
     }[status];
