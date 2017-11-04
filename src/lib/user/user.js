@@ -53,11 +53,11 @@ export async function removeFriend({ username }) {
     return res.data;
 }
 
-export async function _handleFriendRequest(username, acceptStatus) {
-    console.log(username + " " + acceptStatus);
+export async function reviewFriendRequest({ username, accept }) {
+    console.log(username + " " + accept);
     const res = await yoda.post('/invite/m/review/t/0', (new YodaRequest({}, {
-        "from": username,
-        "accept": acceptStatus,
+        'from': username,
+        'accept': accept,
     })).toString(), true);
     if (res.error) {
         return _handleError(res.data);

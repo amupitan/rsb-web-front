@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import user, { getLoggedInUserName, uploadProfilePhoto, handleFriendRequest, FriendStatus } from '../../lib/user';
+import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus } from '../../lib/user';
 import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
@@ -11,7 +11,7 @@ import GameInvites from './GameInvites';
 import GameHistory from './GameHistory';
 import Heading from './Heading';
 import FriendsList from './FriendsList';
-import UserAction from './AddOrRemove';
+import UserAction from './UserAction';
 
 import './style.css';
 
@@ -19,34 +19,26 @@ class Profile extends Notifiable(Component) {
     constructor(props) {
         super(props);
 
-        this.state = {
-            isCurrentUser: false,
-        }
-
         this.handleUserActionClick = this.handleUserActionClick.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.handleChangePhoto = this.handleChangePhoto.bind(this);
         this.handleFriendRequest = this.handleFriendRequest.bind(this);
-        this.refreshUser = this.refreshUser.bind(this);
+        this.displaySuccess = this.displaySuccess.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.match.params.username === nextProps.match.params.username) return;
         this.getUserInfo(nextProps.match.params);
-        if (nextProps.match.params.username !== getLoggedInUserName()) {
-            this.state = {
-                isCurrentUser: false,
-            }
+    }
+
+    async handleFriendRequest({ username, accept }) {
+        const res = await reviewFriendRequest({ username, accept });
+        if (res.error) {
+            this.setState({ errorMessage: res.error });
+            return;
         }
-    }
 
-    async handleFriendRequest(event) {
-        await handleFriendRequest(event.username, event.accept);
-        await this.getUserInfo(this.state.user.username);
-    }
-
-    refreshUser() {
-        this.getUserInfo(this.props.match.params);
+        this.displaySuccess();
     }
 
     componentDidMount() {
@@ -64,7 +56,7 @@ class Profile extends Notifiable(Component) {
 
         const name = file.name;
         if (!name.endsWith('.png') && !name.endsWith('.jpg') && !name.endsWith('.jpeg')) {
-            this.setState({ errorMessage: 'The image must be a .png, ,jpg or .jpeg' });
+            this.setState({ errorMessage: 'The image must be a .png, .jpg or .jpeg' });
             return;
         }
 
@@ -74,8 +66,7 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        showSuccess('Your profile picture was updated successfully');
-        this.getUserInfo({ username: this.state.user.username });
+        this.displaySuccess({ message: 'Your profile picture was updated successfully' })
     }
 
     async handleUserActionClick(clickResponse) {
@@ -84,16 +75,12 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        showSuccess('Success!');
-        await this.getUserInfo({ username: this.state.user.username });
+        this.displaySuccess();
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
         var userInfo = await user({ username, populate: 1 });
 
-        if (userInfo.username === getLoggedInUserName()) {
-            this.setState({ isCurrentUser: true });
-        }
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
             return console.error(userInfo);
@@ -104,6 +91,11 @@ class Profile extends Notifiable(Component) {
             friends: userInfo.friends || [],
             errorMessage: null,
         });
+    }
+
+    displaySuccess({ message = 'Success!' } = {}) {
+        showSuccess(message);
+        this.getUserInfo({ username: this.state.user.username });
     }
 
     render() {
@@ -122,7 +114,7 @@ class Profile extends Notifiable(Component) {
                 {
                     isMe &&
                     <div className="row">
-                        <FriendRequest {...user} handleClick={this.handleFriendRequest} />
+                        <FriendRequest {...user} onReview={this.handleFriendRequest} />
                         <GameInvites {...user} />
                     </div>
                 }
