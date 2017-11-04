@@ -44,7 +44,19 @@ export async function _getUserFriends(username) {
 
 export async function _removeFriend(username) {
     const res = await yoda.post('/remove/f', (new YodaRequest({}, {
-        "unfriend": "username",
+        "unfriend": username,
+    })).toString(), true);
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    return res.data;
+}
+
+export async function _handleFriendRequest(username, acceptStatus) {
+    console.log(username + " " + acceptStatus);
+    const res = await yoda.post('/invite/m/review/t/0', (new YodaRequest({}, {
+        "from": username,
+        "accept": acceptStatus,
     })).toString(), true);
     if (res.error) {
         return _handleError(res.data);

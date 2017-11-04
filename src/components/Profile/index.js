@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import user, { getLoggedInUserName, uploadProfilePhoto, FriendStatus } from '../../lib/user';
+import user, { getLoggedInUserName, uploadProfilePhoto, handleFriendRequest, FriendStatus } from '../../lib/user';
 import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
@@ -20,11 +20,13 @@ class Profile extends Notifiable(Component) {
         super(props);
 
         this.state = {
-            isCurrentUser: false
+            isCurrentUser: false,
         }
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.handleChangePhoto = this.handleChangePhoto.bind(this);
+        this.handleFriendRequest = this.handleFriendRequest.bind(this);
+        this.refreshUser = this.refreshUser.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,9 +34,18 @@ class Profile extends Notifiable(Component) {
         this.getUserInfo(nextProps.match.params);
         if (nextProps.match.params.username !== getLoggedInUserName()) {
             this.state = {
-                isCurrentUser: false
+                isCurrentUser: false,
             }
         }
+    }
+
+    async handleFriendRequest(event) {
+        await handleFriendRequest(event.username, event.accept);
+        await this.getUserInfo(this.state.user.username);
+    }
+
+    refreshUser() {
+        this.getUserInfo(this.props.match.params);
     }
 
     componentDidMount() {
@@ -67,13 +78,10 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-
         var userInfo = await user({ username, populate: 1 });
 
         if (userInfo.username === getLoggedInUserName()) {
-            this.setState({
-                isCurrentUser: true
-            });
+            this.setState({ isCurrentUser: true });
         }
         if (userInfo.error) {
             // TODO: might want to handle error. It's already handled tho
@@ -99,6 +107,7 @@ class Profile extends Notifiable(Component) {
                 <AddOrRemove
                     currentUsername={this.state.user.username}
                     friendsList={this.state.friends}
+                    handleRemove={this.refreshUser}
                 />
                 <div className="row">
                     <FriendsList {...this.state} />
@@ -107,7 +116,7 @@ class Profile extends Notifiable(Component) {
                 {
                     isMe &&
                     <div className="row">
-                        <FriendRequest {...user} />
+                        <FriendRequest {...user} handleClick={this.handleFriendRequest} />
                         <GameInvites {...user} />
                     </div>
                 }

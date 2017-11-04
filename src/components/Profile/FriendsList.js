@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
 
 export default ({ friends }) => {
@@ -19,15 +18,6 @@ export default ({ friends }) => {
                     <Link to={`/user/${username}`}>
                         {username}
                     </Link>
-                </div>
-                <div className="col-sm-4">
-                    <RSBButton
-                        glyphicons="glyphicon glyphicon-remove"
-                        className="decline"
-                        onClickFunction={() => {
-                            console.log("Decline!");
-                        }}
-                    />
                 </div>
             </div >
         );

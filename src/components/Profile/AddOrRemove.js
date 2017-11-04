@@ -22,6 +22,7 @@ class AddOrRemove extends Component {
         this.onAddClick = this.onAddClick.bind(this);
         this.onRemoveClick = this.onRemoveClick.bind(this);
         this.getThisUser = this.getThisUser.bind(this);
+        this.handleRemoveInParent = this.handleRemoveInParent.bind(this);
     }
 
     async getThisUser() {
@@ -43,20 +44,25 @@ class AddOrRemove extends Component {
         });
     }
 
-    onAddClick() {
-        sendFriendRequest(this.props.currentUsername);
+    handleRemoveInParent() {
+        this.props.handleRemove();
+    }
+
+    async onAddClick() {
+        await sendFriendRequest(this.props.currentUsername);
         this.setState({
             buttonStatus: 0,
             friendStatus: FriendStatus.SENT_R
         });
     }
 
-    onRemoveClick() {
-        removeFriend(this.props.currentUsername);
+    async onRemoveClick() {
+        await removeFriend(this.props.currentUsername);
         this.setState({
             buttonStatus: 1,
             friendStatus: null,
         });
+        this.handleRemoveInParent();
     }
 
     componentWillMount() {
