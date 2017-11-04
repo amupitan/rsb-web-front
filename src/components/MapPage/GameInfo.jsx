@@ -23,7 +23,7 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host }) => {
                 </Router>
             </p>
             <p><strong>Duration: </strong>{duration} minutes</p>
-        </div >
+        </div>
     );
 };
 

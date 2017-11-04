@@ -3,10 +3,11 @@ import React from 'react';
 import UserRequests from './UserRequests';
 
 
-export default ({ friendRequests }) => {
+const FriendRequest = ({ friendRequests, onReview }) => {
     const requests = friendRequests && friendRequests.length > 0 ?
-        <UserRequests requests={friendRequests} /> :
+        <UserRequests requests={friendRequests} onReview={onReview} /> :
         <span>No friend requests</span>;
+
     return (
         <div className="col-sm-6 panel panel-default">
             <div className="panel-heading-rsb">
@@ -17,4 +18,6 @@ export default ({ friendRequests }) => {
             </div>
         </div>
     );
-}
+};
+
+export default FriendRequest;
