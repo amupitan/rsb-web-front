@@ -11,7 +11,7 @@ import GameInvites from './GameInvites';
 import GameHistory from './GameHistory';
 import Heading from './Heading';
 import FriendsList from './FriendsList';
-import AddOrRemove from './AddOrRemove';
+import UserAction from './AddOrRemove';
 
 import './style.css';
 
@@ -22,7 +22,8 @@ class Profile extends Notifiable(Component) {
         this.state = {
             isCurrentUser: false,
         }
-        this.componentDidMount = this.componentDidMount.bind(this);
+
+        this.handleUserActionClick = this.handleUserActionClick.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.handleChangePhoto = this.handleChangePhoto.bind(this);
         this.handleFriendRequest = this.handleFriendRequest.bind(this);
@@ -73,8 +74,18 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        showSuccess('Your profile picture was changed successfully');
-        this.getUserInfo(this.state.user.username);
+        showSuccess('Your profile picture was updated successfully');
+        this.getUserInfo({ username: this.state.user.username });
+    }
+
+    async handleUserActionClick(clickResponse) {
+        if (clickResponse.error) {
+            this.setState({ errorMessage: clickResponse.error });
+            return;
+        }
+
+        showSuccess('Success!');
+        await this.getUserInfo({ username: this.state.user.username });
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
@@ -100,15 +111,10 @@ class Profile extends Notifiable(Component) {
 
         const { user, errorMessage } = this.state;
         const isMe = user.friendStatus === FriendStatus.IS_USER;
-
         return (
             <div className="panel col-xs-10 col-xs-offset-1">
                 <Heading onImageChange={isMe && this.handleChangePhoto} {...user} errorMessage={errorMessage} />
-                <AddOrRemove
-                    currentUsername={this.state.user.username}
-                    friendsList={this.state.friends}
-                    handleRemove={this.refreshUser}
-                />
+                <UserAction status={user.friendStatus} onClick={this.handleUserActionClick} username={user.username} />
                 <div className="row">
                     <FriendsList {...this.state} />
                     <GameHistory {...user.username} />

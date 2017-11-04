@@ -5,6 +5,7 @@ import errorFormatter from '../errors';
 import { showError } from '../../mixins/notifiable';
 
 export const FriendStatus = {
+    NONE: '',
     IS_USER: 'isUser',
     ARE_FRIENDS: 'areFriends',
     SENT_R: 'sentRequest',
@@ -42,7 +43,7 @@ export async function _getUserFriends(username) {
     return res.data;
 }
 
-export async function _removeFriend(username) {
+export async function removeFriend({ username }) {
     const res = await yoda.post('/remove/f', (new YodaRequest({}, {
         "unfriend": username,
     })).toString(), true);
@@ -64,7 +65,7 @@ export async function _handleFriendRequest(username, acceptStatus) {
     return res.data;
 }
 
-export async function _sendFriendRequest(username) {
+export async function sendFriendRequest({ username }) {
     const res = await yoda.post('/invite/m/send/t/0', (new YodaRequest({}, {
         to: username,
     })).toString(), true);
