@@ -12,10 +12,7 @@ class GameHistory extends Notifiable(Component) {
 
     constructor(props) {
         super(props);
-        this.state = {
-            friendSearch: '',
-            userFriends: [],
-        }
+        this.state = {}
 
         this.render = this.render.bind(this);
         this.onchange = this.onchange.bind(this);
@@ -39,23 +36,9 @@ class GameHistory extends Notifiable(Component) {
         this.setGameRating(num)
     }
 
+    //TODO: Rate game correctly
     async setGameRating(rating) {
         console.log("Rate game to:", rating)
-
-    }
-
-
-    renderGames(games) {
-        if (games.length === 0) return <div>No games in History</div>
-
-        let gameDisplays = [];
-        games.forEach((element, i) => {
-            gameDisplays.push(
-                <tbody key={i} className={'col' + (i % 2)}>
-                    {displayGames(element, this.onchange, i)}
-                </tbody>)
-        }, this);
-        return gameDisplays;
     }
 
     render() {
@@ -79,7 +62,10 @@ class GameHistory extends Notifiable(Component) {
                                         <th>Rating</th>
                                     </tr>
                                 </thead>
-                                {this.renderGames(this.state.games)}
+                                <tbody>
+                                    {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated*/}
+                                    {this.state.games.map((game, i) => (displayGames(game, this.onchange, i, i)))} 
+                                </tbody>
                             </table>
 
                         </div>
