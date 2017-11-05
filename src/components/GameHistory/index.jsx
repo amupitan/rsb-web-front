@@ -75,6 +75,7 @@ class GameHistory extends Notifiable(Component) {
                                     <tr>
                                         <th>Game Name</th>
                                         <th>Date</th>
+                                        <th>Age Range</th>
                                         <th>Rating</th>
                                     </tr>
                                 </thead>
