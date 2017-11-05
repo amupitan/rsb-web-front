@@ -85,7 +85,7 @@ export async function uploadProfilePhoto(file) {
 }
 
 export async function _getGameHistory(username) {
-    let res = await yoda.post('/user/pg/prevGames', (new YodaRequest({}, {
+    let res = await yoda.post('/user/pg/0', (new YodaRequest({}, {
         username: username,
     })).toString(), true);
 

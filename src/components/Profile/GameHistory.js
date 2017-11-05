@@ -8,12 +8,12 @@ const GameHistory = game => {
             <div className="panel-heading-rsb">
                 <h2>Game History</h2>
             </div>
-            {(game && Games(game)) || NoGame}
+            {(game && <Games games={game}/>) || NoGame}
         </div>
     );
 }
 
-const Games = (games) => {
+const Games = ({games}) => {
     return (
         <div className="scroll-info panel-body">
             {
