@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { getLoggedInUserName, getGameHistory } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
-import displayGames from './displayGames';
+import DisplayGames from './DisplayGames';
 import { LoaderPage } from '../ui/Loader';
 
 import './style.css';
@@ -65,8 +65,10 @@ class GameHistory extends Notifiable(Component) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated*/}
-                                    {this.state.games.map((game, i) => (displayGames(game, this.onChange, i, i)))}
+                                    {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated. The second 'i'
+                                    is used for the zebra affect
+                                    */}
+                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} onChange={this.onChange} rate={i} i={i} />))}
                                 </tbody>
                             </table>
 
