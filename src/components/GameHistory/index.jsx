@@ -24,11 +24,14 @@ class GameHistory extends Notifiable(Component) {
     async getGameHistory() {
         const username = getLoggedInUserName();
         const games = await getGameHistory(username);
-        if (!games.error) {
-            this.setState({
-                games: games
-            });
+        if (games.error) {
+            this.setState({ errorMessage: games.error });
+            return;
         }
+        this.setState({
+            games: games
+        });
+
     }
 
     onChange(num) {
@@ -63,7 +66,7 @@ class GameHistory extends Notifiable(Component) {
                                 </thead>
                                 <tbody>
                                     {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated*/}
-                                    {this.state.games.map((game, i) => (displayGames(game, this.onChange, i, i)))} 
+                                    {this.state.games.map((game, i) => (displayGames(game, this.onChange, i, i)))}
                                 </tbody>
                             </table>
 
