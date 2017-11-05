@@ -14,8 +14,7 @@ class GameHistory extends Notifiable(Component) {
         super(props);
         this.state = {}
 
-        this.render = this.render.bind(this);
-        this.onchange = this.onchange.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +31,7 @@ class GameHistory extends Notifiable(Component) {
         }
     }
 
-    onchange(num) {
+    onChange(num) {
         this.setGameRating(num)
     }
 
@@ -64,7 +63,7 @@ class GameHistory extends Notifiable(Component) {
                                 </thead>
                                 <tbody>
                                     {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated*/}
-                                    {this.state.games.map((game, i) => (displayGames(game, this.onchange, i, i)))} 
+                                    {this.state.games.map((game, i) => (displayGames(game, this.onChange, i, i)))} 
                                 </tbody>
                             </table>
 

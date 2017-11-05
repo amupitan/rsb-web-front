@@ -10,7 +10,6 @@ import './style.css';
 // between routes.
 const Header = () => (
   <header>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <Logout className={classnames('main-logout')} />
     {/* <nav>
       <ul>

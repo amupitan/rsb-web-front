@@ -1,7 +1,7 @@
-.checked {
+.rsb-ui-rater-checked {
     color: orange;
 }
 
-.unrated{
+.rsb-ui-rater-unrated{
     color: grey;
 }
