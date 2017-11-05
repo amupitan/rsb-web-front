@@ -96,7 +96,7 @@ class Profile extends Notifiable(Component) {
         this.setState({
             user: userInfo,
             friends: userInfo.friends || [],
-            gameHistory: gameHistory.res,
+            gameHistory: gameHistory,
             errorMessage: null,
         });
     }
