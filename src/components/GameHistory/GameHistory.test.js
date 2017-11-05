@@ -4,5 +4,6 @@ import GameHistory from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<GameHistory />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<GameHistory notify={notify} />, div);
 }); 
