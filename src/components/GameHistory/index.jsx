@@ -14,7 +14,7 @@ class GameHistory extends Notifiable(Component) {
         super(props);
         this.state = {}
 
-        this.onChange = this.onChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -34,7 +34,7 @@ class GameHistory extends Notifiable(Component) {
 
     }
 
-    onChange(num) {
+    handleChange(num) {
         this.setGameRating(num)
     }
 
@@ -68,7 +68,7 @@ class GameHistory extends Notifiable(Component) {
                                     {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated. The second 'i'
                                     is used for the zebra affect
                                     */}
-                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} onChange={this.onChange} rate={i} i={i} />))}
+                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} handleChange={this.handleChange} rate={i} i={i} />))}
                                 </tbody>
                             </table>
 

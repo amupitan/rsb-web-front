@@ -8,12 +8,12 @@ const GameHistory = game => {
             <div className="panel-heading-rsb">
                 <h2>Game History</h2>
             </div>
-            {(game && <Games games={game}/>) || NoGame}
+            {(game && <Games games={game} />) || NoGame}
         </div>
     );
 }
 
-const Games = ({games}) => {
+const Games = ({ games }) => {
     return (
         <div className="scroll-info panel-body">
             {
@@ -21,7 +21,7 @@ const Games = ({games}) => {
                     const { name, startTime } = game[1];
                     return (
                         <div key={i} className="populate-requests row">
-                            <Link to={`/history`} key={i} >
+                            <Link to={`/history`} >
                                 <div className="col-sm-4 col-sm-pull">
                                     <span><b>{name}</b></span>
                                 </div>

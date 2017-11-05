@@ -84,13 +84,14 @@ class Profile extends Notifiable(Component) {
         var userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
-            // TODO: might want to handle error. It's already handled tho
-            return console.error(userInfo);
+            this.setState({ errorMessage: userInfo.error });
+            return;
         }
 
         const gameHistory = await getGameHistory(username);
         if (gameHistory.error) {
-            return console.log(gameHistory);
+            this.setState({ errorMessage: gameHistory.error });
+            return;
         }
 
         this.setState({
