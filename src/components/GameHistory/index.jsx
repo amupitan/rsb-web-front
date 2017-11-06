@@ -83,9 +83,6 @@ class GameHistory extends Notifiable(Component) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated. The second 'i'
-                                    is used for the zebra affect
-                                    */}
                                     {this.state.games.map((game, i) => (<GameList key={i} {...game} onRatingChange={this.handleRatingChange} index={i} />))}
                                 </tbody>
                             </table>
