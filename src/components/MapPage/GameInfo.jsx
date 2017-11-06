@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
 import { sports } from '../../lib/game';
 
-import { getStars } from '../ui/Rater/Rater';
+import { getStars } from '../ui/Rater';
 
 // GameInfo is dislayed after a marker is clicked
 const GameInfo = ({ name, agerange, duration, sport, startTime, host, members }) => {

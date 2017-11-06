@@ -29,7 +29,7 @@ export async function joinAndGetGame(game, byId) {
 }
 
 // leaves a game and redirects
-export async function _leaveGame(gameId) {
+export async function leaveGame(gameId) {
     const res = await yoda.get('/game/exit', (new YodaRequest({}, {
         code: gameId,
     })).toString(), true);
@@ -57,7 +57,7 @@ export async function getGamesNearLocation({ lat, lng }) {
 }
 
 // joins a game based on map find or join code
-export async function _joinGame(game, { byId = true, source = '/' }) {
+export async function joinGame(game, { byId = true, source = '/' } = {}) {
     if (!game) return;
     const user = session.getItem('username'); //TODO: use navigator/history
 
@@ -77,7 +77,7 @@ export async function _joinGame(game, { byId = true, source = '/' }) {
     redirect({ path: '/game', state: { game: joinedGame } });
 }
 
-export async function _createGame(data) {
+export async function createGame(data) {
     let res = await yoda.post('/create/game', (new YodaRequest({}, data)).toString(), true);
     if (res.error) {
         return _handleError(res.data)
@@ -90,6 +90,19 @@ export async function _createGame(data) {
 
     redirect({ path: '/game', state: { game: res.data } });
 };
+
+// rates a game if not previously rated or returns an error
+export async function rateGame({ rating, id }) {
+    const res = await yoda.post('/game/rate', (new YodaRequest({}, {
+        code: id,
+        rating: rating,
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data)
+    }
+    return res.data
+}
 
 // Returns the user's current game or an error if there's no game
 export default async function Game() {

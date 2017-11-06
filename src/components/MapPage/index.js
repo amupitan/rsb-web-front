@@ -11,6 +11,7 @@ import user, { getLoggedInUserName } from '../../lib/user';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
 import GameInfo from './GameInfo';
+import JoinNewGameModal from './JoinNewGameModal'
 import SearchAddress from '../SearchAddress'
 
 import './style.css';
@@ -27,13 +28,20 @@ export class MapPage extends Notifiable(Component) {
         this.renderGameInfoWindow = this.renderGameInfoWindow.bind(this);
         this.renderMarkers = this.renderMarkers.bind(this);
         this.getLocation = this.getLocation.bind(this);
+        this.checkGame = this.checkGame.bind(this);
+        this.openVerificationModal = this.openVerificationModal.bind(this);
+        this.closeVerificationModal = this.closeVerificationModal.bind(this);
+        this.joinDifferentGame = this.joinDifferentGame.bind(this);
 
         this.state = {
             position: null,
             showingInfoWindow: false,
+            inAnyGame: false,
+            modalHidden: 'none',
             activeMarker: {},
             selectedPlace: {},
             markers: [],
+
         }
     }
 
@@ -43,7 +51,23 @@ export class MapPage extends Notifiable(Component) {
     // an intelligent guess.
     componentWillMount() {
         this._isMounted = true;
+        this.checkGame();
         this.getLocation();
+    }
+
+    async checkGame() {
+        const currentGame = await Game();
+        if (currentGame.error) {
+            this.setState({
+                inAnyGame: false
+            });
+        }
+        else {
+            this.setState({
+                inAnyGame: true
+            });
+        }
+        return currentGame;
     }
 
     // Gets the postion of the user's location
@@ -68,17 +92,44 @@ export class MapPage extends Notifiable(Component) {
         return result;
     }
 
+    openVerificationModal() {
+        this.setState({
+            modalHidden: 'block'
+        });
+    }
+
+    closeVerificationModal() {
+        this.setState({
+            modalHidden: 'none'
+        });
+    }
+
+    async joinDifferentGame(newGame) {
+        const currentGame = await this.checkGame();
+        console.log(this.state.selectedPlace);
+        console.log(currentGame);
+        await leaveGame(currentGame.id);
+        await joinGame(this.state.selectedPlace);
+
+    }
+
     // Gets called when a user tries to join a game
     // Should make a server call and do the necessary work
     handleJoinGame(game) {
         if (!game) return;
         joinGame(game, { byId: true, source: '/map' }); //TODO: use location
+        this.setState({
+            inAnyGame: true
+        });
     }
 
     //When a user clicks leave game on the map
     handleLeaveGame(game) {
         if (!game) return;
         leaveGame(game.id);
+        this.setState({
+            inAnyGame: false
+        });
     }
 
     // Handles the event of a game icon being clicked
@@ -92,13 +143,14 @@ export class MapPage extends Notifiable(Component) {
 
         //check to see if a user is in a game
         const currentUser = getLoggedInUserName();
-        console.log(await Game());
         let inCurrentGame = false;
-        this.state.selectedPlace.members.map(function (member) {
-            if (member.username === currentUser) {
-                inCurrentGame = true;
-            }
-        });
+        if (this.state.selectedPlace.members) {
+            this.state.selectedPlace.members.map(function (member) {
+                if (member.username === currentUser) {
+                    inCurrentGame = true;
+                }
+            });
+        }
 
         if (inCurrentGame) {
             ReactDOM.render(
@@ -107,7 +159,7 @@ export class MapPage extends Notifiable(Component) {
                 document.getElementById('rsb-map-join-game-window')
             );
         }
-        else {
+        else if (!this.state.inAnyGame) {
             ReactDOM.render(
                 <Router>
                     <span>
@@ -116,6 +168,26 @@ export class MapPage extends Notifiable(Component) {
                         </Link>
                     </span>
                 </Router>
+                ,
+                document.getElementById('rsb-map-join-game-window')
+            );
+        }
+        else {
+            console.log('in a game and want to join a different one');
+            console.log(this.state.modalHidden);
+            ReactDOM.render(
+                <div>
+                    <Router>
+                        <span>
+                            <Link to={`/game`}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={this.openVerificationModal}>
+                                    Join Game</button>
+                            </Link>
+                        </span>
+                    </Router>
+                </div>
                 ,
                 document.getElementById('rsb-map-join-game-window')
             );
@@ -171,7 +243,6 @@ export class MapPage extends Notifiable(Component) {
         />
     }
 
-
     // Renders all available markers
     renderMarkers() {
         return this.state.markers.map((marker, i) => {
@@ -210,6 +281,7 @@ export class MapPage extends Notifiable(Component) {
                     {this.renderSearchAddress()}
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
+                    <JoinNewGameModal display={this.state.modalHidden} onCloseFunction={this.closeVerificationModal} joinFunction={this.joinDifferentGame} />
                 </Map>
             </div>
         );
