@@ -14,9 +14,9 @@ export async function getAddress({ lng, lat }) {
     try {
         const res = await fetch(path, { method: 'GET', });
         if (res.status !== 200) {
-            console.error(res);
+            console.error(res.text());
             console.error('Status was not 200');
-            return { error: 'An unexpected external error occurred' };
+            return { error: 'An unexpected external error occurred. Please try again later' };
         }
 
         const address = await res.json();
