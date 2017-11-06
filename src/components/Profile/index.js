@@ -118,7 +118,7 @@ class Profile extends Notifiable(Component) {
                 <UserAction status={user.friendStatus} onClick={this.handleUserActionClick} username={user.username} />
                 <div className="row">
                     <FriendsList {...this.state} />
-                    <GameHistory {...this.state.gameHistory} />
+                    <GameHistory games={this.state.gameHistory} username={user.username} />
                 </div>
                 {
                     isMe &&
