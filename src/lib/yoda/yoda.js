@@ -66,7 +66,7 @@ export default class Yoda {
             session.logOut();
         }
         res.meta = res.meta || {};
-        res.result = res.result || { code: 10, message: 'unauthorized' };
+        res.result = res.result || {};
         return new YodaResponse(res, true);
     }
 
