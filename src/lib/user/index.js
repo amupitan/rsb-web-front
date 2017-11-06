@@ -7,7 +7,8 @@ import {
     reviewFriendRequest,
     cancelFriendRequest,
     uploadProfilePhoto,
-    FriendStatus
+    FriendStatus,
+    getGameHistory
 } from './user';
 
 export {
@@ -19,6 +20,7 @@ export {
     cancelFriendRequest,
     getLoggedInUserName,
     getUserFriends as getFriends,
+    getGameHistory
 };
 
 export default getUserInfo;

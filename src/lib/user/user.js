@@ -96,3 +96,13 @@ export async function uploadProfilePhoto(file) {
     return res.data;
 }
 
+export async function getGameHistory(username) {
+    let res = await yoda.post('/user/pg/0', (new YodaRequest({}, {
+        username: username,
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data)
+    }
+    return res.data
+}
