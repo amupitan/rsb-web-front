@@ -78,7 +78,13 @@ const views = [
         path: 'history',
         isMenuOption: false,
         component: GameHistory
-    }
+    },
+    {
+        name: 'Previous Games',
+        path: 'history/:username?',
+        component: GameHistory,
+        isMenuOption: false,
+    },
 ];
 
 
