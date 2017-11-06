@@ -88,7 +88,7 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        const gameHistory = await getGameHistory(username);
+        const gameHistory = await getGameHistory({ username });
         if (gameHistory.error) {
             this.setState({ errorMessage: gameHistory.error });
             return;

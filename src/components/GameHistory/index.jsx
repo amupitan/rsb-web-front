@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import { getLoggedInUserName, getGameHistory } from '../../lib/user';
+import { rateGame } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 
-import DisplayGames from './DisplayGames';
 import { LoaderPage } from '../ui/Loader';
+import DisplayGames from './DisplayGames';
 
 import './style.css';
 
@@ -12,9 +13,10 @@ class GameHistory extends Notifiable(Component) {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleRatingChange = this.handleRatingChange.bind(this);
+        this.setGameRating = this.setGameRating.bind(this);
     }
 
     componentDidMount() {
@@ -23,24 +25,39 @@ class GameHistory extends Notifiable(Component) {
 
     async getGameHistory() {
         const username = getLoggedInUserName();
-        const games = await getGameHistory(username);
+        const games = await getGameHistory({ username });
         if (games.error) {
             this.setState({ errorMessage: games.error });
             return;
         }
+
         this.setState({
-            games: games
+            games: games,
+            errorMessage: null,
         });
 
     }
 
-    handleChange(num) {
-        this.setGameRating(num)
+    handleRatingChange(rating) {
+        this.setGameRating(rating);
     }
 
-    //TODO: Rate game correctly
-    async setGameRating(rating) {
-        console.log("Rate game to:", rating)
+    async setGameRating({ rating, id }) {
+        const res = await rateGame({ rating, id });
+        if (res.error) {
+            this.setState({ errorMessage: res.error });
+            return;
+        }
+
+        this.getGameHistory({ username: getLoggedInUserName() });
+    }
+
+    renderError(errorMessage) {
+        if (errorMessage) {
+            return (
+                <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>
+            );
+        }
     }
 
     render() {
@@ -53,6 +70,7 @@ class GameHistory extends Notifiable(Component) {
                     <div className="panel-heading text-center">
                         <h3>Game History</h3>
                     </div>
+                    {this.renderError(this.state.errorMessage)}
                     <div className="panel-body">
                         <div className="row">
                             <table>
@@ -68,7 +86,7 @@ class GameHistory extends Notifiable(Component) {
                                     {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated. The second 'i'
                                     is used for the zebra affect
                                     */}
-                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} handleChange={this.handleChange} rate={i} i={i} />))}
+                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} onRatingChange={this.handleRatingChange} index={i} />))}
                                 </tbody>
                             </table>
 
