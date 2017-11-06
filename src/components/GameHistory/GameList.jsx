@@ -5,7 +5,7 @@ import Rater from '../ui/Rater';
 
 import './style.css';
 
-const DisplayGames = ({ id, name, startTime, agerange, onRatingChange, rating, index }) => {
+const GameList = ({ id, name, startTime, agerange, onRatingChange, rating, index }) => {
     const handleRatingChange = (gameId) => {
         return (rating) => onRatingChange({ rating, id: gameId });
     }
@@ -20,11 +20,11 @@ const DisplayGames = ({ id, name, startTime, agerange, onRatingChange, rating, i
     )
 }
 
-DisplayGames.defaultProps = {
+GameList.defaultProps = {
     rating: 0,
 }
 
-DisplayGames.propTypes = {
+GameList.propTypes = {
     index: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -33,4 +33,4 @@ DisplayGames.propTypes = {
     onRatingChange: PropTypes.func.isRequired,
 }
 
-export default DisplayGames;
+export default GameList;

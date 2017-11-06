@@ -5,7 +5,7 @@ import { rateGame } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
-import DisplayGames from './DisplayGames';
+import GameList from './GameList';
 
 import './style.css';
 
@@ -86,7 +86,7 @@ class GameHistory extends Notifiable(Component) {
                                     {/*TODO: the first 'i' is for the game rating. This will change when game rating get's incorperated. The second 'i'
                                     is used for the zebra affect
                                     */}
-                                    {this.state.games.map((game, i) => (<DisplayGames key={i} {...game} onRatingChange={this.handleRatingChange} index={i} />))}
+                                    {this.state.games.map((game, i) => (<GameList key={i} {...game} onRatingChange={this.handleRatingChange} index={i} />))}
                                 </tbody>
                             </table>
 
