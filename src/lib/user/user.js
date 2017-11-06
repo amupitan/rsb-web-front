@@ -19,11 +19,11 @@ function _handleError(error) {
     return err;
 }
 
-export function _getLoggedInUserName() {
+export function getLoggedInUserName() {
     return session.getItem('username');
 }
 
-export default async function _getUserInfo({ username, populate = '0' } = {}) {
+export async function getUserInfo({ username, populate = '0' } = {}) {
     const res = await yoda.post(`/user/p/${populate}`, (new YodaRequest({}, {
         username: username,
     })).toString(), true);
@@ -33,7 +33,7 @@ export default async function _getUserInfo({ username, populate = '0' } = {}) {
     return res.data;
 }
 
-export async function _getUserFriends(username) {
+export async function getUserFriends(username) {
     const res = await yoda.post('/user/f/1', (new YodaRequest({}, {
         username: username,
     })).toString(), true);
@@ -54,10 +54,9 @@ export async function removeFriend({ username }) {
 }
 
 export async function reviewFriendRequest({ username, accept }) {
-    console.log(username + " " + accept);
     const res = await yoda.post('/invite/m/review/t/0', (new YodaRequest({}, {
-        'from': username,
-        'accept': accept,
+        from: username,
+        accept: accept,
     })).toString(), true);
     if (res.error) {
         return _handleError(res.data);
@@ -65,8 +64,9 @@ export async function reviewFriendRequest({ username, accept }) {
     return res.data;
 }
 
-export async function sendFriendRequest({ username }) {
-    const res = await yoda.post('/invite/m/send/t/0', (new YodaRequest({}, {
+async function friendRequestAction({ username, send = false }) {
+    const mode = send ? 'send' : 'cancel';
+    const res = await yoda.post(`/invite/m/${mode}/t/0`, (new YodaRequest({}, {
         to: username,
     })).toString(), true);
     if (res.error) {
@@ -76,6 +76,18 @@ export async function sendFriendRequest({ username }) {
 
 }
 
+
+// sends a friend request to the user with [username]
+export async function sendFriendRequest({ username }) {
+    friendRequestAction({ username, send: true });
+}
+
+// cancels a friend request to a user with [username]
+export async function cancelFriendRequest({ username }) {
+    friendRequestAction({ username, send: false });
+}
+
+
 export async function uploadProfilePhoto(file) {
     const res = await yoda.postFile('/upload', file, { isRelative: true });
     if (res.error) {
@@ -84,3 +96,13 @@ export async function uploadProfilePhoto(file) {
     return res.data;
 }
 
+export async function getGameHistory(username) {
+    let res = await yoda.post('/user/pg/0', (new YodaRequest({}, {
+        username: username,
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data)
+    }
+    return res.data
+}

@@ -1,22 +1,41 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const GameHistory = game => {
-    const hasGames = game.gameHistory && game.gameHistory.length > 0;
     return (
         <div className="col-sm-6 panel panel-default">
             <div className="panel-heading-rsb">
                 <h2>Game History</h2>
             </div>
-            {(hasGames && Games) || NoGame}
+            {(game && <Games games={game} />) || NoGame}
         </div>
     );
 }
 
-const Games = (
-    <div className="scroll-info panel-body">
-        <span>TODO: Display games</span>
-    </div>
-);
+const Games = ({ games }) => {
+    return (
+        <div className="scroll-info panel-body">
+            {
+                Object.entries(games).map((game, i) => {
+                    const { name, startTime } = game[1];
+                    return (
+                        <div key={i} className="populate-requests row">
+                            <Link to={`/history`} >
+                                <div className="col-sm-4 col-sm-pull">
+                                    <span><b>{name}</b></span>
+                                </div>
+                                <div className="col-sm-4">
+                                    <span>{startTime.substring(0, startTime.indexOf('T'))}</span><br />
+                                </div>
+                            </Link>
+                        </div>
+                    );
+                })
+            }
+        </div>
+    )
+};
 
 const NoGame = (
     <div className="scroll-info panel-body">

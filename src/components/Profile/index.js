@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus } from '../../lib/user';
+import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
 import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
@@ -84,13 +84,20 @@ class Profile extends Notifiable(Component) {
         var userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
-            // TODO: might want to handle error. It's already handled tho
-            return console.error(userInfo);
+            this.setState({ errorMessage: userInfo.error });
+            return;
+        }
+
+        const gameHistory = await getGameHistory(username);
+        if (gameHistory.error) {
+            this.setState({ errorMessage: gameHistory.error });
+            return;
         }
 
         this.setState({
             user: userInfo,
             friends: userInfo.friends || [],
+            gameHistory: gameHistory,
             errorMessage: null,
         });
     }
@@ -111,7 +118,7 @@ class Profile extends Notifiable(Component) {
                 <UserAction status={user.friendStatus} onClick={this.handleUserActionClick} username={user.username} />
                 <div className="row">
                     <FriendsList {...this.state} />
-                    <GameHistory {...user.username} />
+                    <GameHistory {...this.state.gameHistory} />
                 </div>
                 {
                     isMe &&

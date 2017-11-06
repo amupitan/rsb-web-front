@@ -1,9 +1,26 @@
-import _getUserInfo, { _getUserFriends, _getLoggedInUserName, removeFriend, sendFriendRequest, reviewFriendRequest, uploadProfilePhoto, FriendStatus } from './user';
+import {
+    getUserInfo,
+    getUserFriends,
+    getLoggedInUserName,
+    removeFriend,
+    sendFriendRequest,
+    reviewFriendRequest,
+    cancelFriendRequest,
+    uploadProfilePhoto,
+    FriendStatus,
+    getGameHistory
+} from './user';
 
-export const getUser = _getUserInfo;
-export const getLoggedInUserName = _getLoggedInUserName;
-export const getFriends = _getUserFriends;
+export {
+    uploadProfilePhoto,
+    FriendStatus,
+    removeFriend,
+    sendFriendRequest,
+    reviewFriendRequest,
+    cancelFriendRequest,
+    getLoggedInUserName,
+    getUserFriends as getFriends,
+    getGameHistory
+};
 
-export { uploadProfilePhoto, FriendStatus, removeFriend, sendFriendRequest, reviewFriendRequest };
-
-export default getUser
+export default getUserInfo;
