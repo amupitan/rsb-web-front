@@ -41,7 +41,7 @@ class Home extends Component {
               <Route exact key={`${view.name}${i}`} path={'/' + view.path} render={(props) => <view.component {...props} {...this.props} />} />
             ))}
             {/* Default route when url is '/' */}
-            <Redirect to={defaultPath} />
+            <Redirect to={{ pathname: '/' + defaultPath }} />
           </Switch>
         </div>
       </div>
