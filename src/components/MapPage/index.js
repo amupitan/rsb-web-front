@@ -4,7 +4,7 @@ import { Link, BrowserRouter as Router } from 'react-router-dom';
 
 import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
-import { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
+import Game, { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
 import { googleApiKey, googleApiVersion } from '../../lib/map';
 import user, { getLoggedInUserName } from '../../lib/user';
 
@@ -83,7 +83,7 @@ export class MapPage extends Notifiable(Component) {
 
     // Handles the event of a game icon being clicked
     // displays the game info box
-    onMarkerClick(props, marker, e) {
+    async onMarkerClick(props, marker, e) {
         this.setState({
             selectedPlace: props.game,
             activeMarker: marker,
@@ -91,18 +91,16 @@ export class MapPage extends Notifiable(Component) {
         });
 
         //check to see if a user is in a game
-        console.log(this.state.selectedPlace);
         const currentUser = getLoggedInUserName();
-        let isInGame = false;
+        console.log(await Game());
+        let inCurrentGame = false;
         this.state.selectedPlace.members.map(function (member) {
             if (member.username === currentUser) {
-                isInGame = true;
+                inCurrentGame = true;
             }
         });
 
-        console.log(isInGame);
-
-        if (isInGame) {
+        if (inCurrentGame) {
             ReactDOM.render(
                 <button onClick={() => this.handleLeaveGame(props.game)} className="btn btn-danger">Leave Game</button>
                 ,
@@ -153,7 +151,6 @@ export class MapPage extends Notifiable(Component) {
 
     // Renders the game info window
     renderGameInfoWindow() {
-        console.log(...this.state.selectedPlace);
         return <InfoWindow
             onClose={this.onMapClicked}
             marker={this.state.activeMarker}
