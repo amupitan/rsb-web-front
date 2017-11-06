@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 
 import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
-import { getGamesNearLocation, joinGame } from '../../lib/game';
+import { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
 import { googleApiKey, googleApiVersion } from '../../lib/map';
+import user, { getLoggedInUserName } from '../../lib/user';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
@@ -73,6 +75,12 @@ export class MapPage extends Notifiable(Component) {
         joinGame(game, { byId: true, source: '/map' }); //TODO: use location
     }
 
+    //When a user clicks leave game on the map
+    handleLeaveGame(game) {
+        if (!game) return;
+        leaveGame(game.id);
+    }
+
     // Handles the event of a game icon being clicked
     // displays the game info box
     onMarkerClick(props, marker, e) {
@@ -81,11 +89,39 @@ export class MapPage extends Notifiable(Component) {
             activeMarker: marker,
             showingInfoWindow: true
         });
-        ReactDOM.render(
-            <button onClick={() => this.handleJoinGame(props.game)} className="btn btn-success">Join Game</button>
-            ,
-            document.getElementById('rsb-map-join-game-window')
-        );
+
+        //check to see if a user is in a game
+        console.log(this.state.selectedPlace);
+        const currentUser = getLoggedInUserName();
+        let isInGame = false;
+        this.state.selectedPlace.members.map(function (member) {
+            if (member.username === currentUser) {
+                isInGame = true;
+            }
+        });
+
+        console.log(isInGame);
+
+        if (isInGame) {
+            ReactDOM.render(
+                <button onClick={() => this.handleLeaveGame(props.game)} className="btn btn-danger">Leave Game</button>
+                ,
+                document.getElementById('rsb-map-join-game-window')
+            );
+        }
+        else {
+            ReactDOM.render(
+                <Router>
+                    <span>
+                        <Link to={`/game`}>
+                            <button onClick={() => this.handleJoinGame(props.game)} className="btn btn-success">Join Game</button>
+                        </Link>
+                    </span>
+                </Router>
+                ,
+                document.getElementById('rsb-map-join-game-window')
+            );
+        }
     }
 
     // Handles the closing of a game option
@@ -117,6 +153,7 @@ export class MapPage extends Notifiable(Component) {
 
     // Renders the game info window
     renderGameInfoWindow() {
+        console.log(...this.state.selectedPlace);
         return <InfoWindow
             onClose={this.onMapClicked}
             marker={this.state.activeMarker}

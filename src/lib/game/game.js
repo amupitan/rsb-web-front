@@ -18,6 +18,7 @@ function _handleError(error) {
 export async function joinAndGetGame(game, byId) {
     const { mode, value } = byId ? { mode: 'i', value: game.id } : { mode: 'j', value: game.joincode };
 
+    console.log(mode);
     const res = await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
         code: value,
     })).toString(), true);
@@ -29,7 +30,7 @@ export async function joinAndGetGame(game, byId) {
 
 // leaves a game and redirects
 export async function _leaveGame(gameId) {
-    const res = await yoda.post('/game/exit', (new YodaRequest({}, {
+    const res = await yoda.get('/game/exit', (new YodaRequest({}, {
         code: gameId,
     })).toString(), true);
     if (res.error) {
