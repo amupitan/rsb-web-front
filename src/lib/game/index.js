@@ -1,5 +1,13 @@
 import constraints from "../constraints";
-import Game, { getGamesNearLocation, _joinGame, _createGame, _leaveGame, joinAndGetGame } from './game';
+import Game, {
+    getGamesNearLocation,
+    joinGame,
+    createGame,
+    leaveGame,
+    joinAndGetGame,
+    getGameHistory,
+    rateGame,
+} from './game';
 
 const DURATION = constraints.GameDuration;
 const _sports = {
@@ -15,11 +23,15 @@ export const sports = Object.freeze(Object.keys(_sports));
 
 export const getDuration = (sport) => _sports[sport].duration;
 
-export const joinGame = _joinGame;
-export const createGame = _createGame;
-export const leaveGame = _leaveGame;
-
-export { getGamesNearLocation, joinAndGetGame as getGame };
+export {
+    getGamesNearLocation,
+    joinAndGetGame as getGame,
+    getGameHistory,
+    createGame,
+    rateGame,
+    joinGame,
+    leaveGame,
+};
 
 export default Game;
 
