@@ -20,11 +20,10 @@ class GameHistory extends Notifiable(Component) {
     }
 
     componentDidMount() {
-        this.getGameHistory();
+        this.getGameHistory({ ...this.props.match.params });
     }
 
-    async getGameHistory() {
-        const username = getLoggedInUserName();
+    async getGameHistory({ username = getLoggedInUserName() } = {}) {
         const games = await getGameHistory({ username });
         if (games.error) {
             this.setState({ errorMessage: games.error });
@@ -39,7 +38,13 @@ class GameHistory extends Notifiable(Component) {
     }
 
     handleRatingChange(rating) {
-        this.setGameRating(rating);
+        const { username } = this.props.match.params;
+        if (!username || username === getLoggedInUserName()) {
+            this.setGameRating(rating);
+            return;
+        }
+
+        this.setState({ errorMessage: 'You can only rate your previous games' });
     }
 
     async setGameRating({ rating, id }) {
@@ -49,7 +54,7 @@ class GameHistory extends Notifiable(Component) {
             return;
         }
 
-        this.getGameHistory({ username: getLoggedInUserName() });
+        this.getGameHistory({ ...this.props.match.params });
     }
 
     renderError(errorMessage) {

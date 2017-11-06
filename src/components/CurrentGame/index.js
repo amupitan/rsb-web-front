@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { sports, leaveGame } from '../../lib/game';
+import { getAddress } from '../../lib/map';
 import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
 
-import { LoaderPage } from '../ui/Loader';
+import Loader, { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import RSBLabel from '../ui/RSBLabel';
 import Avatar from '../ui/Avatar';
@@ -23,6 +24,8 @@ class CurrentGame extends Notifiable(Component) {
             gameLoaded: false,
             errorMessage: null,
         }
+
+        this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
         this.handleLeaveGame = this.handleLeaveGame.bind(this);
     }
@@ -47,8 +50,17 @@ class CurrentGame extends Notifiable(Component) {
 
     // TODO: reuse game-info from maps
     renderGameInfo() {
-        const { host, startTime, location, sport, agerange } = this.game;
+        const { host, startTime, sport, agerange } = this.game;
         const { firstname, lastname, username } = host;
+
+        const renderLocation = () => {
+            const address = this.state.locationLoaded ? this.state.locationLoaded :
+                <Loader width={30} height={30} thickness={6} />;
+
+            return <span><b>Location</b>: {address} <br /></span>
+        };
+
+
         return (
             <div className="col-sm-6 panel panel-default">
                 <div className="panel-heading-rsb">
@@ -57,7 +69,7 @@ class CurrentGame extends Notifiable(Component) {
                 <div className="scroll-info panel-body">
                     <span><b>Host</b>: <Link to={`/user/${username}`}>{firstname} {lastname}</Link></span><br />
                     <span><b>StartTime</b>: {DateUtils.getReadableTime(startTime)}</span><br />
-                    <span><b>Location</b>: Latitude: {location.lat} Longitude: {location.lng} </span><br />
+                    {renderLocation()}
                     <span><b>Sport</b>: {sports[sport]}</span><br />
                     <span><b>Age Range</b>:Min: {agerange[0]}  Max: {agerange[1]}</span><br />
                 </div>
@@ -91,6 +103,22 @@ class CurrentGame extends Notifiable(Component) {
         this.setState({
             gameLoaded: true,
             errorMessage: null,
+        });
+
+        this.getStreetAddress();
+    }
+
+    getStreetAddress() {
+        const { lat, lng } = this.game.location;
+        getAddress({ lat, lng }).then((res) => {
+
+            if (res.error) {
+                this.setState({ errorMessage: res.error });
+                return;
+            }
+
+            console.log(res);
+            this.setState({ locationLoaded: res.address });
         });
     }
 

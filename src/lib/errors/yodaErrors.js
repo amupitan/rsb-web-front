@@ -15,6 +15,12 @@ const _yodaErrors = {
         'User not logged in': 'Your session has timed out. Login to continue',
         '*': 'Your session has timed out. Login to continue',
     },
+    14: { '*': 'The game name is invalid. Only alphabets, numbers and single underscores are allowed' },
+    15: { '*': 'The age range is invalid. Please select a valid range' },
+    16: { '*': 'The time range is invalid. Please select a valid range' },
+    17: { '*': 'The location you selected invalid' },
+    18: { '*': 'The sport you selected is invalid' },
+    19: { '*': 'Sorry, you cannot host a game right now, try again later' },
     30: { '*': 'You are not in a game' }, //GameNotFound
     31: { //Invalid Rating
         'you have already rated the game': 'You have already rated this game',
