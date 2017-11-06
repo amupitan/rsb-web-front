@@ -38,7 +38,8 @@ class GameHistory extends Notifiable(Component) {
     }
 
     handleRatingChange(rating) {
-        if (this.props.match.params.username === getLoggedInUserName()) {
+        const { username } = this.props.match.params;
+        if (!username || username === getLoggedInUserName()) {
             this.setGameRating(rating);
             return;
         }
