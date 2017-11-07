@@ -57,6 +57,7 @@ export class MapPage extends Notifiable(Component) {
 
     async checkGame() {
         const currentGame = await Game();
+        console.log(currentGame);
         if (currentGame.error) {
             this.setState({
                 inAnyGame: false
@@ -106,8 +107,6 @@ export class MapPage extends Notifiable(Component) {
 
     async joinDifferentGame(newGame) {
         const currentGame = await this.checkGame();
-        console.log(this.state.selectedPlace);
-        console.log(currentGame);
         await leaveGame(currentGame.id);
         await joinGame(this.state.selectedPlace);
 
@@ -173,8 +172,6 @@ export class MapPage extends Notifiable(Component) {
             );
         }
         else {
-            console.log('in a game and want to join a different one');
-            console.log(this.state.modalHidden);
             ReactDOM.render(
                 <div>
                     <Router>
