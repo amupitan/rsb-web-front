@@ -12,7 +12,7 @@ import Game, {
 const DURATION = constraints.GameDuration;
 const _sports = {
     'soccer': { duration: DURATION.SOCCER },
-    'baskeball': { duration: DURATION.BASKETBALL },
+    'basketball': { duration: DURATION.BASKETBALL },
     'volleyball': { duration: DURATION.VOLLEYBALL },
     'baseball': { duration: DURATION.OTHERS },
     'frisbee': { duration: DURATION.OTHERS },
