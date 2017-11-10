@@ -95,10 +95,9 @@ export async function uploadProfilePhoto(file) {
     }
 
     //Update session user
-    var userInfo = await getUserInfo(session.getItem('username'));
+    var userInfo = await getUserInfo(session.user.username);
     if (userInfo.error) {
-        this.setState({ errorMessage: userInfo.error });
-        return;
+        return (userInfo);
     }
     session.user = userInfo;
 
