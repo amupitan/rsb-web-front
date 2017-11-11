@@ -93,6 +93,14 @@ export async function uploadProfilePhoto(file) {
     if (res.error) {
         return _handleError(res.data);
     }
+
+    //Update session user
+    var userInfo = await getUserInfo(session.user.username);
+    if (userInfo.error) {
+        return (userInfo);
+    }
+    session.user = userInfo;
+
     return res.data;
 }
 
