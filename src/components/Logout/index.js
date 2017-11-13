@@ -2,14 +2,11 @@ import React from 'react';
 
 import { logout } from '../../lib/authentication';
 
-import Button from '../ui/RSBButton';
-
 import './style.css';
 
-const Logout = ({ className }) => (
-    <div className={className}>
-        <Button onClickFunction={logout} glyphicons="glyphicon glyphicon-log-out"
-            buttonType="danger" />
+const Logout = () => (
+    <div className='rsb-logout'>
+        <span className='menu-option' onClick={logout}>Logout <i className="fa fa-sign-out"></i></span>
     </div>
 );
 
