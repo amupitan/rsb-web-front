@@ -5,7 +5,7 @@ import constraints from '../../lib/constraints';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
 
-import { LoaderPage } from '../ui/Loader';
+import Loader, { LoaderPage } from '../ui/Loader';
 import FriendRequest from './FriendRequest';
 import GameInvites from './GameInvites';
 import GameHistory from './GameHistory';
@@ -19,7 +19,12 @@ class Profile extends Notifiable(Component) {
     constructor(props) {
         super(props);
 
+        this.state = {
+            userActionReady: true,
+        }
+
         this.handleUserActionClick = this.handleUserActionClick.bind(this);
+        this.handleUserActionChange = this.handleUserActionChange.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.handleChangePhoto = this.handleChangePhoto.bind(this);
         this.handleFriendRequest = this.handleFriendRequest.bind(this);
@@ -69,7 +74,13 @@ class Profile extends Notifiable(Component) {
         this.displaySuccess({ message: 'Your profile picture was updated successfully' })
     }
 
-    async handleUserActionClick(clickResponse) {
+    handleUserActionClick(wasClicked) {
+        if (wasClicked) {
+            this.setState({ userActionReady: false });
+        }
+    }
+
+    async handleUserActionChange(clickResponse) {
         if (!clickResponse) return;
 
         if (clickResponse.error) {
@@ -99,6 +110,7 @@ class Profile extends Notifiable(Component) {
             friends: userInfo.friends || [],
             gameHistory: gameHistory,
             errorMessage: null,
+            userActionReady: true,
         });
     }
 
@@ -110,12 +122,19 @@ class Profile extends Notifiable(Component) {
     render() {
         if (!this.state || this.state.user == null) return <LoaderPage />;
 
-        const { user, errorMessage } = this.state;
+        const { user, errorMessage, userActionReady } = this.state;
         const isMe = user.friendStatus === FriendStatus.IS_USER;
         return (
             <div className="panel col-xs-10 col-xs-offset-1">
                 <Heading onImageChange={isMe && this.handleChangePhoto} {...user} errorMessage={errorMessage} />
-                <UserAction status={user.friendStatus} onClick={this.handleUserActionClick} username={user.username} />
+
+                {(userActionReady &&
+                    <UserAction status={user.friendStatus} onChange={this.handleUserActionChange} onClick={this.handleUserActionClick} username={user.username} />)
+                    ||
+                    <div className="text-center rsb-add-or-remove-btn rsb-profile-mini-loader">
+                        <Loader thickness={3} width={43} height={43} />
+                    </ div>
+                }
                 <div className="row">
                     <FriendsList {...this.state} />
                     <GameHistory games={this.state.gameHistory} username={user.username} />

@@ -79,12 +79,12 @@ async function friendRequestAction({ username, send = false }) {
 
 // sends a friend request to the user with [username]
 export async function sendFriendRequest({ username }) {
-    friendRequestAction({ username, send: true });
+    return friendRequestAction({ username, send: true });
 }
 
 // cancels a friend request to a user with [username]
 export async function cancelFriendRequest({ username }) {
-    friendRequestAction({ username, send: false });
+    return friendRequestAction({ username, send: false });
 }
 
 
@@ -93,6 +93,14 @@ export async function uploadProfilePhoto(file) {
     if (res.error) {
         return _handleError(res.data);
     }
+
+    //Update session user
+    var userInfo = await getUserInfo(session.user.username);
+    if (userInfo.error) {
+        return (userInfo);
+    }
+    session.user = userInfo;
+
     return res.data;
 }
 

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import RSBButton from '../ui/RSBButton';
 import './style.css';
 import UserDisplay from './UserDisplay';
+import Logout from '../Logout';
 
 const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
   if (menu) {
@@ -11,6 +12,7 @@ const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
       <div className="rsb-menu" style={{ width: width }}>
         <UserDisplay {...user} />
         {menuGenerator(width)(views, onClick)}
+        <Logout />
       </div>
     );
   }
