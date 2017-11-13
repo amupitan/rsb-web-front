@@ -6,7 +6,7 @@ import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
 import Game, { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
 import { googleApiKey, googleApiVersion } from '../../lib/map';
-import user, { getLoggedInUserName } from '../../lib/user';
+import { getLoggedInUserName } from '../../lib/user';
 
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
@@ -32,6 +32,7 @@ export class MapPage extends Notifiable(Component) {
         this.openVerificationModal = this.openVerificationModal.bind(this);
         this.closeVerificationModal = this.closeVerificationModal.bind(this);
         this.joinDifferentGame = this.joinDifferentGame.bind(this);
+        this.renderActionButton = this.renderActionButton.bind(this);
 
         this.state = {
             position: null,
@@ -55,9 +56,15 @@ export class MapPage extends Notifiable(Component) {
         this.getLocation();
     }
 
+    componentDidUpdate() {
+        if (this.state.showingInfoWindow) {
+            this.renderActionButton();
+        }
+    }
+
     async checkGame() {
         const currentGame = await Game();
-        console.log(currentGame);
+        console.log(currentGame)
         if (currentGame.error) {
             this.setState({
                 inAnyGame: false
@@ -131,29 +138,27 @@ export class MapPage extends Notifiable(Component) {
         });
     }
 
-    // Handles the event of a game icon being clicked
-    // displays the game info box
-    async onMarkerClick(props, marker, e) {
-        this.setState({
-            selectedPlace: props.game,
-            activeMarker: marker,
-            showingInfoWindow: true
-        });
+    renderActionButton() {
+        if (!this.state.selectedPlace.host) return;
 
-        //check to see if a user is in a game
+
+        //check to see if the user is in the currentGame
         const currentUser = getLoggedInUserName();
         let inCurrentGame = false;
+        if (currentUser === this.state.selectedPlace.host.username) {
+            inCurrentGame = true;
+        }
         if (this.state.selectedPlace.members) {
-            this.state.selectedPlace.members.map(function (member) {
-                if (member.username === currentUser) {
+            for (let x = 0; x < this.state.selectedPlace.members.length; ++x) {
+                if (this.state.selectedPlace.members[x].username === currentUser) {
                     inCurrentGame = true;
                 }
-            });
+            }
         }
 
         if (inCurrentGame) {
             ReactDOM.render(
-                <button onClick={() => this.handleLeaveGame(props.game)} className="btn btn-danger">Leave Game</button>
+                <button onClick={() => this.handleLeaveGame(this.state.selectedPlace)} className="btn btn-danger">Leave Game</button>
                 ,
                 document.getElementById('rsb-map-join-game-window')
             );
@@ -163,7 +168,7 @@ export class MapPage extends Notifiable(Component) {
                 <Router>
                     <span>
                         <Link to={`/game`}>
-                            <button onClick={() => this.handleJoinGame(props.game)} className="btn btn-success">Join Game</button>
+                            <button onClick={() => this.handleJoinGame(this.state.selectedPlace)} className="btn btn-success">Join Game</button>
                         </Link>
                     </span>
                 </Router>
@@ -189,6 +194,16 @@ export class MapPage extends Notifiable(Component) {
                 document.getElementById('rsb-map-join-game-window')
             );
         }
+    }
+
+    // Handles the event of a game icon being clicked
+    // displays the game info box
+    async onMarkerClick(props, marker, e) {
+        this.setState({
+            selectedPlace: props.game,
+            activeMarker: marker,
+            showingInfoWindow: true
+        });
     }
 
     // Handles the closing of a game option
