@@ -8,7 +8,12 @@ import { getStars } from '../ui/Rater';
 const GameInfo = ({ name, agerange, duration, sport, startTime, host, members }) => {
     const age = (agerange && [...agerange]) || [0, 0];
     const time = (new Date(startTime)).toTimeString();
-    const { firstname, lastname, username } = host || {};
+    const { username } = host || {};
+
+    let ratingDiv = <span><strong>No Ratings</strong></span>
+    if (host && host.rating) {
+        ratingDiv = <span>{getStars(host.rating)}</span>
+    }
 
     return (
         <div>
@@ -16,40 +21,51 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host, members })
             <p><strong>Minimum Age:</strong>{age[0]} <strong>Maximum Age: </strong>{age[1]}</p>
             <p><strong>Start time: </strong>{time}</p>
             <p><strong>Sport: </strong>{sports[sport]} </p>
-            <p><strong>Host: </strong>
+            <span><strong>Host: </strong></span>
+            <div>
                 <Router>
-                    <span className="">
-                        <Link to={`/user/${username}`} >{username}</Link>
-                    </span>
+                    <div className="row">
+                        <div className="col-xs-6 rsb-member-label">
+                            <Link to={`/user/${username}`}>
+                                <span className="label label-warning">{username}</span>
+                            </Link>
+                        </div>
+                        <span className="col-xs-6">
+                            {ratingDiv}
+                        </span>
+                    </div>
                 </Router>
-            </p>
+            </div>
             <span><strong>Members: </strong></span>
             <MemberInfo members={members} />
             <p><strong>Duration: </strong>{duration} minutes</p>
-        </div>
+        </div >
     );
 };
 
 const MemberInfo = ({ members }) => {
     if (!members) return null;
-
     return (
         <div>{
             members.map((mem, i) => {
                 const memberName = mem.username;
-                const memberRating = mem.rating;
+                const memberRating = mem.ratring;
                 let ratingDiv = <span><strong>No Ratings</strong></span>
                 if (memberRating) {
-                    <span>{getStars(memberRating)}</span>
+                    ratingDiv = <span>{getStars(memberRating)}</span>
                 }
 
                 return (
                     <Router key={i}>
-                        <div key={i}>
-                            <Link to={`/user/${memberName}`} key={i} >
-                                <button className="btn btn-link" key={i}>{memberName}</button>
-                            </Link>
-                            {ratingDiv}
+                        <div key={i} className="row">
+                            <div className="col-xs-6 rsb-member-label">
+                                <Link to={`/user/${memberName}`} key={i} >
+                                    <span className="label label-warning" key={i}>{memberName}</span>
+                                </Link>
+                            </div>
+                            <div className="col-xs-6">
+                                {ratingDiv}
+                            </div>
                         </div>
                     </Router>
                 );
