@@ -5,15 +5,10 @@ import { sports } from '../../lib/game';
 import { getStars } from '../ui/Rater';
 
 // GameInfo is dislayed after a marker is clicked
-const GameInfo = ({ name, agerange, duration, sport, startTime, host, members }) => {
+const GameInfo = ({ name, agerange, duration, sport, startTime, host = {}, members }) => {
     const age = (agerange && [...agerange]) || [0, 0];
     const time = (new Date(startTime)).toTimeString();
-    const { username } = host || {};
-
-    let ratingDiv = <span><strong>No Ratings</strong></span>
-    if (host && host.rating) {
-        ratingDiv = <span>{getStars(host.rating)}</span>
-    }
+    const { username, rating } = host;
 
     return (
         <div>
@@ -31,7 +26,7 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host, members })
                             </Link>
                         </div>
                         <span className="col-xs-6">
-                            {ratingDiv}
+                            <StarRating {...rating} />
                         </span>
                     </div>
                 </Router>
@@ -49,12 +44,7 @@ const MemberInfo = ({ members }) => {
         <div>{
             members.map((mem, i) => {
                 const memberName = mem.username;
-                const memberRating = mem.ratring;
-                let ratingDiv = <span><strong>No Ratings</strong></span>
-                if (memberRating) {
-                    ratingDiv = <span>{getStars(memberRating)}</span>
-                }
-
+                const memberRating = mem.rating;
                 return (
                     <Router key={i}>
                         <div key={i} className="row">
@@ -64,7 +54,7 @@ const MemberInfo = ({ members }) => {
                                 </Link>
                             </div>
                             <div className="col-xs-6">
-                                {ratingDiv}
+                                <StarRating {...memberRating} />
                             </div>
                         </div>
                     </Router>
@@ -73,5 +63,9 @@ const MemberInfo = ({ members }) => {
         }</div>
     );
 };
+
+const StarRating = ({ rating }) => {
+    return (<span> {rating ? getStars(rating) : <strong>No Ratings</strong>} </span>);
+}
 
 export default GameInfo;
