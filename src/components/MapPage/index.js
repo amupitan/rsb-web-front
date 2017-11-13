@@ -192,7 +192,7 @@ export class MapPage extends Notifiable(Component) {
 
     // Handles the event of a game icon being clicked
     // displays the game info box
-    async onMarkerClick(props, marker, e) {
+    onMarkerClick(props, marker, e) {
         this.setState({
             selectedPlace: props.game,
             activeMarker: marker,
