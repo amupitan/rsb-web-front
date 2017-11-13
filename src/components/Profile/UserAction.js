@@ -14,7 +14,7 @@ async function handleUserAction({ username, status }) {
     return action({ username });
 }
 
-export const UserAction = ({ username, status, onClick }) => {
+export const UserAction = ({ username, status, onClick, onChange }) => {
     const buttonInfo = {
         [FriendStatus.ARE_FRIENDS]: { text: ' Unfriend', buttonType: "danger", glyphicons: "minus" },
         [FriendStatus.SENT_R]: { text: ' Cancel', buttonType: "warning", glyphicons: "time" },
@@ -26,7 +26,8 @@ export const UserAction = ({ username, status, onClick }) => {
     if (!buttonInfo) return null;
 
     async function handleClick() {
-        onClick(await handleUserAction({ username, status }));
+        onClick(true);
+        onChange(await handleUserAction({ username, status }));
     }
 
     return (
@@ -38,7 +39,7 @@ export const UserAction = ({ username, status, onClick }) => {
                 buttonType={buttonInfo.buttonType}
             />
         </div>
-    )
+    );
 };
 
 export default UserAction;

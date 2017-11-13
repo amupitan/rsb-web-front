@@ -85,6 +85,10 @@ button{
 
 }
 
+.rsb-profile-mini-loader{
+    margin-left: 50%;        
+}
+
 #image-upload{
     display: none;
 }

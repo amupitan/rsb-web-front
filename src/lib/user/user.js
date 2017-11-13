@@ -79,12 +79,12 @@ async function friendRequestAction({ username, send = false }) {
 
 // sends a friend request to the user with [username]
 export async function sendFriendRequest({ username }) {
-    friendRequestAction({ username, send: true });
+    return friendRequestAction({ username, send: true });
 }
 
 // cancels a friend request to a user with [username]
 export async function cancelFriendRequest({ username }) {
-    friendRequestAction({ username, send: false });
+    return friendRequestAction({ username, send: false });
 }
 
 
