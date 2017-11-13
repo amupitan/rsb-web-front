@@ -64,13 +64,7 @@ export class MapPage extends Notifiable(Component) {
 
     async checkGame() {
         const currentGame = await Game();
-        console.log(currentGame)
-        if (currentGame.error) {
-            this.setState({
-                inAnyGame: false
-            });
-        }
-        else {
+        if (!currentGame.error) {
             this.setState({
                 inAnyGame: true
             });
