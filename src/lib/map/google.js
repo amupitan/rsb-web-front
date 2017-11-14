@@ -31,7 +31,11 @@ export async function getAddress({ lng, lat }) {
 export const loadGoogleMaps = () => scriptHandler.load(`https://maps.googleapis.com/maps/api/js?v=${googleApiVersion}&key=${googleApiKey}&libraries=places`, { async: true, name: googleScriptName });
 
 export const removeGoogleMaps = () => {
-    scriptHandler.remove({ name: googleScriptName });
-    delete window.google.maps;
-    delete window.google;
+    const removed = scriptHandler.remove({ name: googleScriptName });
+
+    // delete google only if the [scriptHandler] placed it there
+    if (removed) {
+        delete window.google.maps;
+        delete window.google;
+    }
 }

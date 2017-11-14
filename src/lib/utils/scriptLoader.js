@@ -15,12 +15,20 @@ export const loadScript = (src, { async = true, name = '' } = {}) => (
     })
 );
 
+// removes a script from the page that meets [condition]
 export const removeScript = ({ name, condition = (script) => name === script.dataset.name, } = {}) => {
 
+    // get script that meets condition
     const allScripts = document.getElementsByTagName('script'),
         scriptElement = [].find.call(allScripts, condition);
 
-    if (scriptElement) scriptElement.remove();
+    // remove script
+    if (scriptElement) {
+        scriptElement.remove();
+        return true;
+    }
+
+    return false;
 };
 
 export default deepFreeze({

@@ -1,6 +1,6 @@
 import datetime from "./datetime";
 import _makeCancelable from './makeCancelable';
-import _scriptLoader from './scriptLoader';
+import scriptHandler from './scriptLoader';
 import _deepFreeze from './deepFreeze';
 
 //TODO: rename this class
@@ -45,7 +45,7 @@ export const DateUtils = datetime;
 
 export const makeCancelable = _makeCancelable;
 
-export const scriptHandler = _scriptLoader;
+export { scriptHandler };
 
 export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 

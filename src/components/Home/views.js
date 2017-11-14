@@ -1,5 +1,5 @@
 import CurrentGame from '../CurrentGame';
-import MapPage from '../MapPage';
+import Map from '../Map';
 import HostPage from '../HostGame';
 import Settings from '../Settings';
 import Join from '../Join';
@@ -28,7 +28,7 @@ const views = [
         name: 'Map',
         path: 'map',
         isMenuOption: true,
-        component: MapPage,
+        component: Map,
     },
     {
         name: 'Current Game',

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MapPage from './';
+import Map from './';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<MapPage />, div);
+  const notify = { show: () => { }, hide: () => { } };
+  ReactDOM.render(<Map notify={notify} />, div);
 }); 
