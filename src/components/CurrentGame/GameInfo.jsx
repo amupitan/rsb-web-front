@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from "react-router-dom";
+
 import utils, { DateUtils } from '../../lib/utils';
 import { sports } from '../../lib/game';
 
@@ -41,8 +43,10 @@ export const GameInfoCenter = ({ name, sport, address, host, joincode }) => {
                 {joincode && <p className="lead"><strong>Join Code: </strong>{joincode}</p>}
 
                 <p className="lead"><strong>Host: </strong></p>
-                <Avatar avatar={host.avatar} alt='member-profile-pic' className='rsb-game-host-photo' />
-                <p className="h4">{host.firstname} {host.lastname}</p>
+                <Link to={`/user/${host.username}`}>
+                    <Avatar avatar={host.avatar} alt='member-profile-pic' className='rsb-game-host-photo' />
+                    <p className="h4">{host.firstname} {host.lastname}</p>
+                </Link>
             </div>
         </div>
     );

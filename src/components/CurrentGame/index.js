@@ -180,6 +180,4 @@ const Footer = () => (
     </div>
 );
 
-
-
 export default CurrentGame;
