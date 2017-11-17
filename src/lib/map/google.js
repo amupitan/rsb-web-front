@@ -23,14 +23,14 @@ export async function getAddress({ lng, lat }) {
         if (address["error_message"]) {
             // TODO: error analytics log
             console.error(address);
-            return { error: 'Cannot fetch at the moment' };
+            return { error: 'Cannot fetch street address at the moment' };
         }
 
         return { address: address.results[0].formatted_address };
 
     } catch (err) {
         console.error(err);
-        return { error: 'Cannot fetch at the moment' };
+        return { error: 'Cannot fetch street address at the moment' };
     }
 }
 

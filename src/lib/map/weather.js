@@ -21,7 +21,7 @@ export default async function getWeather({ lng, lat }) {
         if (result.message) {
             // TODO: error analytics log
             console.error(result);
-            return { error: 'Cannot fetch at the moment' };
+            return { error: 'Cannot fetch weather at the moment' };
         }
 
         return { temp: result.main.temp, weather: result.weather[0].main.toLowerCase() };
