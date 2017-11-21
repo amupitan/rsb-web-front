@@ -103,6 +103,33 @@ export async function rateGame({ rating, id }) {
     return res.data
 }
 
+export async function sendGameInvite(username) {
+    const res = await yoda.post('/invite/m/send/t/1', (new YodaRequest({}, {
+        to: username,
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data);
+    }
+
+    return res.data;
+}
+
+export async function reviewGameInvite({ username, accept }) {
+    console.log("Username: ", username, accept);
+
+    const res = await yoda.post('/invite/m/review/t/1', (new YodaRequest({}, {
+        from: username,
+        accept: accept
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data);
+    }
+
+    return res.data;
+}
+
 // Returns the user's current game or an error if there's no game
 export default async function Game() {
     const game = await _getGame();
