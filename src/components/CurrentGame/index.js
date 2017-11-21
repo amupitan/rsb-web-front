@@ -29,7 +29,6 @@ class CurrentGame extends Notifiable(Component) {
             errorFatal: null,
         }
 
-        this.renderBottom = this.renderBottom.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -86,20 +85,6 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
-    }
-
-    renderBottom() {
-        return (
-            <div>
-                <div className="rsb-game-leave row text-center">
-                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
-                </div>
-
-                <div className="rsb-game-bottom row">
-                    <RSBButton text="Invite Friends" buttonType="info" onClickFunction={toFriends} />
-                </div>
-            </div>
-        );
     }
 
     renderMembers({ members = [] }) {
@@ -179,7 +164,12 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
 const Footer = () => (
     <div>
         <div className="rsb-game-leave row text-center">
-            <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+            <div className="col-sm-6">
+                <RSBButton text="Invite Friends" buttonType="info" onClickFunction={toFriends} />
+            </div>
+            <div className="col-sm-6">
+                <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+            </div>
         </div>
         <div className="rsb-game-bottom row">
         </div>
