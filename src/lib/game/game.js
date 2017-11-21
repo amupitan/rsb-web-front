@@ -2,7 +2,7 @@ import yoda, { YodaRequest } from '../yoda/yoda';
 import redirect from '../navigator';
 import session from '../session';
 import errorFormatter from '../errors';
-import { showError } from '../../mixins/notifiable';
+import { showError, showInfo } from '../../mixins/notifiable';
 
 //make request to get game
 async function _getGame({ value } = {}) {
@@ -109,7 +109,8 @@ export async function sendGameInvite(username) {
     if (res.error) {
         return _handleError(res.data);
     }
-
+    showInfo("Successfully send invitation");
+    redirect({ path: '/game' });
     return res.data;
 }
 
