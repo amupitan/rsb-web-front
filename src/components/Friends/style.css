@@ -35,3 +35,7 @@ input[type=search].rsb-friend-search {
 input[type=search]:focus.rsb-friend-search {
     width: 50%;
 }
+
+.user-select{
+    border: 2px solid blue;
+}
