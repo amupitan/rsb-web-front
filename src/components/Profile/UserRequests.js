@@ -36,6 +36,29 @@ const UserRequests = ({ requests, onReview }) => {
 
 }
 
+export const GameRequest = ({ requests, onReview }) => {
+
+    return (<div>
+        {
+            requests.map((request, i) => {
+                const { From, Game } = request;
+
+                return (
+                    <div key={i} className="populate-requests row">
+
+                        <div className="col-sm-4">
+                            <span>From: {From}</span><br />
+                            <span>Game ID: {Game} </span><br />
+                        </div>
+                        <ReviewRequest accept onClick={onReview} username={From} />
+                        <ReviewRequest onClick={onReview} username={From} />
+                    </div>
+                );
+            })
+        }
+    </div>)
+}
+
 const ReviewRequest = ({ accept = false, onClick, username }) => {
     const { glyph, className } = accept ?
         { glyph: 'ok', className: 'accept' } :
