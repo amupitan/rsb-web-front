@@ -102,7 +102,7 @@ class CurrentGame extends Notifiable(Component) {
             }
 
             // add row
-            rows[rowCount] = (
+            rows[Math.floor(rowCount)] = (
                 <div className="rsb-game-member-row" key={rowCount}>
                     <div className="row">
                         {labels}
@@ -110,7 +110,6 @@ class CurrentGame extends Notifiable(Component) {
                 </div>
             );
         }
-
         return rows;
     }
 
