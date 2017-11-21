@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { sports, leaveGame } from '../../lib/game';
+import { toFriends } from '../../lib/user';
 import { getAddress } from '../../lib/map';
 import { DateUtils } from '../../lib/utils';
 import { Notifiable } from "../../mixins";
@@ -146,6 +147,11 @@ class CurrentGame extends Notifiable(Component) {
                     {this.getCurrentPlayers()}
                     {this.renderGameInfo()}
                 </div>
+                <RSBButton
+                    text="Invite Friends"
+                    buttonType="info"
+                    onClickFunction={toFriends}
+                />
                 <RSBButton
                     text="Exit Game"
                     buttonType="danger"
