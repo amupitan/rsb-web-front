@@ -25,6 +25,7 @@ class Friends extends Notifiable(Component) {
         this.render = this.render.bind(this);
         this.filterUsers = this.filterUsers.bind(this);
         this.renderUsers = this.renderUsers.bind(this);
+        this.displayInvite = this.displayInvite.bind(this);
     }
 
     componentDidMount() {
@@ -107,7 +108,7 @@ class Friends extends Notifiable(Component) {
     }
 
     displayInvite() {
-        if (this.props.location.state) {
+        if (this.props.location && this.props.location.state) {
             return (
                 <RSBButton
                     text="Invite"
