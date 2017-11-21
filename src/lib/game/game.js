@@ -114,8 +114,6 @@ export async function sendGameInvite(username) {
 }
 
 export async function reviewGameInvite({ username, accept }) {
-    console.log("Username: ", username, accept);
-
     const res = await yoda.post('/invite/m/review/t/1', (new YodaRequest({}, {
         from: username,
         accept: accept
