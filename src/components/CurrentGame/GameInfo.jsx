@@ -73,7 +73,7 @@ export const GameInfoLeft = ({ weather, distance }) => {
     return (
         <div className="rsb-game-info-left col-sm-4">
             <p className="lead"><strong>Temperature: </strong>&nbsp;{weather.temp}&#x2109;&nbsp;&nbsp;
-            <i className={`fa fa-${icon} rsb-game-${weather}`} aria-hidden="true"></i>
+            <i className={`fa fa-${icon} rsb-game-${weather.weather}`} aria-hidden="true"></i>
                 <br /> {distance.toFixed(1)} mile{distance !== 1 ? 's' : ''} away. Need a ride?</p>
         </div>
     );
