@@ -1,6 +1,7 @@
 
 
-import { getCurrentLocation } from './map';
+import { getCurrentLocation, getDistanceBetweenTwoPoints } from './map';
+import getWeather from './weather';
 import {
     getAddress,
     googleApiKey,
@@ -16,4 +17,6 @@ export {
     googleApiVersion,
     loadGoogleMaps,
     removeGoogleMaps,
+    getDistanceBetweenTwoPoints,
+    getWeather,
 };
