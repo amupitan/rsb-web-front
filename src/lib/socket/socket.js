@@ -4,9 +4,11 @@ const backend_url = 'ws://127.0.0.1';
 const backend_port = '4444';
 const url = `${backend_url}:${backend_port}`;
 
+window.WebSocket = window.Socket || Object;
+
 export default class Socket {
     constructor() {
-        this.ws = new WebSocket(`${url}/establish`);
+        this.ws = new window.WebSocket(`${url}/establish`);
 
         this._handleMessage = this._handleMessage.bind(this);
     }
@@ -14,7 +16,7 @@ export default class Socket {
     connect() {
         const { disconnected, closing } = this.status;
         if (disconnected || closing) {
-            this.ws = new WebSocket(`${url}/establish`);
+            this.ws = new window.WebSocket(`${url}/establish`);
         }
     }
 
