@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { Link } from "react-router-dom";
 
 import utils, { DateUtils } from '../../lib/utils';
@@ -11,7 +11,7 @@ import Loader from '../ui/Loader';
 export const GameInfoRight = ({ minAge, maxAge, startTime, duration }) => (
     <div className="rsb-game-info-right col-sm-4">
         <p className="lead">
-            <strong>Duration: </strong>{DateUtils.getCurrentTime(startTime)} - {DateUtils.getTimeAfter({ startTime, duration })}
+            <strong>Duration: </strong>{DateUtils.getCurrentTime(startTime)} - {DateUtils.getTimeAfter(( { dateString: startTime, minutes: duration } ))}
         </p>
         <p className="lead"> <strong>Current Time: </strong>{DateUtils.getCurrentTime()}</p>
         <p className="lead">{DateUtils.toDateString()}</p>
