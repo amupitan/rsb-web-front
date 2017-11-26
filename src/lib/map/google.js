@@ -5,7 +5,7 @@ import { scriptHandler } from '../utils';
 const googleScriptName = 'rsb-google-maps';
 
 export const googleApiKey = 'AIzaSyABplRWPbn89WsMUko7bMI83SXCiWVTHLY';
-export const googleApiVersion = '3.28';
+export const googleApiVersion = '3.29';
 
 
 // returns the street address of a location using Google API
