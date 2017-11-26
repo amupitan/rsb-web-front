@@ -9,7 +9,6 @@ import {
     uploadProfilePhoto,
     FriendStatus,
     getGameHistory,
-    toFriends,
 } from './user';
 
 export {
@@ -22,7 +21,6 @@ export {
     getLoggedInUserName,
     getUserFriends as getFriends,
     getGameHistory,
-    toFriends,
 };
 
 export default getUserInfo;

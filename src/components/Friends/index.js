@@ -116,11 +116,7 @@ class Friends extends Notifiable(Component) {
         if (users.length === 0)
             return <div>No friends with the name '{this.state.friendSearch}' were found</div>
 
-        /* `this.props.location.state` is undefined when this component is accessed 
-         * from the hamburger menu, and has `{from: "/game"}` when it gets here from 
-         * trying to invite people from CurrentGame. 
-         */
-        if (this.props.location.state) {
+        if (this.props.location.pathname === '/invite') {
             return users.map((user, i) => (
                 <div className={this.getClassSet(user)} onClick={() => { this.selectFriend(i) }} key={i}>
                     <Avatar avatar={user.avatar} alt='profile-pic' className='rsb-friend-icon' />
@@ -141,7 +137,7 @@ class Friends extends Notifiable(Component) {
     }
 
     displayInvite() {
-        if (this.props.location && this.props.location.state) {
+        if (this.props.location && this.props.location.pathname === '/invite') {
             return (
                 <RSBButton
                     text="Invite"

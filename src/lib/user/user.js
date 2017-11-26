@@ -114,7 +114,3 @@ export async function getGameHistory({ username }) {
     }
     return res.data
 }
-
-export function toFriends() {
-    redirect({ path: '/invite' });
-}

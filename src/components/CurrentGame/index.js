@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
-import { toFriends } from '../../lib/user';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 
 import { Notifiable } from "../../mixins";
@@ -164,10 +163,14 @@ const Footer = () => (
     <div>
         <div className="rsb-game-leave row text-center">
             <div className="col-sm-6">
-                <RSBButton text="Invite Friends" buttonType="info" onClickFunction={toFriends} />
+                <Link to={'/invite'}>
+                    <RSBButton text="Invite Friends" buttonType="info" />
+                </Link>
             </div>
             <div className="col-sm-6">
-                <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                <Link to={`/`}>
+                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                </Link>
             </div>
         </div>
         <div className="rsb-game-bottom row">

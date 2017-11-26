@@ -36,7 +36,6 @@ export async function leaveGame() {
         redirect();
     }
     session.removeItem('game');
-    redirect({ path: '/' });
 }
 
 // gets games based on a location
