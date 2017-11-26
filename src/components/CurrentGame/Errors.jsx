@@ -13,7 +13,6 @@ export const ErrorPage = ({ message }) => (
         <Link to='/join'>
             <button className='rsb-current-game-error-button'><span>Join Game </span></button>
         </Link>
-
     </div>
 );
 
