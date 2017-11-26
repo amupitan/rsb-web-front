@@ -30,7 +30,8 @@ export const GameInfoCenter = ({ name, sport, address, host, joincode }) => {
     const sportName = sports[sport],
         sportIcon = {
             'soccer': 'futbol-o',
-        }[sportName] || 'futbol-o'
+            'basketball': 'dribbble',
+        }[sportName] || 'futbol-o';
 
     return (
         <div className="rsb-game-info-center col-sm-4">
@@ -40,7 +41,7 @@ export const GameInfoCenter = ({ name, sport, address, host, joincode }) => {
                     {utils.toTitleCase(sports[sport])} Game</p>
 
                 {streetAddress}
-                {joincode && <p className="lead"><strong>Join Code: </strong>{joincode}</p>}
+                <p className="lead"><strong>Join Code: </strong>{joincode || 'Hidden (This game is private)'}</p>
 
                 <p className="lead"><strong>Host: </strong></p>
                 <Link to={`/user/${host.username}`}>
