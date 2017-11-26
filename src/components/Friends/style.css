@@ -39,3 +39,8 @@ input[type=search]:focus.rsb-friend-search {
 .user-select{
     border: 2px solid blue;
 }
+
+.user-in-game{
+    border: 2px solid grey;
+    background: #dddddd;
+}

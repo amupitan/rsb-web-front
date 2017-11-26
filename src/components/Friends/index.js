@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { getFriends, getLoggedInUserName } from '../../lib/user';
-import { sendGameInvite } from '../../lib/game';
+import Game, { sendGameInvite } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 
 import RSBButton from '../ui/RSBButton';
@@ -26,9 +26,25 @@ class Friends extends Notifiable(Component) {
         this.filterUsers = this.filterUsers.bind(this);
         this.renderUsers = this.renderUsers.bind(this);
         this.displayInvite = this.displayInvite.bind(this);
+        this.getGameMembers = this.getGameMembers.bind(this);
     }
 
     componentDidMount() {
+        this.getGameMembers();
+    }
+
+    async getGameMembers() {
+        const game = await Game();
+        if (game.error) {
+            this.setState({
+                errorFatal: game.error,
+            });
+            return;
+        }
+        this.setState({
+            game: game
+        });
+
         this.getAllFriends();
     }
 
@@ -37,12 +53,25 @@ class Friends extends Notifiable(Component) {
         const friends = await getFriends(username);
         if (!friends.error) {
             for (let i = 0; i < friends.length; ++i) {
-                friends[`${i}`].selectStatus = false;
+                // friends[`${i}`].selectStatus = false;
+                friends[`${i}`].selectStatus = (this.isInGame(friends[`${i}`].username));
             }
             this.setState({
                 userFriends: friends
             });
         }
+    }
+
+    isInGame(username) {
+        const inGame = this.state.game.members;
+        //Check if user is already in the game
+        for (let i in inGame) {
+            if (inGame[i].username === username) return 2;
+        }
+        if (this.state.game.host.username === username) {
+            return 2;
+        }
+        return 0;
     }
 
     filterUsers(event) {
@@ -62,7 +91,10 @@ class Friends extends Notifiable(Component) {
 
     selectFriend(i) {
         let stateCopy = this.state.userFriends;
-        stateCopy[i].selectStatus = this.state.userFriends[i].selectStatus ? 0 : 1;
+        // stateCopy[i].selectStatus = this.state.userFriends[i].selectStatus ? 0 : 1;
+        if (stateCopy[i].selectStatus !== 2)
+            stateCopy[i].selectStatus = this.state.userFriends[i].selectStatus ? 0 : 1;
+
         this.setState({
             userFriends: stateCopy
         })
@@ -73,7 +105,8 @@ class Friends extends Notifiable(Component) {
             'col-xs-3',
             'text-center',
             {
-                'user-select': user.selectStatus
+                'user-select': (user.selectStatus === 1),
+                'user-in-game': (user.selectStatus === 2)
             }
         )
         return classSet;
@@ -114,12 +147,16 @@ class Friends extends Notifiable(Component) {
                     text="Invite"
                     buttonType="success"
                     onClickFunction={() => {
+                        let userFriends = this.state.userFriends;
                         for (let i in this.state.userFriends) {
-                            if (this.state.userFriends[i].selectStatus) {
+                            if (this.state.userFriends[i].selectStatus === 1) {
                                 sendGameInvite(this.state.userFriends[i].username)
+                                userFriends[i].selectStatus = 0;
                             }
                         }
-
+                        this.setState({
+                            userFriends: userFriends
+                        })
                     }}
                 />)
         }
