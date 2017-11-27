@@ -4,7 +4,7 @@ const backend_url = 'ws://127.0.0.1';
 const backend_port = '4444';
 const url = `${backend_url}:${backend_port}`;
 
-window.WebSocket = window.Socket || Object;
+window.WebSocket = window.WebSocket || Object;
 
 export default class Socket {
     constructor() {
@@ -55,7 +55,7 @@ export default class Socket {
         }, false);
 
         return {
-            cancel: this.ws.removeEventListener(name, listener, false)
+            cancel: () => this.ws.removeEventListener(name, listener, false)
         }
     }
 
