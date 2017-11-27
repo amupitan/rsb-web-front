@@ -1,14 +1,11 @@
+import { webSocketUrl as url } from '../yoda';
 import { wait } from '../utils';
 
-const backend_url = 'ws://127.0.0.1';
-const backend_port = '4444';
-const url = `${backend_url}:${backend_port}`;
-
-window.WebSocket = window.Socket || Object;
+window.WebSocket = window.WebSocket || Object;
 
 export default class Socket {
     constructor() {
-        this.ws = new window.WebSocket(`${url}/establish`);
+        this.ws = new WebSocket(`${url}/establish`);
 
         this._handleMessage = this._handleMessage.bind(this);
     }
@@ -55,7 +52,7 @@ export default class Socket {
         }, false);
 
         return {
-            cancel: this.ws.removeEventListener(name, listener, false)
+            cancel: () => this.ws.removeEventListener(name, listener, false)
         }
     }
 
