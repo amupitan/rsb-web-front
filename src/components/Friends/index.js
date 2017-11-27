@@ -131,22 +131,25 @@ class Friends extends Notifiable(Component) {
     displayInvite() {
         if (this.props.location && this.props.location.pathname === '/invite') {
             return (
-                <RSBButton
-                    text="Invite"
-                    buttonType="success"
-                    onClickFunction={() => {
-                        let userFriends = this.state.userFriends;
-                        for (let friend of this.state.userFriends) {
-                            if (friend.selectStatus === gameStatus.SELECTED) {
-                                sendGameInvite(friend.username)
-                                friend.selectStatus = gameStatus.NOT_SELECTED;
+                <Link to={'/game'}>
+                    <RSBButton
+                        text="Invite"
+                        buttonType="success"
+                        onClickFunction={() => {
+                            let userFriends = this.state.userFriends;
+                            for (let friend of this.state.userFriends) {
+                                if (friend.selectStatus === gameStatus.SELECTED) {
+                                    sendGameInvite(friend.username)
+                                    friend.selectStatus = gameStatus.NOT_SELECTED;
+                                }
                             }
-                        }
-                        this.setState({
-                            userFriends: userFriends
-                        })
-                    }}
-                />)
+                            this.setState({
+                                userFriends: userFriends
+                            })
+                        }}
+                    />
+                </Link>
+            )
         }
     }
 

@@ -109,7 +109,6 @@ export async function sendGameInvite(username) {
         return _handleError(res.data);
     }
     showInfo("Successfully send invitation");
-    redirect({ path: '/game' });
     return res.data;
 }
 

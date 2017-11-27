@@ -45,7 +45,7 @@ export const GameRequest = ({ requests, onReview }) => {
 
                 return (
                     <div key={i} className="populate-requests row">
-
+                        {/*TODO: Display better information*/}
                         <div className="col-sm-4">
                             <span>From: {From}</span><br />
                             <span>Game ID: {Game} </span><br />
