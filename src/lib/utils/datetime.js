@@ -29,7 +29,9 @@ const DateUtils = Object.seal({
         (mm > 9 ? '' : '0') + mm,
         (dd > 9 ? '' : '0') + dd,
         ].join(delimeter);
-    }
+    },
+
+    toDateString: (dateString) => (dateString ? new Date(dateString) : new Date()).toDateString(),
 });
 
 export default DateUtils;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import { Link, BrowserRouter as Router } from 'react-router-dom';
 
-import { Notifiable } from "../../mixins";
 import { getCurrentLocation } from '../../lib/map';
 import Game, { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
 import { googleApiKey, googleApiVersion } from '../../lib/map';
@@ -16,7 +15,7 @@ import SearchAddress from '../SearchAddress'
 
 import './style.css';
 
-export class MapPage extends Notifiable(Component) {
+export class MapPage extends Component {
     constructor(props) {
         super(props);
         this.render = this.render.bind(this);

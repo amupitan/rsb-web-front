@@ -5,7 +5,7 @@ import { scriptHandler } from '../utils';
 const googleScriptName = 'rsb-google-maps';
 
 export const googleApiKey = 'AIzaSyABplRWPbn89WsMUko7bMI83SXCiWVTHLY';
-export const googleApiVersion = '3.28';
+export const googleApiVersion = '3.29';
 
 
 // returns the street address of a location using Google API
@@ -20,18 +20,28 @@ export async function getAddress({ lng, lat }) {
         }
 
         const address = await res.json();
+        if (address["error_message"]) {
+            // TODO: error analytics log
+            console.error(address);
+            return { error: 'Cannot fetch street address at the moment' };
+        }
+
         return { address: address.results[0].formatted_address };
 
     } catch (err) {
         console.error(err);
-        return { error: 'Cannot fetch at the moment' };
+        return { error: 'Cannot fetch street address at the moment' };
     }
 }
 
 export const loadGoogleMaps = () => scriptHandler.load(`https://maps.googleapis.com/maps/api/js?v=${googleApiVersion}&key=${googleApiKey}&libraries=places`, { async: true, name: googleScriptName });
 
 export const removeGoogleMaps = () => {
-    scriptHandler.remove({ name: googleScriptName });
-    delete window.google.maps;
-    delete window.google;
+    const removed = scriptHandler.remove({ name: googleScriptName });
+
+    // delete google only if the [scriptHandler] placed it there
+    if (removed) {
+        delete window.google.maps;
+        delete window.google;
+    }
 }

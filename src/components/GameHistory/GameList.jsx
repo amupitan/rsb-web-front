@@ -15,7 +15,9 @@ const GameList = ({ id, name, startTime, agerange, onRatingChange, rating = 0, i
             <td>{name}</td>
             <td>{startTime.substring(0, startTime.indexOf('T'))}</td>
             <td>{agerange[0]}-{agerange[1]}</td>
-            <Rater rating={rating} onChange={handleRatingChange(id)} />
+            <td>
+                <Rater rating={rating} onChange={handleRatingChange(id)} />
+            </td>
         </tr>
     )
 }

@@ -1,6 +1,6 @@
 import datetime from "./datetime";
 import _makeCancelable from './makeCancelable';
-import _scriptLoader from './scriptLoader';
+import scriptHandler from './scriptLoader';
 import _deepFreeze from './deepFreeze';
 
 //TODO: rename this class
@@ -45,11 +45,20 @@ export const DateUtils = datetime;
 
 export const makeCancelable = _makeCancelable;
 
-export const scriptHandler = _scriptLoader;
+export { scriptHandler };
 
 export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const deepFreeze = _deepFreeze;
+
+/**
+ * Deep clones an object and returns the clone.
+ * It is unsafe because it does not handle function
+ * or date objects correctly 
+ * @param {Object} obj 
+ * @returns {Object}
+ */
+export const unsafeCopy = obj => JSON.parse(JSON.stringify(obj));
 
 export default {
     mergeDeep: mergeDeep,

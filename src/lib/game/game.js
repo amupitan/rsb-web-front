@@ -27,10 +27,8 @@ export async function joinAndGetGame(game, byId) {
 }
 
 // leaves a game and redirects
-export async function leaveGame(gameId) {
-    const res = await yoda.post('/game/exit', (new YodaRequest({}, {
-        code: gameId,
-    })).toString(), true);
+export async function leaveGame() {
+    const res = await yoda.post('/game/exit', (new YodaRequest({}, {})).toString(), true);
     if (res.error) {
         const err = _handleError(res.data);
         showError({ message: err.error });
