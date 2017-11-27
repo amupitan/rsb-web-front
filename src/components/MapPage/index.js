@@ -37,7 +37,7 @@ export class MapPage extends Component {
             position: null,
             showingInfoWindow: false,
             inAnyGame: false,
-            modalHidden: 'none',
+            modalDisplay: false,
             activeMarker: {},
             selectedPlace: {},
             markers: [],
@@ -63,11 +63,12 @@ export class MapPage extends Component {
 
     async checkGame() {
         const currentGame = await Game();
-        if (!currentGame.error) {
-            this.setState({
-                inAnyGame: true
-            });
+        if (currentGame.error) {
+            return;
         }
+        this.setState({
+            inAnyGame: true
+        });
         return currentGame;
     }
 
@@ -95,13 +96,13 @@ export class MapPage extends Component {
 
     openVerificationModal() {
         this.setState({
-            modalHidden: 'block'
+            modalDisplay: true
         });
     }
 
     closeVerificationModal() {
         this.setState({
-            modalHidden: 'none'
+            modalDisplay: false
         });
     }
 
@@ -286,7 +287,7 @@ export class MapPage extends Component {
                     {this.renderSearchAddress()}
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
-                    <JoinNewGameModal display={this.state.modalHidden} onCloseFunction={this.closeVerificationModal} joinFunction={this.joinDifferentGame} />
+                    {this.state.modalDisplay && <JoinNewGameModal onClose={this.closeVerificationModal} joinGame={this.joinDifferentGame} />}
                 </Map>
             </div>
         );

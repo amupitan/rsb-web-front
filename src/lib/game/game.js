@@ -17,6 +17,7 @@ function _handleError(error) {
 // joins a game and returns it
 export async function joinAndGetGame(game, byId) {
     const { mode, value } = byId ? { mode: 'i', value: game.id } : { mode: 'j', value: game.joincode };
+
     const res = await yoda.post(`/game/join/${mode}`, (new YodaRequest({}, {
         code: value,
     })).toString(), true);

@@ -47,10 +47,10 @@ const MemberInfo = ({ members }) => {
                 const memberRating = mem.rating;
                 return (
                     <Router key={i}>
-                        <div key={i} className="row">
+                        <div className="row">
                             <div className="col-xs-6 rsb-member-label">
-                                <Link to={`/user/${memberName}`} key={i} >
-                                    <span className="label label-warning" key={i}>{memberName}</span>
+                                <Link to={`/user/${memberName}`} >
+                                    <span className="label label-warning">{memberName}</span>
                                 </Link>
                             </div>
                             <div className="col-xs-6">
