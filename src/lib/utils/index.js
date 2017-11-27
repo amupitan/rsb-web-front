@@ -51,6 +51,15 @@ export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const deepFreeze = _deepFreeze;
 
+/**
+ * Deep clones an object and returns the clone.
+ * It is unsafe because it does not handle function
+ * or date objects correctly 
+ * @param {Object} obj 
+ * @returns {Object}
+ */
+export const unsafeCopy = obj => JSON.parse(JSON.stringify(obj));
+
 export default {
     mergeDeep: mergeDeep,
     //toTitleCase returns the string with the first letter in uppercase e.g toTitleCase('wings') -> Wings

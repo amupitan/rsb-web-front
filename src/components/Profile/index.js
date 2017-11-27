@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
 import { reviewGameInvite } from '../../lib/game';
 import constraints from '../../lib/constraints';
+import subscription, { subscriptions } from '../../lib/subscriptions';
+import { unsafeCopy } from "../../lib/utils";
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
 
@@ -24,6 +26,8 @@ class Profile extends Notifiable(Component) {
             userActionReady: true,
         }
 
+        this.subscriber = subscription.subscriber;
+
         this.handleUserActionClick = this.handleUserActionClick.bind(this);
         this.handleUserActionChange = this.handleUserActionChange.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
@@ -31,6 +35,7 @@ class Profile extends Notifiable(Component) {
         this.handleFriendRequest = this.handleFriendRequest.bind(this);
         this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
+        this.updateFriendStatus = this.updateFriendStatus.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,6 +64,16 @@ class Profile extends Notifiable(Component) {
 
     componentDidMount() {
         this.getUserInfo(this.props.match.params);
+        this.subscriber.multiple([
+            subscription.subscribe({
+                name: subscriptions.RECEIVED_FRIEND_INVITE,
+                action: this.updateFriendStatus(FriendStatus.RECEIVED_R)
+            }),
+            subscription.subscribe({
+                name: subscriptions.CANCELLED_FRIEND_INVITE,
+                action: this.updateFriendStatus(FriendStatus.NONE)
+            }),
+        ]);
     }
 
     async handleChangePhoto(evt) {
@@ -128,6 +143,21 @@ class Profile extends Notifiable(Component) {
     displaySuccess({ message = 'Success!' } = {}) {
         showSuccess(message);
         this.getUserInfo({ username: this.state.user.username });
+    }
+
+    updateFriendStatus(friendStatus) {
+        return (res) => {
+            if (res.error || this.state.user.username !== res.from) return;
+
+            const _user = unsafeCopy(this.state.user);
+            _user.friendStatus = friendStatus;
+
+            this.setState({ user: _user, userActionReady: true });
+        };
+    }
+
+    componentWillUnmount() {
+        this.subscriber.clearSubscriptions();
     }
 
     render() {
