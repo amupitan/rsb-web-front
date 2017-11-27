@@ -49,28 +49,23 @@ class Friends extends Notifiable(Component) {
     }
 
     async getAllFriends() {
+        const inGame = this.state.game.members;
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
+
         if (!friends.error && this.props.location.pathname === '/invite') {
             for (let i = 0; i < friends.length; ++i) {
-                friends[i].selectStatus = (this.isInGame(friends[i].username));
+                for (let i in inGame) {
+                    if (inGame[i].username === friends[i].username || this.state.game.host.username === friends[i].username) {
+                        friends[i].selectStatus = gameStatus[0];
+                    }
+                    else friends[i].selectStatus = gameStatus[2];
+                }
             }
             this.setState({
                 userFriends: friends
             });
         }
-    }
-
-    isInGame(username) {
-        const inGame = this.state.game.members;
-        //Check if user is already in the game
-        for (let i in inGame) {
-            if (inGame[i].username === username) return gameStatus[0];
-        }
-        if (this.state.game.host.username === username) {
-            return gameStatus[0];
-        }
-        return gameStatus[2];
     }
 
     filterUsers(event) {
