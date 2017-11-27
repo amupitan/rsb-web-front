@@ -12,5 +12,4 @@ it('renders without crashing', () => {
     <BrowserRouter>
       <Route path='map' render={(props) => <MapPage {...props} notify={notify} onCloseFunction={() => { }} />} />
     </BrowserRouter>, div);
-  // ReactDOM.render(<MapPage />, div);
 }); 

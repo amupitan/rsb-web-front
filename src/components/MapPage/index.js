@@ -133,61 +133,51 @@ export class MapPage extends Component {
     }
 
     renderActionButton() {
-        if (!this.state.selectedPlace.host) return;
-
+        const currentPlace = this.state.selectedPlace;
+        if (!currentPlace.host) return;
 
         //check to see if the user is in the currentGame
         const currentUser = getLoggedInUserName();
-        let inCurrentGame = false;
-        if (currentUser === this.state.selectedPlace.host.username) {
-            inCurrentGame = true;
-        }
-        if (this.state.selectedPlace.members) {
-            for (let x = 0; x < this.state.selectedPlace.members.length; ++x) {
-                if (this.state.selectedPlace.members[x].username === currentUser) {
+        let inCurrentGame = currentUser === currentPlace.host.username
+
+        if (!inCurrentGame && currentPlace.members) {
+            for (const mem of currentPlace.members) {
+                if (mem.username === currentUser) {
                     inCurrentGame = true;
+                    break;
                 }
             }
         }
 
+        let btnInfo = null;
         if (inCurrentGame) {
-            ReactDOM.render(
-                <button onClick={() => this.handleLeaveGame(this.state.selectedPlace)} className="btn btn-danger">Leave Game</button>
-                ,
-                document.getElementById('rsb-map-join-game-window')
-            );
+            btnInfo = <button onClick={() => this.handleLeaveGame(currentPlace)} className="btn btn-danger">Leave Game</button>
+
         }
         else if (!this.state.inAnyGame) {
-            ReactDOM.render(
+            btnInfo =
                 <Router>
                     <span>
                         <Link to={`/game`}>
-                            <button onClick={() => this.handleJoinGame(this.state.selectedPlace)} className="btn btn-success">Join Game</button>
+                            <button onClick={() => this.handleJoinGame(currentPlace)} className="btn btn-success">Join Game</button>
                         </Link>
                     </span>
                 </Router>
-                ,
-                document.getElementById('rsb-map-join-game-window')
-            );
         }
         else {
-            ReactDOM.render(
-                <div>
-                    <Router>
-                        <span>
-                            <Link to={`/game`}>
-                                <button
-                                    className="btn btn-success"
-                                    onClick={this.openVerificationModal}>
-                                    Join Game</button>
-                            </Link>
-                        </span>
-                    </Router>
-                </div>
-                ,
-                document.getElementById('rsb-map-join-game-window')
-            );
+            btnInfo =
+                <Router>
+                    <span>
+                        <Link to={`/game`}>
+                            <button
+                                className="btn btn-success"
+                                onClick={this.openVerificationModal}>
+                                Join Game</button>
+                        </Link>
+                    </span>
+                </Router>
         }
+        ReactDOM.render(<div> {btnInfo} </div>, document.getElementById('rsb-map-join-game-window'));
     }
 
     // Handles the event of a game icon being clicked
