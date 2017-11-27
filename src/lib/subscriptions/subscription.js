@@ -24,6 +24,7 @@ export default class Subscription {
      */
     unsubscribe() {
         this.subscription.cancel();
+        delete this.subscription;
     }
 
     /**
@@ -55,7 +56,7 @@ class Subscriber {
     }
 
     /**
-     * unscubscribes from all subscriptions
+     * unsubscribes from all subscriptions
      */
     clearSubscriptions() {
         for (const subscription of this.subscriptions) {
