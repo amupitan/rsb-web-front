@@ -26,6 +26,7 @@ const _yodaErrors = {
         'you have already rated the game': 'You have already rated this game',
         '*': 'Sorry but you cannot rate this game right now',
     },
+    33: { '*': 'Please check the \'private\' checkbox to make this game private' }, //Invalid Private Game Flag    
 }
 
 export default deepFreeze(_yodaErrors);

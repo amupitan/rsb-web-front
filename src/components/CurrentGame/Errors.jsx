@@ -7,6 +7,9 @@ export const ErrorPage = ({ message }) => (
     <div className='rsb-current-game-error-box'>
         <img src={hoops} alt='stick man throwing hoops' width={350} />
         <p className='rsb-current-game-error-message'>{message}</p>
+        <Link to='/host'>
+            <button className='rsb-current-game-error-button'><span>Host Game </span></button>
+        </Link>
         <Link to='/join'>
             <button className='rsb-current-game-error-button'><span>Join Game </span></button>
         </Link>
