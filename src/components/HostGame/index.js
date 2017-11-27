@@ -21,6 +21,7 @@ class HostPage extends Notifiable(Component) {
         this.handleMaxAgeChange = this.handleMaxAgeChange.bind(this);
         this.handleHostSubmit = this.handleHostSubmit.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.handlePrivateFlagChange = this.handlePrivateFlagChange.bind(this);
         this.onSearchAddress = this.onSearchAddress.bind(this);
 
         this.state = {
@@ -30,6 +31,7 @@ class HostPage extends Notifiable(Component) {
             endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[0]) }), // 15 mins + sport duration after the current time
             minimumAge: "",
             maximumAge: "",
+            private: false,
             position: { lat: null, lng: null },
             date: DateUtils.yyyymmdd(),
 
@@ -99,20 +101,22 @@ class HostPage extends Notifiable(Component) {
         });
     }
 
+    handlePrivateFlagChange(event) {
+        this.setState({ private: event.target.checked });
+    }
+
     async handleHostSubmit() {
-        //TODO: Don't know how to get the current users name
-        let result = {
+        const result = {
             name: this.state.gameName,
             startTime: (new Date(this.state.date + ":" + this.state.startTime)).toISOString(),
             endTime: (new Date(this.state.date + ":" + this.state.endTime)).toISOString(),
             sport: +this.state.sport,
             maxAge: +this.state.maximumAge,
             minAge: +this.state.minimumAge,
+            private: this.state.private,
             lat: +this.state.position.lat,
-            lng: +this.state.position.lng
+            lng: +this.state.position.lng,
         }
-
-        //We will send the result to the server, don't know how yet
 
         const res = await createGame(result);
         if (res && res.error) {
@@ -168,6 +172,13 @@ class HostPage extends Notifiable(Component) {
                         </div>
 
                         <br /><br />
+
+                        {/* Private Flag */}
+                        <label htmlFor="game-private" className="form-control-label">Private:</label>
+                        <p className="small">Check this box to make this game private and only accessible by invited players</p>
+                        <input name="private" type="checkbox" checked={this.state.private} onChange={this.handlePrivateFlagChange} />
+                        <br /><br />
+
                         {/*Age Range*/}
                         <label htmlFor="ageRange">Age Range: </label>
                         <br />
@@ -199,14 +210,6 @@ class HostPage extends Notifiable(Component) {
                     </div>
                     <div className="modal-footer">
                         <div>
-                            {/* <RSBButton
-                            text="Cancel"
-                            className="btn btn-default close-btn col-xs-2"
-                            onClickFunction={() => {
-                                console.log("Cancel game");
-                            }
-                            }
-                        /> */}
                             <RSBButton
                                 text="Host"
                                 className="btn btn-info rsb-host-submit-btn col-xs-2"
