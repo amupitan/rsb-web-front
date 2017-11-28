@@ -48,7 +48,6 @@ export const GameRequest = ({ requests, onReview }) => {
                         {/*TODO: Display better information*/}
                         <div className="col-sm-4">
                             <span>From: {From}</span><br />
-                            <span>Game ID: {Game} </span><br />
                         </div>
                         <ReviewRequest accept onClick={onReview} username={From} />
                         <ReviewRequest onClick={onReview} username={From} />
