@@ -9,7 +9,7 @@ import './style.css';
 // Renders the wrapped map component
 export default class Map extends Notifiable(Component) {
     render() {
-        return <WrappedMap {...this.props} />;
+        return <WrappedMap {...this.props} updatePage={() => this.forceUpdate()} />;
     }
 }
 
