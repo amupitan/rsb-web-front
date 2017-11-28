@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
 import { sports } from '../../lib/game';
 
-import { getStars } from '../ui/Rater';
+import Rater from '../ui/Rater';
 
 // GameInfo is dislayed after a marker is clicked
 const GameInfo = ({ name, agerange, duration, sport, startTime, host = {}, members }) => {
@@ -26,7 +26,7 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host = {}, membe
                             </Link>
                         </div>
                         <span className="col-xs-6">
-                            <StarRating {...rating} />
+                            <Rater rating={rating} />
                         </span>
                     </div>
                 </Router>
@@ -54,7 +54,7 @@ const MemberInfo = ({ members }) => {
                                 </Link>
                             </div>
                             <div className="col-xs-6">
-                                <StarRating {...memberRating} />
+                                <Rater rating={memberRating} />
                             </div>
                         </div>
                     </Router>
@@ -63,9 +63,5 @@ const MemberInfo = ({ members }) => {
         }</div>
     );
 };
-
-const StarRating = ({ rating }) => {
-    return (<span> {rating ? getStars(rating) : <strong>No Ratings</strong>} </span>);
-}
 
 export default GameInfo;

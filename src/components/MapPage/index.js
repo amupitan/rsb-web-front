@@ -50,6 +50,7 @@ export class MapPage extends Component {
     // If the user doesn't provide a location, this should make
     // an intelligent guess.
     componentWillMount() {
+        console.log('in component will mount');
         this._isMounted = true;
         this.checkGame();
         this.getLocation();
@@ -132,7 +133,89 @@ export class MapPage extends Component {
         });
     }
 
+    // Handles the event of a game icon being clicked
+    // displays the game info box
+    onMarkerClick(props, marker, e) {
+        console.log('on marker click');
+        this.setState({
+            selectedPlace: props.game,
+            activeMarker: marker,
+            showingInfoWindow: true
+        });
+    }
+
+    // Handles the closing of a game option
+    onMapClicked() {
+        this.setState((prevState) => {
+            if (prevState.showingInfoWindow)
+                return {
+                    showingInfoWindow: false,
+                    activeMarker: null,
+                }
+        });
+    }
+
+    onAddressSearch(position) {
+        this.setState({
+            position: position,
+        });
+    }
+
+    // Causes a render of new markers by invalidating the map
+    async fetchPlaces(mapProps, map) {
+        if (!this._isMounted) return;
+        const center = map.getCenter();
+        console.log(`lat: ${center.lat()} lng: ${center.lng()}`);
+        this.setState({
+            markers: await this.getMarkers({ lat: center.lat(), lng: center.lng() }),
+        });
+    }
+
+    // Renders the game info window
+    renderGameInfoWindow() {
+        console.log('render game info');
+        return <InfoWindow
+            onClose={this.onMapClicked}
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}>
+            <div>
+                {<GameInfo {...this.state.selectedPlace} />}
+                <div id="rsb-map-join-game-window"></div>
+            </div>
+        </InfoWindow>
+    }
+
+
+
+    renderSearchAddress() {
+        return <SearchAddress
+            onPlacesChanged={this.onAddressSearch}
+            className='rsb-map-search-bar'
+        />
+    }
+
+    // Renders all available markers
+    renderMarkers() {
+        return this.state.markers.map((marker, i) => {
+            return <Marker
+                onClick={this.onMarkerClick}
+                title={marker.title}
+                name={marker.name}
+                id={i} //TODO: make this {marker.game.id}?
+                key={i}
+                position={marker.location}
+                game={toGame(marker)}
+            />
+        })
+
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     renderActionButton() {
+        console.log('render action button');
         const currentPlace = this.state.selectedPlace;
         if (!currentPlace.host) return;
 
@@ -180,86 +263,8 @@ export class MapPage extends Component {
         ReactDOM.render(<div> {btnInfo} </div>, document.getElementById('rsb-map-join-game-window'));
     }
 
-    // Handles the event of a game icon being clicked
-    // displays the game info box
-    onMarkerClick(props, marker, e) {
-        this.setState({
-            selectedPlace: props.game,
-            activeMarker: marker,
-            showingInfoWindow: true
-        });
-    }
-
-    // Handles the closing of a game option
-    onMapClicked() {
-        this.setState((prevState) => {
-            if (prevState.showingInfoWindow)
-                return {
-                    showingInfoWindow: false,
-                    activeMarker: null,
-                }
-        });
-    }
-
-    onAddressSearch(position) {
-        this.setState({
-            position: position,
-        });
-    }
-
-    // Causes a render of new markers by invalidating the map
-    async fetchPlaces(mapProps, map) {
-        if (!this._isMounted) return;
-        const center = map.getCenter();
-        console.log(`lat: ${center.lat()} lng: ${center.lng()}`);
-        this.setState({
-            markers: await this.getMarkers({ lat: center.lat(), lng: center.lng() }),
-        });
-    }
-
-    // Renders the game info window
-    renderGameInfoWindow() {
-        return <InfoWindow
-            onClose={this.onMapClicked}
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}>
-            <div>
-                {<GameInfo {...this.state.selectedPlace} />}
-                <div id="rsb-map-join-game-window"></div>
-            </div>
-        </InfoWindow>
-    }
-
-
-
-    renderSearchAddress() {
-        return <SearchAddress
-            onPlacesChanged={this.onAddressSearch}
-            className='rsb-map-search-bar'
-        />
-    }
-
-    // Renders all available markers
-    renderMarkers() {
-        return this.state.markers.map((marker, i) => {
-            return <Marker
-                onClick={this.onMarkerClick}
-                title={marker.title}
-                name={marker.name}
-                id={i} //TODO: make this {marker.game.id}?
-                key={i}
-                position={marker.location}
-                game={toGame(marker)}
-            />
-        })
-
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     render() {
+        console.log('in render');
         if (!this.state.position) {
             return <LoaderPage />;
         }
@@ -274,14 +279,16 @@ export class MapPage extends Component {
                     center={this.state.position}
                     onReady={this.fetchPlaces}>
 
+
+                    {this.renderGameInfoWindow()}
                     {this.renderSearchAddress()}
                     {this.renderMarkers()}
-                    {this.renderGameInfoWindow()}
                     {this.state.modalDisplay && <JoinNewGameModal onClose={this.closeVerificationModal} joinGame={this.joinDifferentGame} />}
                 </Map>
             </div>
         );
     }
+
 }
 
 //TODO: return a filtered game to be displayed

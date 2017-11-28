@@ -8,7 +8,7 @@ const Rater = ({ rating, onChange }) => {
     )
 }
 
-export function getStars(numStars, handleChange) {
+function getStars(numStars, handleChange) {
     const stars = [];
     for (let i = 0; i < 5; i++) {
         const starColor = (numStars !== 0) ? ((numStars > i) ? "rsb-ui-rater-checked" : "") : "rsb-ui-rater-unrated";
