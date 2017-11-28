@@ -35,8 +35,9 @@ class Friends extends Notifiable(Component) {
     }
 
     async getFriendInfo() {
-        await this.getGameMembers();
-        this.getAllFriends();
+        if (await this.getGameMembers()) {
+            this.getAllFriends();
+        }
     }
 
     async getGameMembers() {
@@ -50,6 +51,7 @@ class Friends extends Notifiable(Component) {
         this.setState({
             game: game
         });
+        return 1;
     }
 
     async getAllFriends() {
