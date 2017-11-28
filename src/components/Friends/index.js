@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { getFriends, getLoggedInUserName } from '../../lib/user';
 import Game, { sendGameInvite } from '../../lib/game';
+import { unsafeCopy } from "../../lib/utils";
 import { Notifiable } from "../../mixins";
 
 import RSBButton from '../ui/RSBButton';
@@ -52,14 +53,16 @@ class Friends extends Notifiable(Component) {
         const inGame = this.state.game.members;
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
-
+        console.log(inGame)
         if (!friends.error && this.props.location.pathname === '/invite') {
             for (let i = 0; i < friends.length; ++i) {
-                for (let friend of inGame) {
-                    if (friend.username === friends[i].username || this.state.game.host.username === friends[i].username) {
-                        friends[i].selectStatus = gameStatus.IN_GAME;
+                if (inGame) {
+                    for (let friend of inGame) {
+                        if (friend.username === friends[i].username || this.state.game.host.username === friends[i].username) {
+                            friends[i].selectStatus = gameStatus.IN_GAME;
+                        }
+                        else friends[i].selectStatus = gameStatus.NOT_SELECTED;
                     }
-                    else friends[i].selectStatus = gameStatus.NOT_SELECTED;
                 }
             }
             this.setState({
@@ -84,7 +87,7 @@ class Friends extends Notifiable(Component) {
     }
 
     selectFriend(i) {
-        let stateCopy = this.state.userFriends;
+        let stateCopy = unsafeCopy(this.state.userFriends);
         if (stateCopy[i].selectStatus !== gameStatus.IN_GAME)
             stateCopy[i].selectStatus = (this.state.userFriends[i].selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
 
