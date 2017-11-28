@@ -55,7 +55,6 @@ export class MapPage extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-
         if(this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow) || (prevState.selectedGame !== this.state.selectedGame)) ){
             this.renderActionButton();
         }
