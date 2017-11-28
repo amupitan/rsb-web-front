@@ -11,14 +11,14 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host = {}, membe
     const { username, rating } = host;
 
     return (
-        <div>
-            <h1>{name}</h1>
-            <p><strong>Minimum Age:</strong>{age[0]} <strong>Maximum Age: </strong>{age[1]}</p>
-            <p><strong>Start time: </strong>{time}</p>
-            <p><strong>Sport: </strong>{sports[sport]} </p>
-            <span><strong>Host: </strong></span>
+        <Router>
             <div>
-                <Router>
+                <h1>{name}</h1>
+                <p><strong>Minimum Age:</strong>{age[0]} <strong>Maximum Age: </strong>{age[1]}</p>
+                <p><strong>Start time: </strong>{time}</p>
+                <p><strong>Sport: </strong>{sports[sport]} </p>
+                <span><strong>Host: </strong></span>
+                <div>
                     <div className="row">
                         <div className="col-xs-6 rsb-member-label">
                             <Link to={`/user/${username}`}>
@@ -26,15 +26,15 @@ const GameInfo = ({ name, agerange, duration, sport, startTime, host = {}, membe
                             </Link>
                         </div>
                         <span className="col-xs-6">
-                            <StarRating {...rating} />
+                            <StarRating {...{ rating }} />
                         </span>
                     </div>
-                </Router>
+                </div>
+                <span><strong>Members: </strong></span>
+                <MemberInfo members={members} />
+                <p><strong>Duration: </strong>{duration} minutes</p>
             </div>
-            <span><strong>Members: </strong></span>
-            <MemberInfo members={members} />
-            <p><strong>Duration: </strong>{duration} minutes</p>
-        </div >
+        </Router >
     );
 };
 
@@ -42,22 +42,19 @@ const MemberInfo = ({ members }) => {
     if (!members) return null;
     return (
         <div>{
-            members.map((mem, i) => {
-                const memberName = mem.username;
-                const memberRating = mem.rating;
+            members.map((member, i) => {
+                const { username, rating } = member;
                 return (
-                    <Router key={i}>
-                        <div className="row">
-                            <div className="col-xs-6 rsb-member-label">
-                                <Link to={`/user/${memberName}`} >
-                                    <span className="label label-warning">{memberName}</span>
-                                </Link>
-                            </div>
-                            <div className="col-xs-6">
-                                <StarRating {...memberRating} />
-                            </div>
+                    <div className="row" key={i}>
+                        <div className="col-xs-6 rsb-member-label">
+                            <Link to={`/user/${username}`} >
+                                <span className="label label-warning">{username}</span>
+                            </Link>
                         </div>
-                    </Router>
+                        <div className="col-xs-6">
+                            <StarRating {...{ rating }} />
+                        </div>
+                    </div>
                 );
             })
         }</div>
