@@ -27,11 +27,16 @@ class Friends extends Notifiable(Component) {
         this.filterUsers = this.filterUsers.bind(this);
         this.renderUsers = this.renderUsers.bind(this);
         this.displayInvite = this.displayInvite.bind(this);
-        this.getGameMembers = this.getGameMembers.bind(this);
+        this.getFriendInfo = this.getFriendInfo.bind(this);
     }
 
     componentDidMount() {
-        this.getGameMembers();
+        this.getFriendInfo();
+    }
+
+    async getFriendInfo() {
+        await this.getGameMembers();
+        this.getAllFriends();
     }
 
     async getGameMembers() {
@@ -45,24 +50,25 @@ class Friends extends Notifiable(Component) {
         this.setState({
             game: game
         });
-
-        this.getAllFriends();
     }
 
     async getAllFriends() {
         const inGame = this.state.game.members;
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
-        console.log(inGame)
         if (!friends.error && this.props.location.pathname === '/invite') {
-            for (let i = 0; i < friends.length; ++i) {
+            for (let friend of friends) {
                 if (inGame) {
-                    for (let friend of inGame) {
-                        if (friend.username === friends[i].username || this.state.game.host.username === friends[i].username) {
-                            friends[i].selectStatus = gameStatus.IN_GAME;
+                    for (let member of inGame) {
+                        if (member.username === friend.username) {
+                            friend.selectStatus = gameStatus.IN_GAME;
                         }
-                        else friends[i].selectStatus = gameStatus.NOT_SELECTED;
                     }
+                }
+                if (friend.selectStatus !== gameStatus.IN_GAME) {
+                    friend.selectStatus = (this.state.game.host.username === friend.username)
+                        ? friend.selectStatus = gameStatus.IN_GAME
+                        : friend.selectStatus = gameStatus.NOT_SELECTED;
                 }
             }
             this.setState({
