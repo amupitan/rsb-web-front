@@ -51,7 +51,6 @@ export class MapPage extends Component {
     // an intelligent guess.
     componentDidMount() {
         this._isMounted = true;
-        this.checkGame();
         this.getLocation();
     }
 
