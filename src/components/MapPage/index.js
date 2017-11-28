@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-import { getCurrentLocation } from '../../lib/map';
 import Game, { getGamesNearLocation, joinGame, leaveGame } from '../../lib/game';
-import { googleApiKey, googleApiVersion } from '../../lib/map';
+import { googleApiKey, googleApiVersion, getCurrentLocation } from '../../lib/map';
 import { getLoggedInUserName } from '../../lib/user';
 
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { LoaderPage } from '../ui/Loader';
 import GameInfo from './GameInfo';
 import JoinNewGameModal from './JoinNewGameModal'
 import SearchAddress from '../SearchAddress'
 
 import './style.css';
+import { showError, showSuccess } from '../../mixins/notifiable';
 
 export class MapPage extends Component {
     constructor(props) {
         super(props);
-        this.render = this.render.bind(this);
+
+        this.handleLeaveGame = this.handleLeaveGame.bind(this);
+
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.onAddressSearch = this.onAddressSearch.bind(this);
@@ -27,7 +29,6 @@ export class MapPage extends Component {
         this.renderGameInfoWindow = this.renderGameInfoWindow.bind(this);
         this.renderMarkers = this.renderMarkers.bind(this);
         this.getLocation = this.getLocation.bind(this);
-        this.checkGame = this.checkGame.bind(this);
         this.openVerificationModal = this.openVerificationModal.bind(this);
         this.closeVerificationModal = this.closeVerificationModal.bind(this);
         this.joinDifferentGame = this.joinDifferentGame.bind(this);
@@ -36,10 +37,9 @@ export class MapPage extends Component {
         this.state = {
             position: null,
             showingInfoWindow: false,
-            inAnyGame: false,
             modalDisplay: false,
             activeMarker: {},
-            selectedPlace: {},
+            selectedGame: {},
             markers: [],
 
         }
@@ -49,7 +49,7 @@ export class MapPage extends Component {
     // This gets called when the map is initially being created
     // If the user doesn't provide a location, this should make
     // an intelligent guess.
-    componentWillMount() {
+    componentDidMount() {
         this._isMounted = true;
         this.checkGame();
         this.getLocation();
@@ -59,17 +59,6 @@ export class MapPage extends Component {
         if (this.state.showingInfoWindow) {
             this.renderActionButton();
         }
-    }
-
-    async checkGame() {
-        const currentGame = await Game();
-        if (currentGame.error) {
-            return;
-        }
-        this.setState({
-            inAnyGame: true
-        });
-        return currentGame;
     }
 
     // Gets the postion of the user's location
@@ -94,97 +83,94 @@ export class MapPage extends Component {
         return result;
     }
 
+    /**
+     * opens join game verification modal
+     */
     openVerificationModal() {
-        this.setState({
-            modalDisplay: true
-        });
+        this.setState({ modalDisplay: true });
     }
 
+    /**
+     * closes join game verification modal
+     */
     closeVerificationModal() {
-        this.setState({
-            modalDisplay: false
-        });
+        this.setState({ modalDisplay: false });
     }
 
-    async joinDifferentGame(newGame) {
-        const currentGame = await this.checkGame();
-        await leaveGame(currentGame.id);
-        await joinGame(this.state.selectedPlace);
+    /**
+     * Leaves the current game and joins the selected game in the state
+     */
+    async joinDifferentGame() {
+        const res = await leaveGame();
+        if (res.error) {
+            showError(res.error);
+            this.setState({
+                modalDisplay: false,
+            });
+            this.props.updatePage();
+            return;
+        }
 
+        await joinGame(this.state.selectedGame, { source: this.props.location.pathname });
     }
 
-    // Gets called when a user tries to join a game
-    // Should make a server call and do the necessary work
+    /**
+     * Gets called when a user tries to join a game.
+     * Should make a server call and do the necessary work
+     * @param {Game} game 
+     */
     handleJoinGame(game) {
         if (!game) return;
-        joinGame(game, { byId: true, source: '/map' }); //TODO: use location
-        this.setState({
-            inAnyGame: true
-        });
+        joinGame(game, { byId: true, source: this.props.location.pathname });
     }
 
-    //When a user clicks leave game on the map
-    handleLeaveGame(game) {
-        if (!game) return;
-        leaveGame(game.id);
+    async handleLeaveGame() {
+        //TODO: find a way to unmount the gameinfo if a game no longer exists
+        const res = await leaveGame();
+        if (res.error) {
+            showError(res.error);
+        } else {
+            showSuccess(res.message);
+        }
+
         this.setState({
-            inAnyGame: false
+            inAnyGame: false,
+            showingInfoWindow: false,
         });
+
+        // TODO: change this walk around
+        this.props.updatePage();
     }
 
-    renderActionButton() {
-        const currentPlace = this.state.selectedPlace;
-        if (!currentPlace.host) return;
+    async renderActionButton() {
+        const { selectedGame } = this.state,
+            username = getLoggedInUserName(),
+            isInAnyGame = await userInAnyGame();
 
-        //check to see if the user is in the currentGame
-        const currentUser = getLoggedInUserName();
-        let inCurrentGame = currentUser === currentPlace.host.username
-
-        if (!inCurrentGame && currentPlace.members) {
-            for (const mem of currentPlace.members) {
-                if (mem.username === currentUser) {
-                    inCurrentGame = true;
-                    break;
-                }
-            }
+        let actionButton, link = true;
+        if (!isInAnyGame) {
+            actionButton = <button onClick={() => this.handleJoinGame(selectedGame)} className="btn btn-success">Join Game</button>
+        } else if (userInGame(username, selectedGame)) {
+            actionButton = <button onClick={this.handleLeaveGame} className="btn btn-danger">Leave Game</button>
+            link = false;
+        } else {
+            actionButton = <button className="btn btn-success" onClick={this.openVerificationModal}> Join Game</button>
         }
 
-        let btnInfo = null;
-        if (inCurrentGame) {
-            btnInfo = <button onClick={() => this.handleLeaveGame(currentPlace)} className="btn btn-danger">Leave Game</button>
+        if (link) {
+            actionButton = <Link to={`/game`}>{actionButton}</Link>
+        }
 
-        }
-        else if (!this.state.inAnyGame) {
-            btnInfo =
-                <Router>
-                    <span>
-                        <Link to={`/game`}>
-                            <button onClick={() => this.handleJoinGame(currentPlace)} className="btn btn-success">Join Game</button>
-                        </Link>
-                    </span>
-                </Router>
-        }
-        else {
-            btnInfo =
-                <Router>
-                    <span>
-                        <Link to={`/game`}>
-                            <button
-                                className="btn btn-success"
-                                onClick={this.openVerificationModal}>
-                                Join Game</button>
-                        </Link>
-                    </span>
-                </Router>
-        }
-        ReactDOM.render(<div> {btnInfo} </div>, document.getElementById('rsb-map-join-game-window'));
+        actionButton = <div><Router>{actionButton}</Router></div>;
+
+        ReactDOM.render(actionButton, document.getElementById('rsb-map-join-game-window'));
     }
 
     // Handles the event of a game icon being clicked
     // displays the game info box
     onMarkerClick(props, marker, e) {
         this.setState({
-            selectedPlace: props.game,
+            selectedGame: props.game,
             activeMarker: marker,
             showingInfoWindow: true
         });
@@ -224,7 +210,7 @@ export class MapPage extends Component {
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}>
             <div>
-                {<GameInfo {...this.state.selectedPlace} />}
+                {<GameInfo {...this.state.selectedGame} />}
                 <div id="rsb-map-join-game-window"></div>
             </div>
         </InfoWindow>
@@ -277,7 +263,7 @@ export class MapPage extends Component {
                     {this.renderSearchAddress()}
                     {this.renderMarkers()}
                     {this.renderGameInfoWindow()}
-                    {this.state.modalDisplay && <JoinNewGameModal onClose={this.closeVerificationModal} joinGame={this.joinDifferentGame} />}
+                    {this.state.modalDisplay && <JoinNewGameModal onCancel={this.closeVerificationModal} onJoin={this.joinDifferentGame} />}
                 </Map>
             </div>
         );
@@ -287,6 +273,27 @@ export class MapPage extends Component {
 //TODO: return a filtered game to be displayed
 const toGame = (game) => game;
 
+/**
+ * Returns true a user with {username} is in the {game}
+ * @param {String} username 
+ * @param {Object} game 
+ */
+const userInGame = (username, game = { members: [], host: {} }) => {
+    if (username === game.host.username) return true;
+    for (const member of game.members)
+        if (username === member.username) return true;
+    return false;
+}
+
+/**
+ * Returns true if the logged in user is a game, else false
+ */
+const userInAnyGame = async function () {
+    //TODO: this function is called alot, so there should be a 
+    // quicker to check if a user is in a game, instead of requesting the whole game
+    const game = await Game();
+    return !game.error;
+}
 
 export default GoogleApiWrapper({
     apiKey: googleApiKey,
