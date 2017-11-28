@@ -173,7 +173,9 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
 const Footer = () => (
     <div>
         <div className="rsb-game-leave row text-center">
-            <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+            <Link to={'/'} >
+                <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+            </Link>
         </div>
         <div className="rsb-game-bottom row">
         </div>
