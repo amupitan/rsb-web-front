@@ -64,15 +64,24 @@ const Notifiable = (Notifiable) => class extends Notifiable {
 };
 
 
-const _showMessage = (type, modifier = (msg) => msg) => (message) => session.setItem(type, (modifier(message)));
+const _showMessage = (type, modifier = msg => msg) => (message) => session.setItem(type, (modifier(message)));
 
-// displays an info notification on a Notifiable Component
+/**
+ * displays an info notification on a Notifiable Component
+ * @deprecated
+ */
 export const showInfo = _showMessage('info');
 
-// displays a success notification on a Notifiable Component
+/**
+ * displays a success notification on a Notifiable Component
+ * @deprecated
+ */
 export const showSuccess = _showMessage('success');
 
-// displays an error notification on a Notifiable Component
+/**
+ * displays an error notification on a Notifiable Component
+ * @deprecated
+ */
 export const showError = _showMessage('error', (err) => {
     if (typeof err === 'string') return { message: err };
     return err;
