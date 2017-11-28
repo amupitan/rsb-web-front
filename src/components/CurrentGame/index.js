@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
+import { getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
+import GamePanel from '../ui/GamePanel'
 
 import { GameInfoLeft, GameInfoCenter, GameInfoRight } from './GameInfo';
 import { ErrorMessage, ErrorPage } from './Errors';
@@ -23,6 +25,8 @@ class CurrentGame extends Notifiable(Component) {
         this.distance = null;
         this.state = {
             gameLoaded: false,
+            modalOpen: false,
+            modalError: '',
             errorMessage: null,
             errorFatal: null,
         }
@@ -31,6 +35,8 @@ class CurrentGame extends Notifiable(Component) {
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.closeEditModal = this.closeEditModal.bind(this);
     }
 
     async getCurrentGame() {
@@ -53,7 +59,6 @@ class CurrentGame extends Notifiable(Component) {
         });
 
         this.getStreetAddress();
-
         this.getWeather();
     }
 
@@ -124,6 +129,18 @@ class CurrentGame extends Notifiable(Component) {
         return rows;
     }
 
+    openEditModal() {
+        this.setState({
+            modalOpen: true,
+        });
+    }
+
+    closeEditModal() {
+        this.setState({
+            modalOpen: false,
+        });
+    }
+
     render() {
         if (this.state.errorFatal) {
             return <ErrorPage message={this.state.errorFatal} />;
@@ -133,6 +150,8 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         const { name, host, startTime, sport, agerange, duration, joincode, members } = this.game;
+
+        console.log(this.state.modalOpen);
 
         return (
             <div className="container-fluid rsb-game">
@@ -152,8 +171,13 @@ class CurrentGame extends Notifiable(Component) {
                             <p className='lead text-center'>There are no other members in this game </p>
                         }
                     </div>
-                    <Footer />
+                    <Footer host={host} open={this.openEditModal} />
                 </div>
+                {this.state.modalOpen && <div className="rsb-edit-game-modal">
+                    <div className="rsb-edit-modal-content">
+                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal} />
+                    </div>
+                </div>}
             </div>
         );
     }
@@ -170,10 +194,11 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
     </Link>
 );
 
-const Footer = () => (
+const Footer = ({ host, open }) => (
     <div>
         <div className="rsb-game-leave row text-center">
             <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+            {getLoggedInUserName() === host.username && <button className="rsb-host-edit-game btn btn-info" onClick={open}>Edit Game</button>}
         </div>
         <div className="rsb-game-bottom row">
         </div>
