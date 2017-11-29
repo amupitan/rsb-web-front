@@ -9,7 +9,7 @@ const FriendRequest = ({ friendRequests, onReview }) => {
         <span>No friend requests</span>;
 
     return (
-        <div className="col-sm-6 panel panel-default">
+        <div className="col-sm-6 panel panel-default rsb-profile-panel">
             <div className="panel-heading-rsb">
                 <h2>Friend Requests</h2>
             </div>

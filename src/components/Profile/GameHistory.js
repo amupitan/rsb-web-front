@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const GameHistory = ({ games, username }) => {
     return (
-        <div className="col-sm-6 panel panel-default">
+        <div className="col-sm-6 panel panel-default rsb-profile-panel">
             <div className="panel-heading-rsb">
                 <h2>Game History</h2>
             </div>
@@ -22,11 +22,11 @@ const Games = ({ games, username }) => {
                     return (
                         <div key={i} className="populate-requests row">
                             <Link to={`/history/${username}`} >
-                                <div className="col-sm-4 col-sm-pull">
-                                    <span><b>{name}</b></span>
+                                <div className="col-sm-6 ">
+                                    {name}
                                 </div>
-                                <div className="col-sm-4">
-                                    <span>{startTime.substring(0, startTime.indexOf('T'))}</span><br />
+                                <div className="col-sm-6 ">
+                                    {startTime.substring(0, startTime.indexOf('T'))}
                                 </div>
                             </Link>
                         </div>
