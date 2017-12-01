@@ -112,16 +112,17 @@ export async function sendGameInvite(username) {
     return res.data;
 }
 
-export async function reviewGameInvite({ username, accept }) {
+export async function reviewGameInvite({ username, accept, id }) {
     const res = await yoda.post('/invite/m/review/t/1', (new YodaRequest({}, {
         from: username,
-        accept: accept
+        accept: accept,
+        game: id
     })).toString(), true);
 
     if (res.error) {
         return _handleError(res.data);
     }
-
+    redirect({ path: '/game' });
     return res.data;
 }
 

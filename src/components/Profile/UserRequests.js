@@ -41,16 +41,16 @@ export const GameRequest = ({ requests, onReview }) => {
     return (<div>
         {
             requests.map((request, i) => {
-                const { From, Game } = request;
+                const { from, game } = request;
 
                 return (
                     <div key={i} className="populate-requests row">
                         {/*TODO: Display better information*/}
                         <div className="col-sm-4">
-                            <span>From: {From}</span><br />
+                            <span>From: {from}</span><br />
                         </div>
-                        <ReviewRequest accept onClick={onReview} username={From} />
-                        <ReviewRequest onClick={onReview} username={From} />
+                        <ReviewRequest accept onClick={onReview} username={from} id={game} />
+                        <ReviewRequest onClick={onReview} username={from} id={game} />
                     </div>
                 );
             })
@@ -58,7 +58,7 @@ export const GameRequest = ({ requests, onReview }) => {
     </div>)
 }
 
-const ReviewRequest = ({ accept = false, onClick, username }) => {
+const ReviewRequest = ({ accept = false, onClick, username, id }) => {
     const { glyph, className } = accept ?
         { glyph: 'ok', className: 'accept' } :
         { glyph: 'remove', className: 'decline' };
@@ -68,7 +68,7 @@ const ReviewRequest = ({ accept = false, onClick, username }) => {
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
                 className={className}
-                onClickFunction={() => onClick({ accept, username })}
+                onClickFunction={() => onClick({ accept, username, id })}
             />
         </div>
     );

@@ -53,8 +53,8 @@ class Profile extends Notifiable(Component) {
         this.displaySuccess();
     }
 
-    async handleGameInvite({ username, accept }) {
-        const res = await reviewGameInvite({ username, accept });
+    async handleGameInvite({ username, accept, id }) {
+        const res = await reviewGameInvite({ username, accept, id });
         if (res.error) {
             this.setState({ errorMessage: res.error });
             return;
