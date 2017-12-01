@@ -35,9 +35,9 @@ class Friends extends Notifiable(Component) {
     }
 
     async getFriendInfo() {
-        if (await this.getGameMembers()) {
-            this.getAllFriends();
-        }
+        if (this.props.location.pathname === '/invite' && await this.getGameMembers()) {
+            this.getAllFriends(1);
+        } else this.getAllFriends()
     }
 
     async getGameMembers() {
@@ -54,11 +54,11 @@ class Friends extends Notifiable(Component) {
         return 1;
     }
 
-    async getAllFriends() {
-        const inGame = this.state.game.members;
+    async getAllFriends(isInGame) {
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
-        if (!friends.error && this.props.location.pathname === '/invite') {
+        if (!friends.error && isInGame) {
+            const inGame = this.state.game.members;
             for (let friend of friends) {
                 if (inGame) {
                     for (let member of inGame) {
@@ -73,10 +73,10 @@ class Friends extends Notifiable(Component) {
                         : friend.selectStatus = gameStatus.NOT_SELECTED;
                 }
             }
-            this.setState({
-                userFriends: friends
-            });
         }
+        this.setState({
+            userFriends: friends
+        });
     }
 
     filterUsers(event) {
@@ -116,8 +116,13 @@ class Friends extends Notifiable(Component) {
     }
 
     renderUsers(users) {
-        if (users.length === 0)
+        if (this.state.userFriends.length === 0 || users.error) {
+            return <div>User has no friends at this time</div>
+        }
+
+        if (users.length === 0) {
             return <div>No friends with the name '{this.state.friendSearch}' were found</div>
+        }
 
         if (this.props.location.pathname === '/invite') {
             return users.map((user, i) => (
