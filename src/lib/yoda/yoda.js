@@ -1,13 +1,7 @@
 import 'whatwg-fetch';
 import session from '../session';
 
-//TODO: get these from somewhere else
-const remoteServerAddress = 'http://proj-309-rb-b-5.cs.iastate.edu';
-const localServerAddress = 'http://127.0.0.1';
-
-const backend_url = process.env.REACT_APP_BACKEND === 'LOCAL' ? localServerAddress : remoteServerAddress;
-const backend_port = '4444';
-const url = `${backend_url}:${backend_port}`;
+import { httpServerUrl as url } from './url';
 
 export class YodaRequest {
     constructor(meta, data) {
