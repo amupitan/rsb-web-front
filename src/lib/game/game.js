@@ -108,13 +108,12 @@ export async function sendGameInvite(username) {
     if (res.error) {
         return _handleError(res.data);
     }
-    showInfo("Successfully send invitation");
+    showInfo("Successfully sent invitation");
     return res.data;
 }
 
-export async function reviewGameInvite({ username, accept, id }) {
+export async function reviewGameInvite({ accept, id }) {
     const res = await yoda.post('/invite/m/review/t/1', (new YodaRequest({}, {
-        from: username,
         accept: accept,
         game: id
     })).toString(), true);
