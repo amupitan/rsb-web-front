@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
-import UsernameEdit from './UsernameEdit';
+import UserInfo from './UserInfo';
+import { LoaderPage } from '../ui/Loader';
 
+import { showSuccess } from '../../mixins/notifiable';
+import { unsafeCopy } from "../../lib/utils";
 import user, { getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
@@ -13,12 +16,11 @@ class Settings extends Notifiable(Component) {
 
         this.state = {
             editMode: false,
-            username: "",
-            error: null,
         };
 
         this.onEdit = this.onEdit.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.updateUserInfo = this.updateUserInfo.bind(this);
     }
 
     componentDidMount() {
@@ -34,31 +36,53 @@ class Settings extends Notifiable(Component) {
             return;
         }
 
+        const userData = {
+            "username": userInfo.username,
+            "firstname": userInfo.firstname,
+            "lastname": userInfo.lastname,
+            "password": "",
+            "newPassword": "",
+            "email": "",
+        }
+
         this.setState({
-            username: userInfo.username
+            userData: userData,
+            formData: userData
         })
     }
 
-    async updateUserInfo() {
-        console.log("Submit yo");
-        //If successful, display some "you've successfully completed update"
+    async updateUserInfo(event) {
+        const field = event.target.id;
+        const formDataTemp = unsafeCopy(this.state.formData)
+        formDataTemp[field] = event.target.value;
+
+        this.setState({
+            formData: formDataTemp
+        })
     }
 
     onEdit(inEditMode) {
-        console.log("yolo", inEditMode);
+        // console.log("IDM: ", this.state.formData, this.state.userData)
         this.setState({
-            editMode: inEditMode
+            editMode: inEditMode,
+            formData: this.state.userData
         })
     }
 
     onSubmit() {
-        this.updateUserInfo();
+        console.log("FormData: ", this.state.formData)
         this.setState({
-            editMode: false
+            editMode: false,
+            userData: this.state.formData
         })
+
+        showSuccess("Successfully updated information");
+
     }
 
     render() {
+        if (this.state.formData == null) return <LoaderPage />;
+
         return (
             <div className="col-xs-6 col-xs-offset-3">
                 <br />
@@ -68,8 +92,7 @@ class Settings extends Notifiable(Component) {
                     </div>
                     <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.state.error}</p>
                     <div className="panel-body">
-                        {/* Username */}
-                        <UsernameEdit username={this.state.username} editMode={this.state.editMode} onEdit={this.onEdit} onSubmit={this.onSubmit} />
+                        {<UserInfo formData={this.state.formData} editMode={this.state.editMode} onEdit={this.onEdit} onSubmit={this.onSubmit} updateUserInfo={this.updateUserInfo} />}
                     </div>
                 </div>
             </div >
