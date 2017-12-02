@@ -4,11 +4,11 @@ import { GameRequest } from './UserRequests';
 export default ({ gameRequests, onReview }) => {
     if (gameRequests && gameRequests.length > 0) {
         return (
-            <div className="col-sm-6 panel panel-default">
+            <div className="col-sm-6 panel panel-default rsb-profile-panel">
                 <div className="panel-heading-rsb">
                     <h2>Game Invites</h2>
                 </div>
-                <div className="scroll-info panel-body">
+                <div className="scroll-info panel-body populate-requests">
                     <GameRequest requests={gameRequests} onReview={onReview} />
                 </div>
             </div>
@@ -16,7 +16,7 @@ export default ({ gameRequests, onReview }) => {
     }
 
     return (
-        <div className="col-sm-6 panel panel-default">
+        <div className="col-sm-6 panel panel-default rsb-profile-panel">
             <div className="panel-heading-rsb">
                 <h2>Game Invites</h2>
             </div>
