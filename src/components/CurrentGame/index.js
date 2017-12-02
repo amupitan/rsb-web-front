@@ -175,7 +175,7 @@ class CurrentGame extends Notifiable(Component) {
                 </div>
                 {this.state.modalOpen && <div className="rsb-edit-game-modal">
                     <div className="rsb-edit-modal-content">
-                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal} />
+                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal} game={this.game}/>
                     </div>
                 </div>}
             </div>

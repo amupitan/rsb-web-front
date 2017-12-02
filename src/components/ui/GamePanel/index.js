@@ -24,25 +24,21 @@ class HostPage extends Component {
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleMinAgeChange = this.handleMinAgeChange.bind(this);
         this.handleMaxAgeChange = this.handleMaxAgeChange.bind(this);
-        this.handleHostSubmit = this.handleHostSubmit.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handlePrivateFlagChange = this.handlePrivateFlagChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSearchAddress = this.onSearchAddress.bind(this);
 
-
         this.state = {
-            gameName: "",
-            sport: 0, // pick first sport
+            gameName: props.game ? props.game.name : "",
+            sport: props.game ? props.game.sport : 0, // pick first sport
             startTime: DateUtils.getTimeAfter({ minutes: 15 }), // 15 mins after the current time
             endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[0]) }), // 15 mins + sport duration after the current time
-            minimumAge: "",
-            maximumAge: "",
-            private: false,
+            minimumAge: props.game ? props.game.agerange[0].toString() : "",
+            maximumAge: props.game ? props.game.agerange[1].toString() : "",
+            private: props.game ? props.game.private : false,
             position: { lat: null, lng: null },
             date: DateUtils.yyyymmdd(),
-
-            error: this.props.error,
         };
 
         this.hasSetEndTime = false;
@@ -128,28 +124,10 @@ class HostPage extends Component {
         this.setState({ private: event.target.checked });
     }
 
-
-    //TODO: this will be passed in from props
-    async handleHostSubmit() {
-        const result = {
-            name: this.state.gameName,
-            startTime: (new Date(this.state.date + ":" + this.state.startTime)).toISOString(),
-            endTime: (new Date(this.state.date + ":" + this.state.endTime)).toISOString(),
-            sport: +this.state.sport,
-            maxAge: +this.state.maximumAge,
-            minAge: +this.state.minimumAge,
-            private: this.state.private,
-            lat: +this.state.position.lat,
-            lng: +this.state.position.lng,
-        }
-
-        const res = await createGame(result);
-        if (res && res.error) {
-            this.setState({ error: res.error });
-        }
-    }
-
     render() {
+
+        console.log(this.state.name);
+        console.log(this.props.game);
 
         const sportsOptions = [];
         for (const i in sports) {
@@ -163,7 +141,7 @@ class HostPage extends Component {
                     <div className="panel-heading text-center">
                         <h4>{this.title}</h4>
                     </div>
-                    <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.state.error}</p>
+                    <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.props.error}</p>
                     <div className="panel-body">
                         {/* Game name */}
                         <label htmlFor="game-code" className="form-control-label">Name of game:</label>

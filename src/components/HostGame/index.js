@@ -15,7 +15,7 @@ class HostPage extends Notifiable(Component) {
         this.handleHostSubmit = this.handleHostSubmit.bind(this);
 
         this.state = {
-            error: null,
+            error: "",
         };
 
     }
@@ -36,14 +36,16 @@ class HostPage extends Notifiable(Component) {
 
         const res = await createGame(result);
         if (res && res.error) {
+            console.log(res.error);
             this.setState({ error: res.error });
         }
     }
 
     render() {
+        console.log('render bb');
 
         return (
-            <GamePanel title='Host Game' onSubmit={this.handleHostSubmit} />
+            <GamePanel title='Host Game' onSubmit={this.handleHostSubmit} error={this.state.error}/>
         );
     }
 
