@@ -32,6 +32,7 @@ export class MapPage extends Component {
         this.openVerificationModal = this.openVerificationModal.bind(this);
         this.closeVerificationModal = this.closeVerificationModal.bind(this);
         this.joinDifferentGame = this.joinDifferentGame.bind(this);
+        this.getGame = this.getGame.bind(this);
         this.renderActionButton = this.renderActionButton.bind(this);
 
         this.state = {
@@ -41,7 +42,7 @@ export class MapPage extends Component {
             activeMarker: {},
             selectedGame: {},
             markers: [],
-
+            currentGame: {},
         }
     }
 
@@ -52,10 +53,11 @@ export class MapPage extends Component {
     componentDidMount() {
         this._isMounted = true;
         this.getLocation();
+        this.getGame();
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow) || (prevState.selectedGame !== this.state.selectedGame)) ){
+        if(this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow)) ){
             this.renderActionButton();
         }
     }
@@ -82,6 +84,12 @@ export class MapPage extends Component {
         return result;
     }
 
+    async getGame(){
+        this.setState({
+            currentGame: await Game()
+        });
+    }
+
     /**
      * opens join game verification modal
      */
@@ -92,8 +100,9 @@ export class MapPage extends Component {
     /**
      * closes join game verification modal
      */
-    closeVerificationModal() {
-        this.setState({ modalDisplay: false });
+    async closeVerificationModal() {
+        await this.setState({ modalDisplay: false });
+        this.renderActionButton();
     }
 
     /**
@@ -106,7 +115,6 @@ export class MapPage extends Component {
             this.setState({
                 modalDisplay: false,
             });
-            this.props.updatePage();
             return;
         }
 
@@ -132,19 +140,18 @@ export class MapPage extends Component {
             showSuccess(res.message);
         }
 
-        this.setState({
-            inAnyGame: false,
-            showingInfoWindow: false,
-        });
-
-        // TODO: change this walk around
-        this.props.updatePage();
+        //TODO: Need a different way to refresh map page
+        window.location.reload();
     }
 
-    async renderActionButton() {
+    renderActionButton() {
+        let checkInGame = !this.state.currentGame.error;
+        let inSomeGame = true;
+        if(checkInGame === undefined || !checkInGame) inSomeGame = false;
+
         const { selectedGame } = this.state,
             username = getLoggedInUserName(),
-            isInAnyGame = await userInAnyGame();
+            isInAnyGame = inSomeGame;
 
         let actionButton, link = true;
         if (!isInAnyGame) {
@@ -154,6 +161,7 @@ export class MapPage extends Component {
             link = false;
         } else {
             actionButton = <button className="btn btn-success" onClick={this.openVerificationModal}> Join Game</button>
+            link = false;
         }
 
         if (link) {
@@ -187,6 +195,8 @@ export class MapPage extends Component {
     onAddressSearch(position) {
         this.setState({
             position: position,
+            activeMarker: null,
+            showingInfoWindow: false
         });
     }
 
@@ -197,8 +207,8 @@ export class MapPage extends Component {
         console.log(`lat: ${center.lat()} lng: ${center.lng()}`);
         this.setState({
             markers: await this.getMarkers({ lat: center.lat(), lng: center.lng() }),
-            showingInfoWindow: false,
-            activeMarker: null, 
+            // showingInfoWindow: false,
+            // activeMarker: null,
         });
     }
 
@@ -279,20 +289,13 @@ const toGame = (game) => game;
  * @param {Object} game 
  */
 const userInGame = (username, game = { members: [], host: {} }) => {
+
+
     if (username === game.host.username) return true;
+    if(!game.members) return false;
     for (const member of game.members)
         if (username === member.username) return true;
     return false;
-}
-
-/**
- * Returns true if the logged in user is a game, else false
- */
-const userInAnyGame = async function () {
-    //TODO: this function is called alot, so there should be a 
-    // quicker to check if a user is in a game, instead of requesting the whole game
-    const game = await Game();
-    return !game.error;
 }
 
 export default GoogleApiWrapper({
