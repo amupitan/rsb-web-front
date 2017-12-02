@@ -35,9 +35,8 @@ class Friends extends Notifiable(Component) {
     }
 
     async getFriendInfo() {
-        if (this.props.location.pathname === '/invite' && await this.getGameMembers()) {
-            this.getAllFriends(1);
-        } else this.getAllFriends()
+        const displayInvite = this.props.location.pathname === '/invite' && await this.getGameMembers();
+        this.getAllFriends(displayInvite)
     }
 
     async getGameMembers() {
@@ -46,32 +45,35 @@ class Friends extends Notifiable(Component) {
             this.setState({
                 errorFatal: game.error,
             });
-            return;
+            return false;
         }
         this.setState({
             game: game
         });
-        return 1;
+        return true;
     }
 
     async getAllFriends(isInGame) {
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
         if (!friends.error && isInGame) {
-            const inGame = this.state.game.members;
-            for (let friend of friends) {
-                if (inGame) {
-                    for (let member of inGame) {
-                        if (member.username === friend.username) {
-                            friend.selectStatus = gameStatus.IN_GAME;
-                        }
+            const { members } = this.state.game;
+
+            for (const friend of friends) {
+                if (this.state.game.host.username === friend.username) {
+                    friend.selectStatus = gameStatus.IN_GAME;
+                    continue;
+                }
+
+                for (const member of members) {
+                    if (member.username === friend.username) {
+                        friend.selectStatus = gameStatus.IN_GAME;
+                        break;
                     }
                 }
-                if (friend.selectStatus !== gameStatus.IN_GAME) {
-                    friend.selectStatus = (this.state.game.host.username === friend.username)
-                        ? friend.selectStatus = gameStatus.IN_GAME
-                        : friend.selectStatus = gameStatus.NOT_SELECTED;
-                }
+
+                if (friend.selectStatus !== gameStatus.IN_GAME)
+                    friend.selectStatus = gameStatus.NOT_SELECTED;
             }
         }
         this.setState({
@@ -95,12 +97,14 @@ class Friends extends Notifiable(Component) {
     }
 
     selectFriend(i) {
-        let stateCopy = unsafeCopy(this.state.userFriends);
-        if (stateCopy[i].selectStatus !== gameStatus.IN_GAME)
-            stateCopy[i].selectStatus = (this.state.userFriends[i].selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
+        const friends = unsafeCopy(this.state.userFriends),
+            friend = friends[i];
+        if (friend.selectStatus === gameStatus.IN_GAME) return;
+
+        friend.selectStatus = (friend.selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
 
         this.setState({
-            userFriends: stateCopy
+            userFriends: friends,
         })
     }
 
