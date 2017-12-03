@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { sports, getDuration, createGame } from '../../../lib/game';
+import { sports, getDuration } from '../../../lib/game';
 import { DateUtils } from '../../../lib/utils';
 
 import SearchAddress from '../../SearchAddress';
@@ -16,7 +16,6 @@ class HostPage extends Component {
 
         this.title = this.props.title;
 
-
         this.render = this.render.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSportChange = this.handleSportChange.bind(this);
@@ -28,6 +27,7 @@ class HostPage extends Component {
         this.handlePrivateFlagChange = this.handlePrivateFlagChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSearchAddress = this.onSearchAddress.bind(this);
+        this.convertDate = this.convertDate.bind(this);
 
         this.state = {
             gameName: props.game ? props.game.name : "",
@@ -37,11 +37,27 @@ class HostPage extends Component {
             minimumAge: props.game ? props.game.agerange[0].toString() : "",
             maximumAge: props.game ? props.game.agerange[1].toString() : "",
             private: props.game ? props.game.private : false,
-            position: { lat: null, lng: null },
+            position: props.game ? props.game.location : { lat: null, lng: null },
             date: DateUtils.yyyymmdd(),
         };
 
         this.hasSetEndTime = false;
+    }
+
+    componentWillMount() {
+        this.convertDate();
+    }
+
+    //uses the startTime and duration to create date and time objects
+    convertDate() {
+        if (this.props.game) {
+            const res = DateUtils.convertToTimes(this.props.game.startTime, this.props.game.duration);
+            this.setState({
+                date: res.gameDate,
+                startTime: res.startTime,
+                endTime: res.endTime,
+            });
+        }
     }
 
     handleSubmit() {
@@ -126,8 +142,14 @@ class HostPage extends Component {
 
     render() {
 
-        console.log(this.state.name);
-        console.log(this.props.game);
+        const cancelButton = this.props.onCancel ?
+            <RSBButton
+                text="Cancel"
+                className="btn btn-warning rsb-edit-cancel-btn col-xs-2"
+                onClickFunction={this.props.onCancel}
+            />
+            : null;
+
 
         const sportsOptions = [];
         for (const i in sports) {
@@ -135,6 +157,7 @@ class HostPage extends Component {
         }
 
         return (
+
             <div className="col-xs-6 col-xs-offset-3">
                 <br />
                 <div className="panel panel-default">
@@ -204,7 +227,7 @@ class HostPage extends Component {
 
                         <div className="row" name="location" id="location">
                             <div className="col-xs-12">
-                                <SearchAddress onPlacesChanged={this.onSearchAddress} />
+                                <SearchAddress onPlacesChanged={this.onSearchAddress} location={this.state.position} />
                             </div>
                         </div>
 
@@ -214,10 +237,11 @@ class HostPage extends Component {
                     <div className="modal-footer">
                         <div>
                             <RSBButton
-                                text="Host"
+                                text={this.props.buttonText}
                                 className="btn btn-info rsb-host-submit-btn col-xs-2"
                                 onClickFunction={this.handleSubmit}
                             />
+                            {cancelButton}
 
                         </div>
                     </div>

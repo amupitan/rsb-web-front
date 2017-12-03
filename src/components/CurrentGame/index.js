@@ -37,6 +37,7 @@ class CurrentGame extends Notifiable(Component) {
         this.getCurrentGame = this.getCurrentGame.bind(this);
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
+        this.submitEdit = this.submitEdit.bind(this);
     }
 
     async getCurrentGame() {
@@ -60,6 +61,29 @@ class CurrentGame extends Notifiable(Component) {
 
         this.getStreetAddress();
         this.getWeather();
+    }
+
+    submitEdit(game) {
+        const result = {
+            name: game.gameName,
+            startTime: (new Date(game.date + ":" + game.startTime)).toISOString(),
+            endTime: (new Date(game.date + ":" + game.endTime)).toISOString(),
+            sport: +game.sport,
+            maxAge: +game.maximumAge,
+            minAge: +game.minimumAge,
+            private: game.private,
+            lat: +game.lat,
+            lng: +game.lng,
+        }
+
+        //TODO: need to make the backend call
+        // const res = await editGame(result);
+        // if (res && res.error) {
+        //     console.log(res.error);
+        //     this.setState({ modalError: res.error });
+        //     return;
+        // }
+        // this.closeEditModal();
     }
 
     getStreetAddress() {
@@ -151,8 +175,6 @@ class CurrentGame extends Notifiable(Component) {
 
         const { name, host, startTime, sport, agerange, duration, joincode, members } = this.game;
 
-        console.log(this.state.modalOpen);
-
         return (
             <div className="container-fluid rsb-game">
                 <div className="rsb-game">
@@ -175,7 +197,8 @@ class CurrentGame extends Notifiable(Component) {
                 </div>
                 {this.state.modalOpen && <div className="rsb-edit-game-modal">
                     <div className="rsb-edit-modal-content">
-                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal} game={this.game}/>
+                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal}
+                            game={this.game} onSubmit={this.submitEdit} buttonText="Edit" />
                     </div>
                 </div>}
             </div>

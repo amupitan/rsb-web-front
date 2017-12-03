@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { createGame } from '../../lib/game';
 import { Notifiable } from "../../mixins";
 
-import RSBButton from '../ui/RSBButton';
 import GamePanel from '../ui/GamePanel';
 
 import './style.css';
@@ -17,11 +16,9 @@ class HostPage extends Notifiable(Component) {
         this.state = {
             error: "",
         };
-
     }
 
     async handleHostSubmit(game) {
-        console.log(game);
         const result = {
             name: game.gameName,
             startTime: (new Date(game.date + ":" + game.startTime)).toISOString(),
@@ -42,10 +39,8 @@ class HostPage extends Notifiable(Component) {
     }
 
     render() {
-        console.log('render bb');
-
         return (
-            <GamePanel title='Host Game' onSubmit={this.handleHostSubmit} error={this.state.error}/>
+            <GamePanel title='Host Game' onSubmit={this.handleHostSubmit} error={this.state.error} buttonText="Host" />
         );
     }
 
