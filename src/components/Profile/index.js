@@ -36,6 +36,7 @@ class Profile extends Notifiable(Component) {
         this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
         this.updateFriendStatus = this.updateFriendStatus.bind(this);
+        this.updateFriendRequests = this.updateFriendRequests.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -70,8 +71,16 @@ class Profile extends Notifiable(Component) {
                 action: this.updateFriendStatus(FriendStatus.RECEIVED_R)
             }),
             subscription.subscribe({
+                name: subscriptions.RECEIVED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
+            }),
+            subscription.subscribe({
                 name: subscriptions.CANCELLED_FRIEND_INVITE,
                 action: this.updateFriendStatus(FriendStatus.NONE)
+            }),
+            subscription.subscribe({
+                name: subscriptions.CANCELLED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
             }),
         ]);
     }
@@ -156,6 +165,16 @@ class Profile extends Notifiable(Component) {
         };
     }
 
+    updateFriendRequests() {
+        return async () => {
+            const username = this.props.match.params.username;
+            var userInfo = await user({ username, populate: 1 });
+            this.setState({
+                user: userInfo,
+            })
+        }
+    }
+
     componentWillUnmount() {
         this.subscriber.clearSubscriptions();
     }
@@ -164,6 +183,7 @@ class Profile extends Notifiable(Component) {
         if (!this.state || this.state.user == null) return <LoaderPage />;
 
         const { user, errorMessage, userActionReady } = this.state;
+        console.log(this.state.user);
         const isMe = user.friendStatus === FriendStatus.IS_USER;
         return (
             <div className="panel col-xs-10 col-xs-offset-1">
