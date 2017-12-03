@@ -88,9 +88,7 @@ class Profile extends Notifiable(Component) {
             }),
             subscription.subscribe({
                 name: subscriptions.UNFRIEND_USER,
-                action: (res) => {
-                    console.log("Res: ", res);
-                }
+                action: this.unfriendUser()
             }),
             subscription.subscribe({
                 name: subscriptions.RESPONSE_GAME_INVITE,
@@ -186,10 +184,19 @@ class Profile extends Notifiable(Component) {
             }
 
             const username = res.to;
-            var userInfo = await user({ username, populate: 1 });
+            const userInfo = await user({ username, populate: 1 });
             const _user = unsafeCopy(this.state.user);
             _user.friendStatus = FriendStatus.ARE_FRIENDS;
             this.setState({ friends: userInfo.friends, user: _user, userActionReady: true })
+        }
+    }
+
+    unfriendUser() {
+        return async (res) => {
+            if (res.error) return;
+            const username = this.state.user.username;
+            const userInfo = await user({ username, populate: 1 });
+            this.setState({ friends: userInfo.friends, userActionReady: true })
         }
     }
 
@@ -214,7 +221,6 @@ class Profile extends Notifiable(Component) {
 
     updateGameRequests() {
         return async (res) => {
-            //Need the username of the person's page, not res.from
             const username = res.to;
             var userInfo = await user({ username, populate: 1 });
             this.setState({ user: userInfo })
