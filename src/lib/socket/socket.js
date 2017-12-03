@@ -19,7 +19,7 @@ export default class Socket {
 
     static get connection() {
         const sock = new Socket();
-        sock.ws.onopen = (m) => console.log(m);
+        sock.ws.onopen = (m) => console.log('Connected to rsb');
         sock.ws.onmessage = sock._handleMessage;
         return sock;
     }
