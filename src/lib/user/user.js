@@ -104,6 +104,32 @@ export async function uploadProfilePhoto(file) {
     return res.data;
 }
 
+export async function editUser(userInfo) {
+    const newInfo = {};
+
+    for (const type in userInfo) {
+        if (userInfo[type]) {
+            newInfo[`${type}`] = userInfo[type]
+        }
+    }
+
+    const res = await yoda.post('/edit/user', (new YodaRequest({}, newInfo)).toString(), true);
+
+    if (res.error) {
+        //TODO Handle error
+        return res;
+    }
+
+    //Reset sessions
+    var newSessionInfo = await getUserInfo(userInfo.username || session.user.username);
+    if (newSessionInfo.error) {
+        return (newSessionInfo);
+    }
+    session.user = newSessionInfo;
+
+    return res.data;
+}
+
 export async function getGameHistory({ username }) {
     const res = await yoda.post('/user/pg/0', (new YodaRequest({}, {
         username: username,
