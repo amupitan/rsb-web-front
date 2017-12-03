@@ -63,7 +63,7 @@ class Profile extends Notifiable(Component) {
     }
 
     componentDidMount() {
-        this.getUserInfo(this.props.match.params);
+        this.getUserInfo(getLoggedInUserName());
         this.subscriber.multiple([
             subscription.subscribe({
                 name: subscriptions.RECEIVED_FRIEND_INVITE,
