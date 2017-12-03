@@ -109,23 +109,22 @@ export async function editUser(userInfo) {
 
     for (const type in userInfo) {
         if (userInfo[type]) {
-            newInfo[`${type}`] = userInfo[type]
+            newInfo[type] = userInfo[type]
         }
     }
 
     const res = await yoda.post('/edit/user', (new YodaRequest({}, newInfo)).toString(), true);
-
     if (res.error) {
-        //TODO Handle error
-        return res;
+        return _handleError(res.data);
     }
 
     //Reset sessions
-    var newSessionInfo = await getUserInfo(userInfo.username || session.user.username);
+    const newSessionInfo = await getUserInfo(res.data.username);
     if (newSessionInfo.error) {
-        return (newSessionInfo);
+        return newSessionInfo;
     }
     session.user = newSessionInfo;
+    session.setItem('username', newSessionInfo.username);
 
     return res.data;
 }

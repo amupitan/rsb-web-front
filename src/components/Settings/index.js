@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import UserInfo from './UserInfo';
+import UserInfo from './UserInfo.jsx';
 import { LoaderPage } from '../ui/Loader';
 
 import { showSuccess } from '../../mixins/notifiable';
@@ -17,6 +17,7 @@ class Settings extends Notifiable(Component) {
 
         this.state = {
             editMode: false,
+            errorMessage: ""
         };
 
         this.onEdit = this.onEdit.bind(this);
@@ -30,10 +31,10 @@ class Settings extends Notifiable(Component) {
     }
 
     async getUser(username) {
-        var userInfo = await user({ username, populate: 1 });
+        const userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
-            //TODO do something when there's an error
+            this.setState({ errorMessage: userInfo.data });
             return;
         }
 
@@ -73,31 +74,32 @@ class Settings extends Notifiable(Component) {
         const res = await editUser(this.state.formData);
 
         if (res.error) {
-            //TODO Handle error 
+            this.setState({ errorMessage: res.error });
             return;
         }
+        showSuccess("Successfully updated information");
 
         this.setState({
             editMode: false,
             userData: this.state.formData
         })
 
-        showSuccess("Successfully updated information");
     }
 
     render() {
         if (this.state.formData == null) return <LoaderPage />;
-
+        const { errorMessage } = this.state;
         return (
             <div className="col-xs-6 col-xs-offset-3">
                 <br />
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">
                         <h4>Settings</h4>
+                        {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
                     </div>
                     <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.state.error}</p>
                     <div className="panel-body">
-                        {<UserInfo formData={this.state.formData} editMode={this.state.editMode} onEdit={this.onEdit} onSubmit={this.onSubmit} updateUserInfo={this.updateUserInfo} />}
+                        <UserInfo formData={this.state.formData} editMode={this.state.editMode} onEdit={this.onEdit} onSubmit={this.onSubmit} updateUserInfo={this.updateUserInfo} />
                     </div>
                 </div>
             </div >
