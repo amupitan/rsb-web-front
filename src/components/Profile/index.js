@@ -93,7 +93,7 @@ class Profile extends Notifiable(Component) {
                 }
             }),
             subscription.subscribe({
-                name: subscriptions.REVIEW_GAME_INVITE,
+                name: subscriptions.RESPONSE_GAME_INVITE,
                 action: (res) => {
                     console.log("Review Game Invites: ", res);
                 }
@@ -206,7 +206,6 @@ class Profile extends Notifiable(Component) {
 
     updateFriendRequests() {
         return async (res) => {
-            //Need the username of the person's page, not res.from
             const username = res.to;
             var userInfo = await user({ username, populate: 1 });
             this.setState({ user: userInfo })
