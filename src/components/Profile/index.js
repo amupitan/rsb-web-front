@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
+import { reviewGameInvite } from '../../lib/game';
 import constraints from '../../lib/constraints';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { unsafeCopy } from "../../lib/utils";
@@ -32,6 +33,7 @@ class Profile extends Notifiable(Component) {
         this.getUserInfo = this.getUserInfo.bind(this);
         this.handleChangePhoto = this.handleChangePhoto.bind(this);
         this.handleFriendRequest = this.handleFriendRequest.bind(this);
+        this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
         this.updateFriendStatus = this.updateFriendStatus.bind(this);
     }
@@ -48,6 +50,15 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
+        this.displaySuccess();
+    }
+
+    async handleGameInvite({ username, accept, id }) {
+        const res = await reviewGameInvite({ username, accept, id });
+        if (res.error) {
+            this.setState({ errorMessage: res.error });
+            return;
+        }
         this.displaySuccess();
     }
 
@@ -173,7 +184,7 @@ class Profile extends Notifiable(Component) {
                     isMe &&
                     <div className="row">
                         <FriendRequest {...user} onReview={this.handleFriendRequest} />
-                        <GameInvites {...user} />
+                        <GameInvites {...user} onReview={this.handleGameInvite} />
                     </div>
                 }
             </div >

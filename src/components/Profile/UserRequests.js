@@ -36,7 +36,29 @@ const UserRequests = ({ requests, onReview }) => {
 
 }
 
-const ReviewRequest = ({ accept = false, onClick, username }) => {
+export const GameRequest = ({ requests, onReview }) => {
+
+    return (<div>
+        {
+            requests.map((request, i) => {
+                const { from, game } = request;
+
+                return (
+                    <div key={i} className="populate-requests row">
+                        {/*TODO: Display better information*/}
+                        <div className="col-sm-4">
+                            <span>From: {from}</span><br />
+                        </div>
+                        <ReviewRequest accept onClick={onReview} id={game} />
+                        <ReviewRequest onClick={onReview} id={game} />
+                    </div>
+                );
+            })
+        }
+    </div>)
+}
+
+const ReviewRequest = ({ accept = false, onClick, username, id }) => {
     const { glyph, className } = accept ?
         { glyph: 'ok', className: 'accept' } :
         { glyph: 'remove', className: 'decline' };
@@ -46,7 +68,7 @@ const ReviewRequest = ({ accept = false, onClick, username }) => {
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
                 className={className}
-                onClickFunction={() => onClick({ accept, username })}
+                onClickFunction={() => onClick({ accept, username, id })}
             />
         </div>
     );

@@ -2,7 +2,7 @@ import yoda, { YodaRequest } from '../yoda/yoda';
 import redirect from '../navigator';
 import session from '../session';
 import errorFormatter from '../errors';
-import { showError } from '../../mixins/notifiable';
+import { showError, showInfo } from '../../mixins/notifiable';
 
 //make request to get game
 async function _getGame({ value } = {}) {
@@ -37,6 +37,7 @@ export async function leaveGame() {
     if (res.error) {
         return _handleError(res.data);
     }
+    session.removeItem('game');
     return { message: 'You have successfully left the game' };
 }
 
@@ -100,6 +101,31 @@ export async function rateGame({ rating, id }) {
         return _handleError(res.data)
     }
     return res.data
+}
+
+export async function sendGameInvite(username) {
+    const res = await yoda.post('/invite/m/send/t/1', (new YodaRequest({}, {
+        to: username,
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    showInfo("Successfully sent invitation");
+    return res.data;
+}
+
+export async function reviewGameInvite({ accept, id }) {
+    const res = await yoda.post('/invite/m/review/t/1', (new YodaRequest({}, {
+        accept: accept,
+        game: id
+    })).toString(), true);
+
+    if (res.error) {
+        return _handleError(res.data);
+    }
+    redirect({ path: '/game' });
+    return res.data;
 }
 
 // Returns the user's current game or an error if there's no game

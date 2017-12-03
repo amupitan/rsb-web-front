@@ -85,6 +85,12 @@ const views = [
         component: GameHistory,
         isMenuOption: false,
     },
+    {
+        name: 'Invite friends',
+        path: 'invite',
+        component: Friends,
+        isMenuOption: false,
+    },
 ];
 
 

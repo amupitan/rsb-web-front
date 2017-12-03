@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
+
 import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
@@ -27,7 +28,6 @@ class CurrentGame extends Notifiable(Component) {
             errorFatal: null,
         }
 
-        this.renderBottom = this.renderBottom.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -86,19 +86,8 @@ class CurrentGame extends Notifiable(Component) {
         this.getCurrentGame();
     }
 
-    renderBottom() {
-        return (
-            <div>
-                <div className="rsb-game-leave row text-center">
-                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
-                </div>
-                <div className="rsb-game-bottom row">
-                </div>
-            </div>
-        );
-    }
-
     renderMembers({ members = [] }) {
+
         let numMembers = members.length;
         const rows = [];
 
@@ -112,7 +101,7 @@ class CurrentGame extends Notifiable(Component) {
             }
 
             // add row
-            rows[rowCount] = (
+            rows[Math.floor(rowCount)] = (
                 <div className="rsb-game-member-row" key={rowCount}>
                     <div className="row">
                         {labels}
@@ -120,7 +109,6 @@ class CurrentGame extends Notifiable(Component) {
                 </div>
             );
         }
-
         return rows;
     }
 
@@ -154,6 +142,7 @@ class CurrentGame extends Notifiable(Component) {
                     </div>
                     <Footer />
                 </div>
+
             </div>
         );
     }
@@ -173,9 +162,16 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
 const Footer = () => (
     <div>
         <div className="rsb-game-leave row text-center">
-            <Link to={'/'} >
-                <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
-            </Link>
+            <div className="col-sm-6">
+                <Link to={'/invite'}>
+                    <RSBButton text="Invite Friends" buttonType="info" />
+                </Link>
+            </div>
+            <div className="col-sm-6">
+                <Link to={`/`}>
+                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                </Link>
+            </div>
         </div>
         <div className="rsb-game-bottom row">
         </div>

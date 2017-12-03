@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
+
 import { Link } from 'react-router-dom';
 
 import { getFriends, getLoggedInUserName } from '../../lib/user';
+import Game, { sendGameInvite } from '../../lib/game';
+import { unsafeCopy } from "../../lib/utils";
 import { Notifiable } from "../../mixins";
 
+import RSBButton from '../ui/RSBButton';
 import { LoaderPage } from '../ui/Loader';
 import Avatar from '../ui/Avatar';
 
@@ -20,20 +25,60 @@ class Friends extends Notifiable(Component) {
 
         this.render = this.render.bind(this);
         this.filterUsers = this.filterUsers.bind(this);
+        this.renderUsers = this.renderUsers.bind(this);
+        this.displayInvite = this.displayInvite.bind(this);
+        this.getFriendInfo = this.getFriendInfo.bind(this);
     }
 
     componentDidMount() {
-        this.getAllFriends();
+        this.getFriendInfo();
     }
 
-    async getAllFriends() {
+    async getFriendInfo() {
+        const displayInvite = this.props.location.pathname === '/invite' && await this.getGameMembers();
+        this.getAllFriends(displayInvite)
+    }
+
+    async getGameMembers() {
+        const game = await Game();
+        if (game.error) {
+            this.setState({
+                errorFatal: game.error,
+            });
+            return false;
+        }
+        this.setState({
+            game: game
+        });
+        return true;
+    }
+
+    async getAllFriends(isInGame) {
         const username = getLoggedInUserName();
         const friends = await getFriends(username);
-        if (!friends.error) {
-            this.setState({
-                userFriends: friends
-            });
+        if (!friends.error && isInGame) {
+            const { members } = this.state.game;
+
+            for (const friend of friends) {
+                if (this.state.game.host.username === friend.username) {
+                    friend.selectStatus = gameStatus.IN_GAME;
+                    continue;
+                }
+
+                for (const member of members) {
+                    if (member.username === friend.username) {
+                        friend.selectStatus = gameStatus.IN_GAME;
+                        break;
+                    }
+                }
+
+                if (friend.selectStatus !== gameStatus.IN_GAME)
+                    friend.selectStatus = gameStatus.NOT_SELECTED;
+            }
         }
+        this.setState({
+            userFriends: friends
+        });
     }
 
     filterUsers(event) {
@@ -51,18 +96,81 @@ class Friends extends Notifiable(Component) {
         });
     }
 
-    renderUsers(users) {
-        if (users.length === 0) 
-            return <div>No friends with the name '{this.state.friendSearch}' were found</div>
+    selectFriend(i) {
+        const friends = unsafeCopy(this.state.userFriends),
+            friend = friends[i];
+        if (friend.selectStatus === gameStatus.IN_GAME) return;
 
-        return users.map((user, i) => (
+        friend.selectStatus = (friend.selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
+
+        this.setState({
+            userFriends: friends,
+        })
+    }
+
+    getClassSet(user) {
+        return classNames(
+            'col-xs-3',
+            'text-center',
+            {
+                'user-select': (user.selectStatus === gameStatus.SELECTED),
+                'user-in-game': (user.selectStatus === gameStatus.IN_GAME)
+            }
+        )
+    }
+
+    renderUsers(users) {
+        if (this.state.userFriends.length === 0 || users.error) {
+            return <div>User has no friends at this time</div>
+        }
+
+        if (users.length === 0) {
+            return <div>No friends with the name '{this.state.friendSearch}' were found</div>
+        }
+
+        if (this.props.location.pathname === '/invite') {
+            return users.map((user, i) => (
+                <div className={this.getClassSet(user)} onClick={() => { this.selectFriend(i) }} key={i}>
+                    <Avatar avatar={user.avatar} alt='profile-pic' className='rsb-friend-icon' />
+                    <span className='rsb-friend-name'>{user.username}</span>
+                </div>
+            ));
+        }
+        else {
+            return users.map((user, i) => (
                 <Link to={`/user/${user.username}`} key={i} >
                     <div className='col-xs-3 text-center'>
                         <Avatar avatar={user.avatar} alt='profile-pic' className='rsb-friend-icon' />
                         <span className='rsb-friend-name'>{user.username}</span>
                     </div>
                 </Link>
-        ));
+            ))
+        }
+    }
+
+    displayInvite() {
+        if (this.props.location && this.props.location.pathname === '/invite') {
+            return (
+                <Link to={'/game'}>
+                    <RSBButton
+                        text="Invite"
+                        buttonType="success"
+                        onClickFunction={() => {
+                            let userFriends = this.state.userFriends;
+                            for (let friend of this.state.userFriends) {
+                                if (friend.selectStatus === gameStatus.SELECTED) {
+                                    sendGameInvite(friend.username)
+                                    friend.selectStatus = gameStatus.NOT_SELECTED;
+                                }
+                            }
+                            this.setState({
+                                userFriends: userFriends
+                            })
+                        }}
+                    />
+                </Link>
+            )
+        }
     }
 
     render() {
@@ -81,11 +189,18 @@ class Friends extends Notifiable(Component) {
                             {/*This either displays the filtered array of friends or all the friends */}
                             {this.renderUsers(this.state.filteredFriends || this.state.userFriends)}
                         </div>
+                        {this.displayInvite()}
                     </div>
                 </div>
             </div >
         )
     }
 }
+
+const gameStatus = {
+    "IN_GAME": 0,
+    "SELECTED": 1,
+    "NOT_SELECTED": 2
+};
 
 export default Friends;

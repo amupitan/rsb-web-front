@@ -25,7 +25,7 @@ export default ({ friends }) => {
 
 
     return (
-        <div className="col-sm-6 panel panel-default">
+        <div className="col-sm-6 panel panel-default rsb-profile-panel">
             <div className="panel-heading-rsb">
                 <h2>Friends</h2>
             </div>
