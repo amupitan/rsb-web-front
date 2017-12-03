@@ -13,16 +13,15 @@ const UserRequests = ({ requests, onReview }) => {
                     const { username, firstname, lastname, avatar, sport, time, } = request;
 
                     return (
-                        <div key={i} className="populate-requests row">
+                        <div key={i} className="populate-requests requests-space row">
                             <Link to={`/user/${username}`} key={i} >
-                                <div className="col-sm-4 col-sm-pull">
+                                <div className="col-sm-2 col-sm-pull">
                                     <Avatar avatar={avatar} alt='profile-pic' className='profile-pic-xs' />
                                 </div>
-                                <div className="col-sm-4">
-                                    <span>{username}</span><br />
-                                    <span>{firstname} {lastname}</span><br />
-                                    {sport && <span><i>{sport}</i></span>}<br />
-                                    <span>{time}</span>
+                                <div className="col-sm-6 display-request-info">
+                                    <b>Username:</b> {username}<br />
+                                    <b>First name:</b> {firstname}
+                                    {time}
                                 </div>
                             </Link>
                             <ReviewRequest accept onClick={onReview} username={username} />
@@ -44,13 +43,15 @@ export const GameRequest = ({ requests, onReview }) => {
                 const { from, game } = request;
 
                 return (
-                    <div key={i} className="populate-requests row">
+                    <div key={i} className="populate-requests requests-space row">
                         {/*TODO: Display better information*/}
-                        <div className="col-sm-4">
-                            <span>From: {from}</span><br />
+                        <div className="col-sm-6 display-request-info">
+                            From: {from}<br />
                         </div>
-                        <ReviewRequest accept onClick={onReview} id={game} />
-                        <ReviewRequest onClick={onReview} id={game} />
+                        <div className="col-sm-6">
+                            <ReviewRequest accept onClick={onReview} id={game} />
+                            <ReviewRequest onClick={onReview} id={game} />
+                        </div>
                     </div>
                 );
             })
@@ -64,7 +65,7 @@ const ReviewRequest = ({ accept = false, onClick, username, id }) => {
         { glyph: 'remove', className: 'decline' };
 
     return (
-        <div className="col-sm-2">
+        <div className="display-request-info">
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
                 className={className}
