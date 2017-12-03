@@ -27,15 +27,18 @@ export async function joinAndGetGame(game, byId) {
     return res.data;
 }
 
-// leaves a game and redirects
+/**
+ * Leaves a game and returns a {message} if successful,
+ * or an error if not
+ */
 export async function leaveGame() {
     const res = await yoda.post('/game/exit', (new YodaRequest({}, {})).toString(), true);
+    session.removeItem('game');
     if (res.error) {
-        const err = _handleError(res.data);
-        showError({ message: err.error });
-        redirect();
+        return _handleError(res.data);
     }
     session.removeItem('game');
+    return { message: 'You have successfully left the game' };
 }
 
 // gets games based on a location
@@ -53,7 +56,7 @@ export async function getGamesNearLocation({ lat, lng }) {
 }
 
 // joins a game based on map find or join code
-export async function joinGame(game, { byId = true, source = '/' }) {
+export async function joinGame(game, { byId = true, source = '/' } = {}) {
     if (!game) return;
     const user = session.getItem('username'); //TODO: use navigator/history
 

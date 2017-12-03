@@ -5,4 +5,7 @@ export default {
     UNFRIEND_USER: 'unfriendUser',
     RESPONSE_GAME_INVITE: 'responseGameInvite',
     RECEIVED_GAME_INVITE: 'receivedGameInvite',
+    NEW_GAME_MEMBER: 'newGameMember',
+    GAME_MEMBER_LEAVE: 'gameMemberLeave',
+    GAME_HOST_LEAVE: 'gameHostLeave',
 }

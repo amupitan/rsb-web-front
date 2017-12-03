@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
+import { getLoggedInUserName } from '../../lib/user';
+import subscription, { subscriptions } from '../../lib/subscriptions';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 
 import { Notifiable } from "../../mixins";
@@ -15,6 +17,7 @@ import { ErrorMessage, ErrorPage } from './Errors';
 
 
 import './style.css';
+import { showInfo } from '../../mixins/notifiable';
 
 class CurrentGame extends Notifiable(Component) {
     constructor(props) {
@@ -28,6 +31,11 @@ class CurrentGame extends Notifiable(Component) {
             errorFatal: null,
         }
 
+        this.subscriber = subscription.subscriber;
+
+        this.addMember = this.addMember.bind(this);
+        this.removeMember = this.removeMember.bind(this);
+        this.createSubscriptions = this.createSubscriptions.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -43,6 +51,9 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         this.game = game;
+        this.setState({
+            game: game,
+        })
         const myLocation = await getCurrentLocation();
         this.distance = getDistance({ origin: myLocation, dest: game.location });
 
@@ -84,6 +95,67 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
+        this.createSubscriptions();
+    }
+
+    createSubscriptions() {
+        this.subscriber.multiple([
+            subscription.subscribe({
+                name: subscriptions.NEW_GAME_MEMBER,
+                action: (res) => this.addMember(res.member),
+            }),
+
+            subscription.subscribe({
+                name: subscriptions.GAME_MEMBER_LEAVE,
+                action: (res) => this.removeMember(res.username),
+            }),
+
+            subscription.subscribe({
+                name: subscriptions.GAME_HOST_LEAVE,
+                action: () => {
+                    const { host } = this.game;
+                    if (host.username === getLoggedInUserName()) return;
+                    showInfo(`${host.firstname} ${host.lastname} just left your game`);
+                    this.getCurrentGame();
+                },
+            })
+        ]);
+    }
+
+    /**
+     * adds a member to the list of displayed game members
+     * @param {User} user 
+     */
+    addMember(user) {
+        if (!this.game || user.username === getLoggedInUserName()) return;
+        const { members } = this.game;
+        for (const member of members)
+            if (member.username === user.username) return;
+
+        members[members.length] = user;
+        showInfo(`${user.firstname} ${user.lastname} just joined your game`);
+        this.setState({ game: this.game });
+    }
+
+    /**
+     * Removes the user with the username from the list of 
+     * displayed members
+     * @param {String} username 
+     */
+    removeMember(username) {
+        if (!this.game || username === getLoggedInUserName()) return;
+        const { members } = this.game;
+        let member;
+        for (const i in members) {
+            if (members[i].username === username) {
+                member = members[i];
+                members.splice(i, 1);
+                break;
+            }
+        }
+
+        showInfo(`${member.firstname} ${member.lastname} just left your game`);
+        this.setState({ game: this.game });
     }
 
     renderMembers({ members = [] }) {
