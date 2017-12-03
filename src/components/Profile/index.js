@@ -91,12 +91,6 @@ class Profile extends Notifiable(Component) {
                 action: this.unfriendUser()
             }),
             subscription.subscribe({
-                name: subscriptions.RESPONSE_GAME_INVITE,
-                action: (res) => {
-                    console.log("Review Game Invites: ", res);
-                }
-            }),
-            subscription.subscribe({
                 name: subscriptions.RECEIVED_GAME_INVITE,
                 action: this.updateGameRequests()
             }),
