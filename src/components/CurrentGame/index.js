@@ -35,6 +35,7 @@ class CurrentGame extends Notifiable(Component) {
 
         this.addMember = this.addMember.bind(this);
         this.removeMember = this.removeMember.bind(this);
+        this.createSubscriptions = this.createSubscriptions.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -94,20 +95,26 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
+        this.createSubscriptions();
+    }
 
+    createSubscriptions() {
         this.subscriber.multiple([
             subscription.subscribe({
                 name: subscriptions.NEW_GAME_MEMBER,
                 action: (res) => this.addMember(res.member),
             }),
+
             subscription.subscribe({
                 name: subscriptions.GAME_MEMBER_LEAVE,
                 action: (res) => this.removeMember(res.username),
             }),
+
             subscription.subscribe({
                 name: subscriptions.GAME_HOST_LEAVE,
                 action: () => {
                     const { host } = this.game;
+                    if (host.username === getLoggedInUserName()) return;
                     showInfo(`${host.firstname} ${host.lastname} just left your game`);
                     this.getCurrentGame();
                 },
