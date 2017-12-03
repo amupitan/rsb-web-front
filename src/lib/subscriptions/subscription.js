@@ -46,13 +46,26 @@ class Subscriber {
     }
 
     /**
+     * Returns the number of subscriptions
+     */
+    get length() { return this.subscriptions.length; }
+
+    /**
      * Subscribes a set of subscriptions to the handler
      * @param {Array<Subscription>} subscriptions 
      */
     multiple(subscriptions = []) {
         for (const subscription of subscriptions) {
-            this.subscriptions.push(subscription);
+            this.subscriptions[this.length] = subscription;
         }
+    }
+
+    /**
+     * Subscribes to the subscription
+     * @param {Subscription} subscription 
+     */
+    add(subscription) {
+        this.subscriptions[this.length] = subscription;
     }
 
     /**

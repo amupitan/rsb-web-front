@@ -8,7 +8,7 @@ export default ({ gameRequests, onReview }) => {
                 <div className="panel-heading-rsb">
                     <h2>Game Invites</h2>
                 </div>
-                <div className="scroll-info panel-body populate-requests">
+                <div className="scroll-info panel-body ">
                     <GameRequest requests={gameRequests} onReview={onReview} />
                 </div>
             </div>
