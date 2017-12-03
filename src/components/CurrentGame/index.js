@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
+import subscription, { subscriptions } from '../../lib/subscriptions';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 
 import { Notifiable } from "../../mixins";
@@ -28,6 +29,9 @@ class CurrentGame extends Notifiable(Component) {
             errorFatal: null,
         }
 
+        this.subscriber = subscription.subscriber;
+
+        this.addMember = this.addMember.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -43,6 +47,9 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         this.game = game;
+        this.setState({
+            game: game,
+        })
         const myLocation = await getCurrentLocation();
         this.distance = getDistance({ origin: myLocation, dest: game.location });
 
@@ -84,6 +91,18 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
+        this.subscriber.add(subscription.subscribe({
+            name: subscriptions.NEW_GAME_MEMBER,
+            action: this.addMember,
+        }));
+    }
+
+    addMember(res) {
+        for (const member of this.game.members)
+            if (member.username === res.member.username) return;
+
+        this.game.members[this.game.members.length] = res.member;
+        this.setState({ game: this.game });
     }
 
     renderMembers({ members = [] }) {
