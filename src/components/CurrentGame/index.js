@@ -32,6 +32,7 @@ class CurrentGame extends Notifiable(Component) {
         this.subscriber = subscription.subscriber;
 
         this.addMember = this.addMember.bind(this);
+        this.removeMember = this.removeMember.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -91,17 +92,43 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
-        this.subscriber.add(subscription.subscribe({
-            name: subscriptions.NEW_GAME_MEMBER,
-            action: this.addMember,
-        }));
+
+        this.subscriber.multiple([
+            subscription.subscribe({
+                name: subscriptions.NEW_GAME_MEMBER,
+                action: (res) => this.addMember(res.member),
+            }),
+            subscription.subscribe({
+                name: subscriptions.GAME_MEMBER_LEAVE,
+                action: (res) => this.removeMember(res.username),
+            }),
+            subscription.subscribe({
+                name: subscriptions.GAME_HOST_LEAVE,
+                action: () => this.getCurrentGame(),
+            })
+        ]);
     }
 
-    addMember(res) {
-        for (const member of this.game.members)
-            if (member.username === res.member.username) return;
+    addMember(user) {
+        if (!this.game) return;
+        const { members } = this.game;
+        for (const member of members)
+            if (member.username === user.username) return;
 
-        this.game.members[this.game.members.length] = res.member;
+        members[members.length] = user;
+        this.setState({ game: this.game });
+    }
+
+    removeMember(username) {
+        if (!this.game) return;
+        const { members } = this.game;
+        for (const i in members) {
+            if (members[i].username === username) {
+                members.splice(i, 1);
+                break;
+            }
+        }
+
         this.setState({ game: this.game });
     }
 
