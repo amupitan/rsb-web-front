@@ -41,28 +41,24 @@ export const GameRequest = ({ requests, onReview }) => {
 
     async function getGames(games) {
         for (let req of requests) {
-            console.log(req.game);
             const id = req.game
             const curGame = await getGameById({ value: id });
-            console.log(curGame);
             games.push(curGame.data);
         }
     }
 
     let gameArray = [];
-
     getGames(gameArray);
-    console.log(gameArray);
 
     return (<div>
         {
             requests.map((request, i) => {
                 const { from, game } = request;
-                console.log(game);
-
+                curGame = gameArray[i];
                 return (
                     <div key={i} className="populate-requests row">
                         {/*TODO: Display better information*/}
+
                         <div className="col-sm-4">
                             <span>From: {from}</span><br />
                         </div>
