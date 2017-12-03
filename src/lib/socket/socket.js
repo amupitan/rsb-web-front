@@ -1,7 +1,9 @@
 import { webSocketUrl as url } from '../yoda';
 import { wait } from '../utils';
 
-window.WebSocket = window.WebSocket || Object;
+import MockWS from './mock';
+
+window.WebSocket = window.WebSocket || MockWS;
 
 export default class Socket {
     constructor() {
