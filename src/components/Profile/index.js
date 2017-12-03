@@ -82,6 +82,26 @@ class Profile extends Notifiable(Component) {
                 name: subscriptions.CANCELLED_FRIEND_INVITE,
                 action: this.updateFriendRequests()
             }),
+            subscription.subscribe({
+                name: subscriptions.RESPONSE_FRIEND_INVITE,
+                action: this.responseFriendInvite()
+            }),
+            subscription.subscribe({
+                name: subscriptions.UNFRIEND_USER,
+                action: (res) => {
+                    console.log("Res: ", res);
+                }
+            }),
+            subscription.subscribe({
+                name: subscriptions.REVIEW_GAME_INVITE,
+                action: (res) => {
+                    console.log("Review Game Invites: ", res);
+                }
+            }),
+            subscription.subscribe({
+                name: subscriptions.RECEIVED_GAME_INVITE,
+                action: this.updateGameRequests()
+            }),
         ]);
     }
 
@@ -154,6 +174,25 @@ class Profile extends Notifiable(Component) {
         this.getUserInfo({ username: this.state.user.username });
     }
 
+    responseFriendInvite() {
+        return async (res) => {
+            if (res.error || this.state.user.username !== res.to) return;
+
+            if (!res.accept) {
+                const _user = unsafeCopy(this.state.user);
+                _user.friendStatus = FriendStatus.NONE;
+                this.setState({ user: _user, userActionReady: true });
+                return;
+            }
+
+            const username = res.to;
+            var userInfo = await user({ username, populate: 1 });
+            const _user = unsafeCopy(this.state.user);
+            _user.friendStatus = FriendStatus.ARE_FRIENDS;
+            this.setState({ friends: userInfo.friends, user: _user, userActionReady: true })
+        }
+    }
+
     updateFriendStatus(friendStatus) {
         return (res) => {
             if (res.error || this.state.user.username !== res.from) return;
@@ -166,12 +205,20 @@ class Profile extends Notifiable(Component) {
     }
 
     updateFriendRequests() {
-        return async () => {
-            const username = this.props.match.params.username;
+        return async (res) => {
+            //Need the username of the person's page, not res.from
+            const username = res.to;
             var userInfo = await user({ username, populate: 1 });
-            this.setState({
-                user: userInfo,
-            })
+            this.setState({ user: userInfo })
+        }
+    }
+
+    updateGameRequests() {
+        return async (res) => {
+            //Need the username of the person's page, not res.from
+            const username = res.to;
+            var userInfo = await user({ username, populate: 1 });
+            this.setState({ user: userInfo })
         }
     }
 
@@ -183,7 +230,6 @@ class Profile extends Notifiable(Component) {
         if (!this.state || this.state.user == null) return <LoaderPage />;
 
         const { user, errorMessage, userActionReady } = this.state;
-        console.log(this.state.user);
         const isMe = user.friendStatus === FriendStatus.IS_USER;
         return (
             <div className="panel col-xs-10 col-xs-offset-1">
