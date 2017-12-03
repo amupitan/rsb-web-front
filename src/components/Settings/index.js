@@ -4,6 +4,7 @@ import UserInfo from './UserInfo';
 import { LoaderPage } from '../ui/Loader';
 
 import { showSuccess } from '../../mixins/notifiable';
+import { editUser } from '../../lib/user';
 import { unsafeCopy } from "../../lib/utils";
 import user, { getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
@@ -62,22 +63,26 @@ class Settings extends Notifiable(Component) {
     }
 
     onEdit(inEditMode) {
-        // console.log("IDM: ", this.state.formData, this.state.userData)
         this.setState({
             editMode: inEditMode,
             formData: this.state.userData
         })
     }
 
-    onSubmit() {
-        console.log("FormData: ", this.state.formData)
+    async onSubmit() {
+        const res = await editUser(this.state.formData);
+
+        if (res.error) {
+            //TODO Handle error 
+            return;
+        }
+
         this.setState({
             editMode: false,
             userData: this.state.formData
         })
 
         showSuccess("Successfully updated information");
-
     }
 
     render() {
