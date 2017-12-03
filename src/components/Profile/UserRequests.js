@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { getGameById } from '../../lib/game'
+
 import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
 
 const UserRequests = ({ requests, onReview }) => {
-
     return (
         <div>
             {
@@ -38,10 +39,26 @@ const UserRequests = ({ requests, onReview }) => {
 
 export const GameRequest = ({ requests, onReview }) => {
 
+    async function getGames(games) {
+        for (let req of requests) {
+            console.log(req.game);
+            const id = req.game
+            const curGame = await getGameById({ value: id });
+            console.log(curGame);
+            games.push(curGame.data);
+        }
+    }
+
+    let gameArray = [];
+
+    getGames(gameArray);
+    console.log(gameArray);
+
     return (<div>
         {
             requests.map((request, i) => {
                 const { from, game } = request;
+                console.log(game);
 
                 return (
                     <div key={i} className="populate-requests row">

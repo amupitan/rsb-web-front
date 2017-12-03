@@ -5,7 +5,8 @@ import errorFormatter from '../errors';
 import { showError, showInfo } from '../../mixins/notifiable';
 
 //make request to get game
-async function _getGame({ value } = {}) {
+export async function getGame({ value } = {}) {
+    console.log(value);
     const path = value ? `/game/g/${value}` : '/game';
     return await yoda.get(path, true);
 }
@@ -79,7 +80,7 @@ export async function createGame(data) {
         return _handleError(res.data)
     }
 
-    res = await _getGame({ value: res.data });
+    res = await getGame({ value: res.data });
     if (res.error) {
         return _handleError(res.data)
     }
@@ -127,7 +128,7 @@ export async function reviewGameInvite({ accept, id }) {
 
 // Returns the user's current game or an error if there's no game
 export default async function Game() {
-    const game = await _getGame();
+    const game = await getGame();
     if (game.error) {
         return _handleError(game.data);
     }
