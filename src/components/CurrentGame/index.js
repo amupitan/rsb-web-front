@@ -109,6 +109,10 @@ class CurrentGame extends Notifiable(Component) {
         ]);
     }
 
+    /**
+     * adds a member to the list of displayed game members
+     * @param {User} user 
+     */
     addMember(user) {
         if (!this.game) return;
         const { members } = this.game;
@@ -119,6 +123,11 @@ class CurrentGame extends Notifiable(Component) {
         this.setState({ game: this.game });
     }
 
+    /**
+     * Removes the user with the username from the list of 
+     * displayed members
+     * @param {String} username 
+     */
     removeMember(username) {
         if (!this.game) return;
         const { members } = this.game;
