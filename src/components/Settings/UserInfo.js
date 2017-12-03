@@ -49,15 +49,15 @@ export default ({ formData, editMode, onEdit, onSubmit, updateUserInfo }) => {
                 <div className="row">
                     <div className="col-xs-6">
                         <h5>Username:</h5>
-                        <span className="form-control">{formData.username}</span> <br />
+                        <span className="form-control rsb-no-edit">{formData.username}</span> <br />
                         <h5>First name:</h5>
-                        <span className="form-control">{formData.firstname}</span> <br />
+                        <span className="form-control rsb-no-edit">{formData.firstname}</span> <br />
                         <h5>Last name:</h5>
-                        <span className="form-control">{formData.lastname}</span> <br />
+                        <span className="form-control rsb-no-edit">{formData.lastname}</span> <br />
                         <h5>Email: </h5>
-                        <span className="form-control"> </span> <br />
+                        <span className="form-control rsb-no-edit"> </span> <br />
                         <h5>Password: </h5>
-                        <span className="form-control">***********</span> <br />
+                        <span className="form-control rsb-no-edit">***********</span> <br />
 
                     </div>
                 </div>
