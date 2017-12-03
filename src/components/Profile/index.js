@@ -54,7 +54,7 @@ class Profile extends Notifiable(Component) {
     }
 
     async handleGameInvite({ username, accept, id }) {
-        const res = await reviewGameInvite({ username, accept, id });
+        const res = await reviewGameInvite({ from: username, accept, id });
         if (res.error) {
             this.setState({ errorMessage: res.error });
             return;

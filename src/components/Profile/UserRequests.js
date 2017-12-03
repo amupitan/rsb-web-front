@@ -49,8 +49,8 @@ export const GameRequest = ({ requests, onReview }) => {
                         <div className="col-sm-4">
                             <span>From: {from}</span><br />
                         </div>
-                        <ReviewRequest accept onClick={onReview} id={game} />
-                        <ReviewRequest onClick={onReview} id={game} />
+                        <ReviewRequest accept onClick={onReview} id={game} username={from} />
+                        <ReviewRequest onClick={onReview} id={game} username={from} />
                     </div>
                 );
             })
