@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Game, { leaveGame } from '../../lib/game';
+import { getLoggedInUserName } from '../../lib/user';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 
@@ -16,6 +17,7 @@ import { ErrorMessage, ErrorPage } from './Errors';
 
 
 import './style.css';
+import { showInfo } from '../../mixins/notifiable';
 
 class CurrentGame extends Notifiable(Component) {
     constructor(props) {
@@ -104,7 +106,11 @@ class CurrentGame extends Notifiable(Component) {
             }),
             subscription.subscribe({
                 name: subscriptions.GAME_HOST_LEAVE,
-                action: () => this.getCurrentGame(),
+                action: () => {
+                    const { host } = this.game;
+                    showInfo(`${host.firstname} ${host.lastname} just left your game`);
+                    this.getCurrentGame();
+                },
             })
         ]);
     }
@@ -114,12 +120,13 @@ class CurrentGame extends Notifiable(Component) {
      * @param {User} user 
      */
     addMember(user) {
-        if (!this.game) return;
+        if (!this.game || user.username === getLoggedInUserName()) return;
         const { members } = this.game;
         for (const member of members)
             if (member.username === user.username) return;
 
         members[members.length] = user;
+        showInfo(`${user.firstname} ${user.lastname} just joined your game`);
         this.setState({ game: this.game });
     }
 
@@ -129,15 +136,18 @@ class CurrentGame extends Notifiable(Component) {
      * @param {String} username 
      */
     removeMember(username) {
-        if (!this.game) return;
+        if (!this.game || username === getLoggedInUserName()) return;
         const { members } = this.game;
+        let member;
         for (const i in members) {
             if (members[i].username === username) {
+                member = members[i];
                 members.splice(i, 1);
                 break;
             }
         }
 
+        showInfo(`${member.firstname} ${member.lastname} just left your game`);
         this.setState({ game: this.game });
     }
 
