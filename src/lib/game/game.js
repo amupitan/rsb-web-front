@@ -93,6 +93,8 @@ export async function editGame(data) {
     if (res.error) {
         return _handleError(res.data)
     }
+
+    return res.data;
 };
 
 // rates a game if not previously rated or returns an error

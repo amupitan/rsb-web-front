@@ -63,7 +63,7 @@ class CurrentGame extends Notifiable(Component) {
         this.getWeather();
     }
 
-    submitEdit(game) {
+    async submitEdit(game) {
         const result = {
             name: game.gameName,
             startTime: (new Date(game.date + ":" + game.startTime)).toISOString(),
@@ -76,13 +76,13 @@ class CurrentGame extends Notifiable(Component) {
             lng: +game.lng,
         }
 
-        //TODO: need to make the backend call
-        //const res = await editGame(result);
-        // if (res && res.error) {
-        //     console.log(res.error);
-        //     this.setState({ modalError: res.error });
-        //     return;
-        // }
+        const res = await editGame(result);
+        if (res && res.error) {
+            console.log(res.error);
+            this.setState({ modalError: res.error });
+            return;
+        }
+
         this.closeEditModal();
         this.getCurrentGame();
     }
