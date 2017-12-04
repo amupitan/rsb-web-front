@@ -83,8 +83,8 @@ class CurrentGame extends Notifiable(Component) {
             return;
         }
 
-        this.closeEditModal();
         this.getCurrentGame();
+        this.closeEditModal();
     }
 
     getStreetAddress() {
