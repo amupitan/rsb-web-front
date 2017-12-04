@@ -4,9 +4,8 @@ import UserInfo from './UserInfo.jsx';
 import { LoaderPage } from '../ui/Loader';
 
 import { showSuccess } from '../../mixins/notifiable';
-import { editUser } from '../../lib/user';
 import { unsafeCopy } from "../../lib/utils";
-import user, { getLoggedInUserName } from '../../lib/user';
+import user, { getLoggedInUserName, editUser } from '../../lib/user';
 import { Notifiable } from "../../mixins";
 
 import './style.css';
@@ -95,7 +94,7 @@ class Settings extends Notifiable(Component) {
                 <div className="panel panel-default">
                     <div className="panel-heading text-center">
                         <h4>Settings</h4>
-                        {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
+                        <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>
                     </div>
                     <p style={{ color: 'red', marginTop: '5px', textAlign: 'center' }}>{this.state.error}</p>
                     <div className="panel-body">
