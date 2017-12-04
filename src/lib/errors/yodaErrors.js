@@ -22,6 +22,7 @@ const _yodaErrors = {
     17: { '*': 'The location you selected invalid' },
     18: { '*': 'The sport you selected is invalid' },
     19: { '*': 'Sorry, you cannot host a game right now, try again later' },
+    22: { '*': 'You are already in a game' },
     30: { '*': 'You are not in a game' }, //GameNotFound
     31: { //Invalid Rating
         'you have already rated the game': 'You have already rated this game',

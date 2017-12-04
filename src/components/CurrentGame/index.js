@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import Game, { leaveGame } from '../../lib/game';
+import Game, { leaveGame, editGame } from '../../lib/game';
 import { getLoggedInUserName } from '../../lib/user';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
@@ -11,6 +11,7 @@ import { Notifiable } from "../../mixins";
 import { LoaderPage } from '../ui/Loader';
 import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
+import GamePanel from '../ui/GamePanel'
 
 import { GameInfoLeft, GameInfoCenter, GameInfoRight } from './GameInfo';
 import { ErrorMessage, ErrorPage } from './Errors';
@@ -27,6 +28,8 @@ class CurrentGame extends Notifiable(Component) {
         this.distance = null;
         this.state = {
             gameLoaded: false,
+            modalOpen: false,
+            modalError: '',
             errorMessage: null,
             errorFatal: null,
         }
@@ -39,6 +42,9 @@ class CurrentGame extends Notifiable(Component) {
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.closeEditModal = this.closeEditModal.bind(this);
+        this.submitEdit = this.submitEdit.bind(this);
     }
 
     async getCurrentGame() {
@@ -64,8 +70,30 @@ class CurrentGame extends Notifiable(Component) {
         });
 
         this.getStreetAddress();
-
         this.getWeather();
+    }
+
+    async submitEdit(game) {
+        const result = {
+            name: game.gameName,
+            startTime: (new Date(game.date + ":" + game.startTime)).toISOString(),
+            endTime: (new Date(game.date + ":" + game.endTime)).toISOString(),
+            sport: +game.sport,
+            maxAge: +game.maximumAge,
+            minAge: +game.minimumAge,
+            private: game.private,
+            lat: +game.lat,
+            lng: +game.lng,
+        }
+
+        const res = await editGame(result);
+        if (res && res.error) {
+            this.setState({ modalError: res.error });
+            return;
+        }
+
+        this.getCurrentGame();
+        this.closeEditModal();
     }
 
     getStreetAddress() {
@@ -185,6 +213,18 @@ class CurrentGame extends Notifiable(Component) {
         return rows;
     }
 
+    openEditModal() {
+        this.setState({
+            modalOpen: true,
+        });
+    }
+
+    closeEditModal() {
+        this.setState({
+            modalOpen: false,
+        });
+    }
+
     render() {
         if (this.state.errorFatal) {
             return <ErrorPage message={this.state.errorFatal} />;
@@ -194,6 +234,9 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         const { name, host, startTime, sport, agerange, duration, joincode, members } = this.game;
+
+        const isGameHost = getLoggedInUserName() === host.username;
+        const buttonColumns = isGameHost ? "col-sm-4" : "col-sm-6";
 
         return (
             <div className="container-fluid rsb-game">
@@ -213,8 +256,15 @@ class CurrentGame extends Notifiable(Component) {
                             <p className='lead text-center'>There are no other members in this game </p>
                         }
                     </div>
-                    <Footer />
+                    <Footer host={host} open={this.openEditModal} isHost={isGameHost} cols={buttonColumns}/>
                 </div>
+                {this.state.modalOpen &&         
+                <div className="rsb-edit-game-modal">
+                    <div className="rsb-edit-modal-content">
+                        <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal}
+                            game={this.game} onSubmit={this.submitEdit} buttonText="Save Changes" />
+                    </div>
+                </div>}
 
             </div>
         );
@@ -232,20 +282,26 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
     </Link>
 );
 
-const Footer = () => (
+const Footer = ({ host, open, isHost, cols}) => (
     <div>
         <div className="rsb-game-leave row text-center">
-            <div className="col-sm-6">
+            <div className={cols}>
                 <Link to={'/invite'}>
-                    <RSBButton text="Invite Friends" buttonType="info" />
+                    <RSBButton className="text-center" text="Invite Friends" buttonType="info" />
                 </Link>
             </div>
-            <div className="col-sm-6">
+            <div className={cols}>
                 <Link to={`/`}>
-                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                    <RSBButton className="text-center" text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
                 </Link>
             </div>
+            {isHost && 
+                <div className="col-sm-4 text-center">
+                    <RSBButton className="text-center" text="Edit Game" buttonType="info" onClickFunction={open} />
+                 </div>
+            }
         </div>
+
         <div className="rsb-game-bottom row">
         </div>
     </div>

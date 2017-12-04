@@ -225,8 +225,6 @@ export class MapPage extends Component {
         </InfoWindow>
     }
 
-
-
     renderSearchAddress() {
         return <SearchAddress
             onPlacesChanged={this.onAddressSearch}
