@@ -56,8 +56,8 @@ export class MapPage extends Component {
         this.getGame();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow))) {
+    componentDidUpdate() {
+        if (this.state.showingInfoWindow) {
             this.renderActionButton();
         }
     }
@@ -207,8 +207,8 @@ export class MapPage extends Component {
         console.log(`lat: ${center.lat()} lng: ${center.lng()}`);
         this.setState({
             markers: await this.getMarkers({ lat: center.lat(), lng: center.lng() }),
-            // showingInfoWindow: false,
-            // activeMarker: null,
+            showingInfoWindow: false,
+            activeMarker: null,
         });
     }
 
