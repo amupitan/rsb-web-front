@@ -13,11 +13,17 @@ export const FriendStatus = {
 }
 
 function _handleError(error) {
-    const err = { error: errorFormatter(error) }
+    const err = { error: errorFormatter(error) };
     showError({ message: err.error });
     redirect();
     return err;
-}
+};
+
+/**
+ * Returns a user readable version of the error
+ * @param {YodaError} error 
+ */
+const _handleErrorPure = error => ({ error: errorFormatter(error) });
 
 export function getLoggedInUserName() {
     return session.getItem('username');
@@ -109,13 +115,13 @@ export async function editUser(userInfo) {
 
     for (const type in userInfo) {
         if (userInfo[type]) {
-            newInfo[type] = userInfo[type]
+            newInfo[type] = userInfo[type];
         }
     }
 
     const res = await yoda.post('/edit/user', (new YodaRequest({}, newInfo)).toString(), true);
     if (res.error) {
-        return _handleError(res.data);
+        return _handleErrorPure(res.data);
     }
 
     //Reset sessions
