@@ -24,7 +24,11 @@
 }
 
 .rsb-game-clear {
-    color: #285599;
+    color: #3e75c7;
+}
+
+.rsb-game-clouds {
+    color: #0d2b58;
 }
 
 .rsb-game-error {
