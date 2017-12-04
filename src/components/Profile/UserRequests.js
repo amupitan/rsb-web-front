@@ -12,7 +12,7 @@ const UserRequests = ({ requests, onReview }) => {
         <div>
             {
                 requests.map((request, i) => {
-                    const { username, firstname, lastname, avatar, sport, time, } = request;
+                    const { username, firstname, avatar, time, } = request;
 
                     return (
                         <div key={i} className="populate-requests requests-space row">
