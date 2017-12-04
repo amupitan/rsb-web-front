@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
 import { Notifiable } from '../../mixins';
@@ -60,6 +60,9 @@ class Login extends Notifiable(Component) {
         return (
             <div className="container " >
                 <div className="smart">
+                    <Link to={`/signup`}>
+                        <button className="btn btn-link">Sign Up</button>
+                    </Link>
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>

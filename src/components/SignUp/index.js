@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Notifiable } from "../../mixins";
 import { createUser, onSignUp, signupForm } from '../../lib/authentication';
@@ -40,6 +41,9 @@ class SignUp extends Notifiable(Component) {
         return (
             <div className="container ">
                 <div className="smart">
+                    <Link to={`/login`}>
+                        <button className="btn btn-link">Back to Login</button>
+                    </Link>
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
