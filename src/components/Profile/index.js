@@ -5,6 +5,7 @@ import { reviewGameInvite } from '../../lib/game';
 import constraints from '../../lib/constraints';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { unsafeCopy } from "../../lib/utils";
+import redirect from '../../lib/navigator';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
 
@@ -28,6 +29,7 @@ class Profile extends Notifiable(Component) {
 
         this.subscriber = subscription.subscriber;
 
+        this.createSubscriptions = this.createSubscriptions.bind(this);
         this.handleUserActionClick = this.handleUserActionClick.bind(this);
         this.handleUserActionChange = this.handleUserActionChange.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
@@ -60,11 +62,23 @@ class Profile extends Notifiable(Component) {
             this.setState({ errorMessage: res.error });
             return;
         }
+
+        if (accept && res.successful) {
+            // TODO: use a different way to redirect
+            redirect({ path: '/game' });
+        }
         this.displaySuccess();
     }
 
     componentDidMount() {
         this.getUserInfo(this.props.match.params);
+        this.createSubscriptions();
+    }
+
+    /**
+     * Makes subscriptions to necessary socket events
+     */
+    createSubscriptions() {
         this.subscriber.multiple([
             subscription.subscribe({
                 name: subscriptions.RECEIVED_FRIEND_INVITE,
