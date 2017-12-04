@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import { Link } from "react-router-dom";
 
 import utils, { DateUtils } from '../../lib/utils';
@@ -11,7 +11,7 @@ import Loader from '../ui/Loader';
 export const GameInfoRight = ({ minAge, maxAge, startTime, duration }) => (
     <div className="rsb-game-info-right col-sm-4">
         <p className="lead">
-            <strong>Duration: </strong>{DateUtils.getCurrentTime(startTime)} - {DateUtils.getTimeAfter(( { dateString: startTime, minutes: duration } ))}
+            <strong>Duration: </strong>{DateUtils.getCurrentTime(startTime)} - {DateUtils.getTimeAfter(({ dateString: startTime, minutes: duration }))}
         </p>
         <p className="lead"> <strong>Current Time: </strong>{DateUtils.getCurrentTime()}</p>
         <p className="lead">{DateUtils.toDateString()}</p>
@@ -68,14 +68,16 @@ export const GameInfoLeft = ({ weather, distance }) => {
         'clouds': 'cloud',
         'clear': 'cloud',
         'rain': 'bolt',
+        'haze': 'tint',
         '': '',
     }[weather.weather];
 
+    const distanceMessage = distance.toFixed(1) === '0.0' ? 'You are here!' : (`${distance.toFixed(1)} mile${distance !== 1 ? 's' : ''} away. Need a ride?`);
     return (
         <div className="rsb-game-info-left col-sm-4">
             <p className="lead"><strong>Temperature: </strong>&nbsp;{weather.temp}&#x2109;&nbsp;&nbsp;
             <i className={`fa fa-${icon} rsb-game-${weather.weather}`} aria-hidden="true"></i>
-                <br /> {distance.toFixed(1)} mile{distance !== 1 ? 's' : ''} away. Need a ride?</p>
+                <br /> {distanceMessage}</p>
         </div>
     );
 }
