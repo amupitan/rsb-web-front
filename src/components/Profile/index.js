@@ -118,7 +118,6 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        console.log("In getUserInfo: ", username)
         var userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
