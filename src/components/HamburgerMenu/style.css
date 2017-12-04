@@ -14,11 +14,7 @@
     font-size:20px;
     color: white;
     text-align: center;
-    background: black; /* For browsers that do not support gradients */    
-    background: -webkit-linear-gradient(left top, #503e414a,#708090); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, #503e414a,#708090); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, #503e414a,#708090); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, #503e414a,#708090); /* Standard syntax (must be last) */
+    background: #503e4180; 
 }
 
 .test-hamburger:hover{
