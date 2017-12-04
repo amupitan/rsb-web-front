@@ -127,15 +127,12 @@ export class MapPage extends Component {
         </InfoWindow>
     }
 
-
-
     renderSearchAddress() {
         return <SearchAddress
             onPlacesChanged={this.onAddressSearch}
             className='rsb-map-search-bar'
         />
     }
-
 
     // Renders all available markers
     renderMarkers() {
