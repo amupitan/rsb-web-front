@@ -132,7 +132,7 @@ export async function editUser(userInfo) {
     session.user = newSessionInfo;
     session.setItem('username', newSessionInfo.username);
 
-    return res.data;
+    return { successful: true };
 }
 
 export async function getGameHistory({ username }) {

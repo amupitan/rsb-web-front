@@ -128,7 +128,7 @@ export async function reviewGameInvite({ accept, id }) {
     if (accept) {
         redirect({ path: '/game' });
     }
-    return { successful: true };
+    return res.data;
 }
 
 // Returns the user's current game or an error if there's no game
