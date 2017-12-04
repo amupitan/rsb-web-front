@@ -1,7 +1,9 @@
 import { webSocketUrl as url } from '../yoda';
 import { wait } from '../utils';
 
-window.WebSocket = window.WebSocket || Object;
+import MockWS from './mock';
+
+window.WebSocket = window.WebSocket || MockWS;
 
 export default class Socket {
     constructor() {
@@ -19,7 +21,7 @@ export default class Socket {
 
     static get connection() {
         const sock = new Socket();
-        sock.ws.onopen = (m) => console.log(m);
+        sock.ws.onopen = (m) => console.log('Connected to rsb');
         sock.ws.onmessage = sock._handleMessage;
         return sock;
     }

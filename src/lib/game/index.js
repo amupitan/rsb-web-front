@@ -5,6 +5,8 @@ import Game, {
     createGame,
     editGame,
     leaveGame,
+    sendGameInvite,
+    reviewGameInvite,
     joinAndGetGame,
     getGameHistory,
     rateGame,
@@ -33,6 +35,8 @@ export {
     rateGame,
     joinGame,
     leaveGame,
+    sendGameInvite,
+    reviewGameInvite,
 };
 
 export default Game;

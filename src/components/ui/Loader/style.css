@@ -1,8 +1,8 @@
 .spinner-loader {
     border-style: solid;
     border-radius: 50%;
-    -webkit-animation: spin 1.7s linear infinite;
-    animation: spin 1.7s linear infinite;
+    -webkit-animation: spin 1.0s linear infinite;
+    animation: spin 1.0s linear infinite;
   }
   
   @-webkit-keyframes spin {

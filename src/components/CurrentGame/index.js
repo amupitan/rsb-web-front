@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
+<<<<<<< HEAD
 import Game, { leaveGame, editGame } from '../../lib/game';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 import { getLoggedInUserName } from '../../lib/user';
+=======
+import Game, { leaveGame } from '../../lib/game';
+import { getLoggedInUserName } from '../../lib/user';
+import subscription, { subscriptions } from '../../lib/subscriptions';
+import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
+
+>>>>>>> master
 import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
@@ -16,6 +24,7 @@ import { ErrorMessage, ErrorPage } from './Errors';
 
 
 import './style.css';
+import { showInfo } from '../../mixins/notifiable';
 
 class CurrentGame extends Notifiable(Component) {
     constructor(props) {
@@ -31,7 +40,11 @@ class CurrentGame extends Notifiable(Component) {
             errorFatal: null,
         }
 
-        this.renderBottom = this.renderBottom.bind(this);
+        this.subscriber = subscription.subscriber;
+
+        this.addMember = this.addMember.bind(this);
+        this.removeMember = this.removeMember.bind(this);
+        this.createSubscriptions = this.createSubscriptions.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.getStreetAddress = this.getStreetAddress.bind(this);
         this.getCurrentGame = this.getCurrentGame.bind(this);
@@ -50,6 +63,9 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         this.game = game;
+        this.setState({
+            game: game,
+        })
         const myLocation = await getCurrentLocation();
         this.distance = getDistance({ origin: myLocation, dest: game.location });
 
@@ -114,21 +130,71 @@ class CurrentGame extends Notifiable(Component) {
 
     componentDidMount() {
         this.getCurrentGame();
+        this.createSubscriptions();
     }
 
-    renderBottom() {
-        return (
-            <div>
-                <div className="rsb-game-leave row text-center">
-                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
-                </div>
-                <div className="rsb-game-bottom row">
-                </div>
-            </div>
-        );
+    createSubscriptions() {
+        this.subscriber.multiple([
+            subscription.subscribe({
+                name: subscriptions.NEW_GAME_MEMBER,
+                action: (res) => this.addMember(res.member),
+            }),
+
+            subscription.subscribe({
+                name: subscriptions.GAME_MEMBER_LEAVE,
+                action: (res) => this.removeMember(res.username),
+            }),
+
+            subscription.subscribe({
+                name: subscriptions.GAME_HOST_LEAVE,
+                action: () => {
+                    const { host } = this.game;
+                    if (host.username === getLoggedInUserName()) return;
+                    showInfo(`${host.firstname} ${host.lastname} just left your game`);
+                    this.getCurrentGame();
+                },
+            })
+        ]);
+    }
+
+    /**
+     * adds a member to the list of displayed game members
+     * @param {User} user 
+     */
+    addMember(user) {
+        if (!this.game || user.username === getLoggedInUserName()) return;
+        const { members } = this.game;
+        for (const member of members)
+            if (member.username === user.username) return;
+
+        members[members.length] = user;
+        showInfo(`${user.firstname} ${user.lastname} just joined your game`);
+        this.setState({ game: this.game });
+    }
+
+    /**
+     * Removes the user with the username from the list of 
+     * displayed members
+     * @param {String} username 
+     */
+    removeMember(username) {
+        if (!this.game || username === getLoggedInUserName()) return;
+        const { members } = this.game;
+        let member;
+        for (const i in members) {
+            if (members[i].username === username) {
+                member = members[i];
+                members.splice(i, 1);
+                break;
+            }
+        }
+
+        showInfo(`${member.firstname} ${member.lastname} just left your game`);
+        this.setState({ game: this.game });
     }
 
     renderMembers({ members = [] }) {
+
         let numMembers = members.length;
         const rows = [];
 
@@ -142,7 +208,7 @@ class CurrentGame extends Notifiable(Component) {
             }
 
             // add row
-            rows[rowCount] = (
+            rows[Math.floor(rowCount)] = (
                 <div className="rsb-game-member-row" key={rowCount}>
                     <div className="row">
                         {labels}
@@ -150,7 +216,6 @@ class CurrentGame extends Notifiable(Component) {
                 </div>
             );
         }
-
         return rows;
     }
 
@@ -196,12 +261,16 @@ class CurrentGame extends Notifiable(Component) {
                     </div>
                     <Footer host={host} open={this.openEditModal} />
                 </div>
+<<<<<<< HEAD
                 {this.state.modalOpen && <div className="rsb-edit-game-modal">
                     <div className="rsb-edit-modal-content">
                         <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal}
                             game={this.game} onSubmit={this.submitEdit} buttonText="Edit" />
                     </div>
                 </div>}
+=======
+
+>>>>>>> master
             </div>
         );
     }
@@ -221,8 +290,21 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
 const Footer = ({ host, open }) => (
     <div>
         <div className="rsb-game-leave row text-center">
+<<<<<<< HEAD
             <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
             {getLoggedInUserName() === host.username && <button className="rsb-host-edit-game btn btn-info" onClick={open}>Edit Game</button>}
+=======
+            <div className="col-sm-6">
+                <Link to={'/invite'}>
+                    <RSBButton text="Invite Friends" buttonType="info" />
+                </Link>
+            </div>
+            <div className="col-sm-6">
+                <Link to={`/`}>
+                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                </Link>
+            </div>
+>>>>>>> master
         </div>
         <div className="rsb-game-bottom row">
         </div>
