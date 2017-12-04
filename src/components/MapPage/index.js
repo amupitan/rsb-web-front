@@ -57,7 +57,7 @@ export class MapPage extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow)) ){
+        if (this.state.showingInfoWindow && ((prevState === this.state && this.state.showingInfoWindow))) {
             this.renderActionButton();
         }
     }
@@ -84,7 +84,7 @@ export class MapPage extends Component {
         return result;
     }
 
-    async getGame(){
+    async getGame() {
         this.setState({
             currentGame: await Game()
         });
@@ -147,7 +147,7 @@ export class MapPage extends Component {
     renderActionButton() {
         let checkInGame = !this.state.currentGame.error;
         let inSomeGame = true;
-        if(checkInGame === undefined || !checkInGame) inSomeGame = false;
+        if (checkInGame === undefined || !checkInGame) inSomeGame = false;
 
         const { selectedGame } = this.state,
             username = getLoggedInUserName(),
@@ -187,8 +187,8 @@ export class MapPage extends Component {
     // Handles the closing of a game option
     onMapClicked() {
         this.setState({
-                showingInfoWindow: false,
-                activeMarker: null, 
+            showingInfoWindow: false,
+            activeMarker: null,
         })
     }
 
@@ -292,7 +292,7 @@ const userInGame = (username, game = { members: [], host: {} }) => {
 
 
     if (username === game.host.username) return true;
-    if(!game.members) return false;
+    if (!game.members) return false;
     for (const member of game.members)
         if (username === member.username) return true;
     return false;
