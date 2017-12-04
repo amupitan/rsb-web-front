@@ -24,6 +24,7 @@ class CurrentGame extends Notifiable(Component) {
         super(props);
 
         this.game = null;
+        console.log('game was just set to null');
         this.distance = null;
         this.state = {
             gameLoaded: false,
@@ -51,6 +52,7 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         this.game = game;
+        console.log(game);
         this.setState({
             game: game,
         })
@@ -113,6 +115,7 @@ class CurrentGame extends Notifiable(Component) {
             subscription.subscribe({
                 name: subscriptions.GAME_HOST_LEAVE,
                 action: () => {
+                    if (!this.game) return;
                     const { host } = this.game;
                     if (host.username === getLoggedInUserName()) return;
                     showInfo(`${host.firstname} ${host.lastname} just left your game`);
