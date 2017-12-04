@@ -141,6 +141,7 @@ class CurrentGame extends Notifiable(Component) {
             subscription.subscribe({
                 name: subscriptions.GAME_HOST_LEAVE,
                 action: () => {
+                    if (!this.game) return;
                     const { host } = this.game;
                     if (host.username === getLoggedInUserName()) return;
                     showInfo(`${host.firstname} ${host.lastname} just left your game`);

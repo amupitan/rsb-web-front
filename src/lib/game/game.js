@@ -134,9 +134,6 @@ export async function reviewGameInvite({ accept, id }) {
         return _handleError(res.data);
     }
 
-    if (accept) {
-        redirect({ path: '/game' });
-    }
     return res.data;
 }
 
