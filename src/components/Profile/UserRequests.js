@@ -60,7 +60,7 @@ export const GameRequest = ({ requests, onReview, games }) => {
                             <p className="col-xs-11 display-request-info"> {DateUtils.getReadableTime(games[i].startTime)}</p>
                         </div>
                         <div className="row">
-                            <p className="col-xs-11 display-request-info"> Location: {games[i].street.address}</p>
+                            <p className="col-xs-11 display-request-info"> Location: {games[i].street}</p>
                         </div>
                         <div className="row">
                             <p className="col-xs-11 display-request-info"> Sport: {sports[games[i].sport]}</p>
@@ -81,7 +81,7 @@ const ReviewRequest = ({ accept = false, onClick, username, id }) => {
         <div className="display-request-info">
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
-                className={className + " pull-right"}
+                className={`${className} pull-right`}
                 onClickFunction={() => onClick({ accept, username, id })}
             />
         </div>

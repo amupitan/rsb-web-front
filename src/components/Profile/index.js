@@ -119,15 +119,23 @@ class Profile extends Notifiable(Component) {
         this.displaySuccess();
     }
 
-    async getInvitedGames(games, newArray) {
-        if (games) {
-            for (const req of games) {
+    async getInvitedGames(gameRequests) {
+        let newArray = [];
+        if (gameRequests) {
+            for (const req of gameRequests) {
                 const id = req.game
-                let curGame = await getGameById({ value: id });
-                curGame.data.street = await getAddress(curGame.data.location);
-                newArray.push(curGame.data);
+                const curGame = await getGameById({ value: id });
+
+                const res = await getAddress(curGame.data.location);
+                if (res.error) {
+                    this.setState({ errorMessage: res.error });
+                    return [];
+                }
+                curGame.data.street = res.address;
+                newArray[newArray.length] = curGame.data;
             }
         }
+        return newArray;
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
@@ -144,8 +152,7 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        const gamesArray = [];
-        await this.getInvitedGames(userInfo.gameRequests, gamesArray);
+        const gamesArray = await this.getInvitedGames(userInfo.gameRequests);
 
         this.setState({
             user: userInfo,
