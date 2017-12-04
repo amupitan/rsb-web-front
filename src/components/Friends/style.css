@@ -37,10 +37,29 @@ input[type=search]:focus.rsb-friend-search {
 }
 
 .user-select{
-    border: 2px solid blue;
+    border: 3px solid rgba(19, 128, 55, 0.479);
+    background-color: rgba(210, 214, 214, 0.781);
+}
+
+.rsb-friends-invite-button{
+    box-shadow: 1px 5px 5px rgb(3, 53, 10);
+    width: 80px;
+    font-family: 'Proxima Nova Soft','Helvetica Neue',sans-serif;
 }
 
 .user-in-game{
-    border: 2px solid grey;
-    background: #dddddd;
+    border: 3px solid rgb(85, 83, 83);
+    background: #d4a3a3;
+    cursor: not-allowed;
+}
+
+.rsb-friends-invite{
+    margin-left: 50%;
+    margin-right: 50%;
+    margin-top: 30px;
+}
+
+.rsb-friend-user-box{
+    margin-left: 10px;
+    border-radius: 3%;
 }
