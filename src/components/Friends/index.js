@@ -21,6 +21,7 @@ class Friends extends Notifiable(Component) {
         this.state = {
             friendSearch: '',
             userFriends: [],
+            numSelected: 0,
         }
 
         this.render = this.render.bind(this);
@@ -97,14 +98,22 @@ class Friends extends Notifiable(Component) {
     }
 
     selectFriend(i) {
+        let numSelected = this.state.numSelected;
         const friends = unsafeCopy(this.state.userFriends),
             friend = friends[i];
         if (friend.selectStatus === gameStatus.IN_GAME) return;
 
-        friend.selectStatus = (friend.selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
+        if (friend.selectStatus === gameStatus.SELECTED) {
+            friend.selectStatus = gameStatus.NOT_SELECTED;
+            numSelected--;
+        } else {
+            friend.selectStatus = gameStatus.SELECTED
+            numSelected++;
+        }
 
         this.setState({
             userFriends: friends,
+            numSelected: numSelected
         })
     }
 
@@ -150,6 +159,16 @@ class Friends extends Notifiable(Component) {
 
     displayInvite() {
         if (this.props.location && this.props.location.pathname === '/invite') {
+            if (this.state.numSelected === 0) {
+                return (
+                    <RSBButton
+                        text="Invite"
+                        buttonType="success"
+                        className="disabled"
+                    />
+                )
+            }
+
             return (
                 <Link to={'/game'}>
                     <RSBButton
