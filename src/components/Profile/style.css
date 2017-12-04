@@ -44,10 +44,12 @@ button{
 
 .accept{
     background-color: #66ff33;
+    border-radius: 50%;
 }
   
 .decline{
     background-color: #cc0000;
+    border-radius: 50%;
 }
 
 .populate-requests{

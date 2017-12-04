@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
-import { reviewGameInvite } from '../../lib/game';
+import { sports, reviewGameInvite, getGameById } from '../../lib/game';
+import { getAddress } from '../../lib/map'
 import constraints from '../../lib/constraints';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { unsafeCopy } from "../../lib/utils";
@@ -36,6 +37,7 @@ class Profile extends Notifiable(Component) {
         this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
         this.updateFriendStatus = this.updateFriendStatus.bind(this);
+        this.getInvitedGames = this.getInvitedGames.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -117,6 +119,17 @@ class Profile extends Notifiable(Component) {
         this.displaySuccess();
     }
 
+    async getInvitedGames(games, newArray) {
+        if (games) {
+            for (const req of games) {
+                const id = req.game
+                let curGame = await getGameById({ value: id });
+                curGame.data.street = await getAddress(curGame.data.location);
+                newArray.push(curGame.data);
+            }
+        }
+    }
+
     async getUserInfo({ username = getLoggedInUserName() }) {
         var userInfo = await user({ username, populate: 1 });
 
@@ -131,12 +144,16 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
+        const gamesArray = [];
+        await this.getInvitedGames(userInfo.gameRequests, gamesArray);
+
         this.setState({
             user: userInfo,
             friends: userInfo.friends || [],
             gameHistory: gameHistory,
             errorMessage: null,
             userActionReady: true,
+            invitedGames: gamesArray,
         });
     }
 
@@ -184,7 +201,7 @@ class Profile extends Notifiable(Component) {
                     isMe &&
                     <div className="row">
                         <FriendRequest {...user} onReview={this.handleFriendRequest} />
-                        <GameInvites {...user} onReview={this.handleGameInvite} />
+                        <GameInvites {...user} onReview={this.handleGameInvite} games={this.state.invitedGames} />
                     </div>
                 }
             </div >

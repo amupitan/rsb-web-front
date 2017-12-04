@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { getGameById } from '../../lib/game'
+import { sports } from '../../lib/game'
+import { DateUtils } from '../../lib/utils';
 
 import RSBButton from '../ui/RSBButton';
 import Avatar from '../ui/Avatar';
@@ -36,33 +37,33 @@ const UserRequests = ({ requests, onReview }) => {
 
 }
 
-export const GameRequest = ({ requests, onReview }) => {
-
-    async function getGames(games) {
-        for (let req of requests) {
-            const id = req.game
-            const curGame = await getGameById({ value: id });
-            games.push(curGame.data);
-        }
-    }
-
-    let gameArray = [];
-    getGames(gameArray);
-
+export const GameRequest = ({ requests, onReview, games }) => {
     return (<div>
         {
             requests.map((request, i) => {
                 const { from, game } = request;
-                curGame = gameArray[i];
+
                 return (
                     <div key={i} className="populate-requests requests-space row">
                         {/*TODO: Display better information*/}
-                        <div className="col-sm-6 display-request-info">
-                            From: {from}<br />
+                        <div className="row">
+                            <p className="col-xs-4 display-request-info">
+                                From: {from}<br />
+                            </p>
+                            <p className="col-xs-4 display-request-info"> Game Name: {games[i].name}</p>
+                            <div className="col-xs-4 pull-right">
+                                <ReviewRequest accept onClick={onReview} id={game} className="rsb-accept-game-request-btn" />
+                                <ReviewRequest onClick={onReview} id={game} className="rsb-decline-game-request-btn" />
+                            </div>
                         </div>
-                        <div className="col-sm-6">
-                            <ReviewRequest accept onClick={onReview} id={game} />
-                            <ReviewRequest onClick={onReview} id={game} />
+                        <div className="row">
+                            <p className="col-xs-11 display-request-info"> {DateUtils.getReadableTime(games[i].startTime)}</p>
+                        </div>
+                        <div className="row">
+                            <p className="col-xs-11 display-request-info"> Location: {games[i].street.address}</p>
+                        </div>
+                        <div className="row">
+                            <p className="col-xs-11 display-request-info"> Sport: {sports[games[i].sport]}</p>
                         </div>
                     </div>
                 );
@@ -80,7 +81,7 @@ const ReviewRequest = ({ accept = false, onClick, username, id }) => {
         <div className="display-request-info">
             <RSBButton
                 glyphicons={`glyphicon glyphicon-${glyph}`}
-                className={className}
+                className={className + " pull-right"}
                 onClickFunction={() => onClick({ accept, username, id })}
             />
         </div>

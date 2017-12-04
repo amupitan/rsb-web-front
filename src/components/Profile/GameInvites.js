@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameRequest } from './UserRequests';
 
-export default ({ gameRequests, onReview }) => {
+export default ({ gameRequests, onReview, games }) => {
     if (gameRequests && gameRequests.length > 0) {
         return (
             <div className="col-sm-6 panel panel-default rsb-profile-panel">
@@ -9,7 +9,7 @@ export default ({ gameRequests, onReview }) => {
                     <h2>Game Invites</h2>
                 </div>
                 <div className="scroll-info panel-body ">
-                    <GameRequest requests={gameRequests} onReview={onReview} />
+                    <GameRequest requests={gameRequests} onReview={onReview} games={games} />
                 </div>
             </div>
         )

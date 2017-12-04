@@ -6,7 +6,6 @@ import { showError, showInfo } from '../../mixins/notifiable';
 
 //make request to get game
 export async function getGame({ value } = {}) {
-    console.log(value);
     const path = value ? `/game/g/${value}` : '/game';
     return await yoda.get(path, true);
 }
