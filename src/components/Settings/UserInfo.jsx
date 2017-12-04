@@ -29,7 +29,7 @@ export default ({ formData, editMode, onEdit, onSubmit, updateUserInfo }) => {
                             text="Submit"
                             className="btn btn-info rsb-submit-btn"
                             buttonType="info"
-                            onClickFunction={() => { onSubmit() }}
+                            onClickFunction={onSubmit}
                         />
                     </div>
                     <div className="col-xs-4">

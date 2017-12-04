@@ -63,7 +63,7 @@ class Profile extends Notifiable(Component) {
     }
 
     componentDidMount() {
-        this.getUserInfo(getLoggedInUserName());
+        this.getUserInfo(this.props.match.params);
         this.subscriber.multiple([
             subscription.subscribe({
                 name: subscriptions.RECEIVED_FRIEND_INVITE,
@@ -118,6 +118,7 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
+        console.log("In getUserInfo: ", username)
         var userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
