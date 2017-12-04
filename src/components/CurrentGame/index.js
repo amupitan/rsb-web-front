@@ -24,7 +24,6 @@ class CurrentGame extends Notifiable(Component) {
         super(props);
 
         this.game = null;
-        console.log('game was just set to null');
         this.distance = null;
         this.state = {
             gameLoaded: false,
@@ -52,7 +51,6 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         this.game = game;
-        console.log(game);
         this.setState({
             game: game,
         })
