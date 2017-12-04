@@ -144,7 +144,7 @@ class HostPage extends Component {
     }
 
     render() {
-        
+
         const cancelButton = this.props.onCancel ?
             <RSBButton
                 text="Cancel"
@@ -152,7 +152,6 @@ class HostPage extends Component {
                 onClickFunction={this.props.onCancel}
             />
             : null;
-
 
         const sportsOptions = [];
         for (const i in sports) {
