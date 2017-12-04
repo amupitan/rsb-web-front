@@ -173,7 +173,7 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
-        const gamesArray = await this.getInvitedGames(userInfo.gameRequests);
+        const games = await this.getInvitedGames(userInfo.gameRequests);
 
         this.setState({
             user: userInfo,
@@ -181,7 +181,7 @@ class Profile extends Notifiable(Component) {
             gameHistory: gameHistory,
             errorMessage: null,
             userActionReady: true,
-            invitedGames: gamesArray,
+            invitedGames: games,
         });
     }
 
