@@ -89,12 +89,7 @@ export async function createGame(data) {
 };
 
 export async function editGame(data) {
-    let res = await yoda.post('/create/game', (new YodaRequest({}, data)).toString(), true);
-    if (res.error) {
-        return _handleError(res.data)
-    }
-
-    res = await _getGame({ value: res.data });
+    let res = await yoda.post('/edit/game', (new YodaRequest({}, data)).toString(), true);
     if (res.error) {
         return _handleError(res.data)
     }
