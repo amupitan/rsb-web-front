@@ -139,7 +139,7 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        var userInfo = await user({ username, populate: 1 });
+        const userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
             this.setState({ errorMessage: userInfo.error });
@@ -179,6 +179,11 @@ class Profile extends Notifiable(Component) {
 
             const username = res.to;
             const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
             const _user = unsafeCopy(this.state.user);
             _user.friendStatus = FriendStatus.ARE_FRIENDS;
             this.setState({ friends: userInfo.friends, user: _user, userActionReady: true })
@@ -190,6 +195,11 @@ class Profile extends Notifiable(Component) {
             if (res.error) return;
             const username = this.state.user.username;
             const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
             this.setState({ friends: userInfo.friends, userActionReady: true })
         }
     }
@@ -208,7 +218,11 @@ class Profile extends Notifiable(Component) {
     updateFriendRequests() {
         return async (res) => {
             const username = res.to;
-            var userInfo = await user({ username, populate: 1 });
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
             this.setState({ user: userInfo })
         }
     }
@@ -216,7 +230,11 @@ class Profile extends Notifiable(Component) {
     updateGameRequests() {
         return async (res) => {
             const username = res.to;
-            var userInfo = await user({ username, populate: 1 });
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
             this.setState({ user: userInfo })
         }
     }
