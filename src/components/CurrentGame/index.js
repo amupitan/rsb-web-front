@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-<<<<<<< HEAD
 import Game, { leaveGame, editGame } from '../../lib/game';
-import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
-import { getLoggedInUserName } from '../../lib/user';
-=======
-import Game, { leaveGame } from '../../lib/game';
 import { getLoggedInUserName } from '../../lib/user';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 
->>>>>>> master
 import { Notifiable } from "../../mixins";
 
 import { LoaderPage } from '../ui/Loader';
@@ -94,7 +88,6 @@ class CurrentGame extends Notifiable(Component) {
 
         const res = await editGame(result);
         if (res && res.error) {
-            console.log(res.error);
             this.setState({ modalError: res.error });
             return;
         }
@@ -241,6 +234,9 @@ class CurrentGame extends Notifiable(Component) {
 
         const { name, host, startTime, sport, agerange, duration, joincode, members } = this.game;
 
+        const isGameHost = getLoggedInUserName() === host.username;
+        const buttonColumns = isGameHost ? "col-sm-4" : "col-sm-6";
+
         return (
             <div className="container-fluid rsb-game">
                 <div className="rsb-game">
@@ -259,18 +255,16 @@ class CurrentGame extends Notifiable(Component) {
                             <p className='lead text-center'>There are no other members in this game </p>
                         }
                     </div>
-                    <Footer host={host} open={this.openEditModal} />
+                    <Footer host={host} open={this.openEditModal} isHost={isGameHost} cols={buttonColumns}/>
                 </div>
-<<<<<<< HEAD
-                {this.state.modalOpen && <div className="rsb-edit-game-modal">
+                {this.state.modalOpen &&         
+                <div className="rsb-edit-game-modal">
                     <div className="rsb-edit-modal-content">
                         <GamePanel title='Edit Game' submitText='Submit Changes' error={this.state.modalError} onCancel={this.closeEditModal}
                             game={this.game} onSubmit={this.submitEdit} buttonText="Edit" />
                     </div>
                 </div>}
-=======
 
->>>>>>> master
             </div>
         );
     }
@@ -287,25 +281,26 @@ const UserCard = ({ avatar, firstname, lastname, username }) => (
     </Link>
 );
 
-const Footer = ({ host, open }) => (
+const Footer = ({ host, open, isHost, cols}) => (
     <div>
         <div className="rsb-game-leave row text-center">
-<<<<<<< HEAD
-            <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
-            {getLoggedInUserName() === host.username && <button className="rsb-host-edit-game btn btn-info" onClick={open}>Edit Game</button>}
-=======
-            <div className="col-sm-6">
+            <div className={cols}>
                 <Link to={'/invite'}>
-                    <RSBButton text="Invite Friends" buttonType="info" />
+                    <RSBButton className="text-center" text="Invite Friends" buttonType="info" />
                 </Link>
             </div>
-            <div className="col-sm-6">
+            <div className={cols}>
                 <Link to={`/`}>
-                    <RSBButton text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
+                    <RSBButton className="text-center" text="Exit Game" buttonType="danger" onClickFunction={leaveGame} />
                 </Link>
             </div>
->>>>>>> master
+            {isHost && 
+                <div className="col-sm-4 text-center">
+                    <RSBButton className="text-center" text="Edit Game" buttonType="info" onClickFunction={open} />
+                 </div>
+            }
         </div>
+
         <div className="rsb-game-bottom row">
         </div>
     </div>

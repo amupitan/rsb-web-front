@@ -19,6 +19,7 @@ class HostPage extends Notifiable(Component) {
     }
 
     async handleHostSubmit(game) {
+        
         const result = {
             name: game.gameName,
             startTime: (new Date(game.date + ":" + game.startTime)).toISOString(),

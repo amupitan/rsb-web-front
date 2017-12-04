@@ -39,9 +39,9 @@ class HostPage extends Component {
             private: props.game ? props.game.private : false,
             position: props.game ? props.game.location : { lat: null, lng: null },
             date: DateUtils.yyyymmdd(),
-        };
 
-        this.hasSetEndTime = false;
+            hasSetEndTime: this.props ? true : false
+        };
     }
 
     componentWillMount() {
@@ -49,13 +49,15 @@ class HostPage extends Component {
     }
 
     //uses the startTime and duration to create date and time objects
-    convertDate() {
+    async convertDate() {
         if (this.props.game) {
+
             const res = DateUtils.convertToTimes(this.props.game.startTime, this.props.game.duration);
+
             this.setState({
-                date: res.gameDate,
-                startTime: res.startTime,
-                endTime: res.endTime,
+                date: DateUtils.yyyymmdd({dateString : res.gameDate}),
+                startTime: DateUtils.hhmm({timeString: res.startTime}),
+                endTime:  DateUtils.hhmm({timeString: res.endTime}),
             });
         }
     }
@@ -89,9 +91,10 @@ class HostPage extends Component {
         });
 
         //TODO: use setState updater instead of batching calls
-        if (!this.hasSetEndTime) {
+        if (!this.state.hasSetEndTime) {
             this.setState({
                 endTime: DateUtils.getTimeAfter({ minutes: 15 + getDuration(sports[sport]) }),
+                hasSetEndTime: true
             });
         }
     }
@@ -141,11 +144,11 @@ class HostPage extends Component {
     }
 
     render() {
-
+        
         const cancelButton = this.props.onCancel ?
             <RSBButton
                 text="Cancel"
-                className="btn btn-warning rsb-edit-cancel-btn col-xs-2"
+                className="btn btn-warning rsb-edit-cancel-btn pull-right"
                 onClickFunction={this.props.onCancel}
             />
             : null;
@@ -234,17 +237,22 @@ class HostPage extends Component {
                         <br /><br />
 
                     </div>
-                    <div className="modal-footer">
-                        <div>
-                            <RSBButton
-                                text={this.props.buttonText}
-                                className="btn btn-info rsb-host-submit-btn col-xs-2"
-                                onClickFunction={this.handleSubmit}
-                            />
-                            {cancelButton}
 
-                        </div>
+                    <div className="modal-footer">
+                        <div className="row text-center">
+                            <div className="col-xs-6">
+                                <RSBButton
+                                text={this.props.buttonText}
+                                className="btn btn-info rsb-host-submit-btn pull-left"
+                                onClickFunction={this.handleSubmit}
+                                 />
+                            </div>
+                            <div className="col-xs-6">
+                                {cancelButton}
+                            </div>
+                        </div>                      
                     </div>
+
                 </div>
             </div>
         );

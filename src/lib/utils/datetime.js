@@ -31,6 +31,15 @@ const DateUtils = Object.seal({
         ].join(delimeter);
     },
 
+    hhmm: ({ timeString, delimeter = ':' } = {}) => {
+        const t = timeString.split(':');
+        const hh = t[0], mm = t[1];
+        return [(hh > 9 ? '' : '0') + hh,
+        (mm > 9 ? '' : '0') + mm,
+        ].join(delimeter);
+    },
+
+
     toDateString: (dateString) => (dateString ? new Date(dateString) : new Date()).toDateString(),
 
     convertToTimes: (date, duration) => {
@@ -48,7 +57,7 @@ const DateUtils = Object.seal({
         const hours = gameDate.getHours() + "";
         const minutes = gameDate.getMinutes() + "";
         const dateFormat = year + "-" + month + "-" + day;
-        const startFormat = hours + ':' + minutes;
+        let startFormat = hours + ':' + minutes;
 
         const dateAndTimes = {
             gameDate: dateFormat,
