@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import Game, { leaveGame } from '../../lib/game';
+import Game, { leaveGame, editGame } from '../../lib/game';
 import { getAddress, getWeather, getDistanceBetweenTwoPoints as getDistance, getCurrentLocation } from '../../lib/map';
 import { getLoggedInUserName } from '../../lib/user';
 import { Notifiable } from "../../mixins";
@@ -77,13 +77,13 @@ class CurrentGame extends Notifiable(Component) {
         }
 
         //TODO: need to make the backend call
-        // const res = await editGame(result);
+        //const res = await editGame(result);
         // if (res && res.error) {
         //     console.log(res.error);
         //     this.setState({ modalError: res.error });
         //     return;
         // }
-        // this.closeEditModal();
+        this.closeEditModal();
     }
 
     getStreetAddress() {

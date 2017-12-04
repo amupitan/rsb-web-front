@@ -88,6 +88,18 @@ export async function createGame(data) {
     redirect({ path: '/game', state: { game: res.data } });
 };
 
+export async function editGame(data) {
+    let res = await yoda.post('/create/game', (new YodaRequest({}, data)).toString(), true);
+    if (res.error) {
+        return _handleError(res.data)
+    }
+
+    res = await _getGame({ value: res.data });
+    if (res.error) {
+        return _handleError(res.data)
+    }
+};
+
 // rates a game if not previously rated or returns an error
 export async function rateGame({ rating, id }) {
     const res = await yoda.post('/game/rate', (new YodaRequest({}, {
