@@ -36,6 +36,7 @@ class Profile extends Notifiable(Component) {
         this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
         this.updateFriendStatus = this.updateFriendStatus.bind(this);
+        this.updateFriendRequests = this.updateFriendRequests.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -70,8 +71,28 @@ class Profile extends Notifiable(Component) {
                 action: this.updateFriendStatus(FriendStatus.RECEIVED_R)
             }),
             subscription.subscribe({
+                name: subscriptions.RECEIVED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
+            }),
+            subscription.subscribe({
                 name: subscriptions.CANCELLED_FRIEND_INVITE,
                 action: this.updateFriendStatus(FriendStatus.NONE)
+            }),
+            subscription.subscribe({
+                name: subscriptions.CANCELLED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
+            }),
+            subscription.subscribe({
+                name: subscriptions.RESPONSE_FRIEND_INVITE,
+                action: this.responseFriendInvite()
+            }),
+            subscription.subscribe({
+                name: subscriptions.UNFRIEND_USER,
+                action: this.unfriendUser()
+            }),
+            subscription.subscribe({
+                name: subscriptions.RECEIVED_GAME_INVITE,
+                action: this.updateGameRequests()
             }),
         ]);
     }
@@ -118,7 +139,7 @@ class Profile extends Notifiable(Component) {
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
-        var userInfo = await user({ username, populate: 1 });
+        const userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
             this.setState({ errorMessage: userInfo.error });
@@ -145,6 +166,44 @@ class Profile extends Notifiable(Component) {
         this.getUserInfo({ username: this.state.user.username });
     }
 
+    responseFriendInvite() {
+        return async (res) => {
+            if (res.error || this.state.user.username !== res.to) return;
+
+            if (!res.accept) {
+                const _user = unsafeCopy(this.state.user);
+                _user.friendStatus = FriendStatus.NONE;
+                this.setState({ user: _user, userActionReady: true });
+                return;
+            }
+
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
+            const _user = unsafeCopy(this.state.user);
+            _user.friendStatus = FriendStatus.ARE_FRIENDS;
+            this.setState({ friends: userInfo.friends, user: _user, userActionReady: true })
+        }
+    }
+
+    unfriendUser() {
+        return async (res) => {
+            if (res.error) return;
+            const username = this.state.user.username;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
+            this.setState({ friends: userInfo.friends, userActionReady: true })
+        }
+    }
+
     updateFriendStatus(friendStatus) {
         return (res) => {
             if (res.error || this.state.user.username !== res.from) return;
@@ -154,6 +213,30 @@ class Profile extends Notifiable(Component) {
 
             this.setState({ user: _user, userActionReady: true });
         };
+    }
+
+    updateFriendRequests() {
+        return async (res) => {
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+            this.setState({ user: userInfo })
+        }
+    }
+
+    updateGameRequests() {
+        return async (res) => {
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+            this.setState({ user: userInfo })
+        }
     }
 
     componentWillUnmount() {
