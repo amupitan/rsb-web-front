@@ -34,7 +34,6 @@ class HostPage extends Notifiable(Component) {
 
         const res = await createGame(result);
         if (res && res.error) {
-            console.log(res.error);
             this.setState({ error: res.error });
         }
     }

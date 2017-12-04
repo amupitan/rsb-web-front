@@ -49,7 +49,15 @@ class SearchAddress extends Component {
     }
 
     async getAddressInput() {
-        if (this.props.location && this.props.location.lat) this.searchInput = await getAddress(this.props.location);
+        if (this.props.location && this.props.location.lat){
+            const res = await getAddress(this.props.location);
+            if(res.error){
+                this.searchInput = "";
+                return;
+            } 
+            this.searchInput = res;
+        } 
+
         if (this.searchInput.address) {
             this.searchInput = this.searchInput.address;
         }
