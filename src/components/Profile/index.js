@@ -155,22 +155,25 @@ class Profile extends Notifiable(Component) {
     }
 
     async getInvitedGames(gameRequests) {
-        let newArray = [];
+        const gameInvites = [];
         if (gameRequests) {
             for (const req of gameRequests) {
                 const id = req.game
+
                 const curGame = await getGameById({ value: id });
+                if (curGame.error) {
+                    continue;
+                }   
 
                 const res = await getAddress(curGame.data.location);
                 if (res.error) {
-                    this.setState({ errorMessage: res.error });
-                    return [];
+                    continue;
                 }
                 curGame.data.street = res.address;
-                newArray[newArray.length] = curGame.data;
+                gameInvites[gameInvites.length] = curGame.data;
             }
         }
-        return newArray;
+        return gameInvites;
     }
 
     async getUserInfo({ username = getLoggedInUserName() }) {
