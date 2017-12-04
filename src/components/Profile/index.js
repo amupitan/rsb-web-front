@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
-import { sports, reviewGameInvite, getGameById } from '../../lib/game';
+import { reviewGameInvite, getGameById } from '../../lib/game';
 import { getAddress } from '../../lib/map'
 import constraints from '../../lib/constraints';
 import subscription, { subscriptions } from '../../lib/subscriptions';
@@ -163,7 +163,7 @@ class Profile extends Notifiable(Component) {
                 const curGame = await getGameById({ value: id });
                 if (curGame.error) {
                     continue;
-                }   
+                }
 
                 const res = await getAddress(curGame.data.location);
                 if (res.error) {
