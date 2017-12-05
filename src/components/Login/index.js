@@ -28,7 +28,7 @@ class Login extends Notifiable(Component) {
             return this.onError(res.error);
         }
 
-        await onLogin(res);
+        onLogin(res);
 
         this.setState({
             redirectToReferrer: true,
@@ -53,8 +53,11 @@ class Login extends Notifiable(Component) {
 
     render() {
         if (this.state.redirectToReferrer) {
-            const { from } = this.props.location.state || { from: { pathname: '/' } };
-            return <Redirect to={from} />
+            const home = { from: '/' },
+                { from } = this.props.location.state || home,
+                next = from !== '/signup' ? from : home.from;
+
+            return <Redirect to={next} />
         }
 
         return (

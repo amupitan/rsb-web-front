@@ -12,7 +12,7 @@ export const _formElements = [
         placeholder: 'ellenjohnson',
         type: 'text',
         validate: (value) => {
-            if (value.length < 4 || value.length > 10) return 'Incorrect Length';
+            if (value.length < 4 || value.length > 12) return 'Incorrect Length';
             return false;
         }
     },
