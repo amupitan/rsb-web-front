@@ -276,7 +276,12 @@ class Profile extends Notifiable(Component) {
                 this.setState({ errorMessage: userInfo.error });
                 return;
             }
-            this.setState({ user: userInfo })
+            const games = await this.getInvitedGames(userInfo.gameRequests);
+            if (games.error) {
+                this.setState({ errorMessage: games.error });
+                return;
+            }
+            this.setState({ user: userInfo, invitedGames: games })
         }
     }
 
