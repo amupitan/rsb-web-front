@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { getFriends, getLoggedInUserName } from '../../lib/user';
 import Game, { sendGameInvite } from '../../lib/game';
+import subscription, { subscriptions } from '../../lib/subscriptions';
 import { unsafeCopy } from "../../lib/utils";
 import { Notifiable } from "../../mixins";
 
@@ -24,15 +25,42 @@ class Friends extends Notifiable(Component) {
             numSelected: 0,
         }
 
+        this.subscriber = subscription.subscriber;
+
         this.render = this.render.bind(this);
         this.filterUsers = this.filterUsers.bind(this);
         this.renderUsers = this.renderUsers.bind(this);
         this.displayInvite = this.displayInvite.bind(this);
         this.getFriendInfo = this.getFriendInfo.bind(this);
+        this.updateFriends = this.updateFriends.bind(this);
     }
 
     componentDidMount() {
         this.getFriendInfo();
+        this.createSubscriptions();
+    }
+
+    /**
+    * Makes subscriptions to necessary socket events
+    */
+    createSubscriptions() {
+        this.subscriber.multiple([
+            subscription.subscribe({
+                name: subscriptions.UNFRIEND_USER,
+                action: this.updateFriends()
+            }),
+            subscription.subscribe({
+                name: subscriptions.RESPONSE_FRIEND_INVITE,
+                action: this.updateFriends(true)
+            }),
+        ]);
+    }
+
+    updateFriends(respondToInvite) {
+        return (res) => {
+            if (respondToInvite && !res.accept) return;
+            this.getFriendInfo();
+        }
     }
 
     async getFriendInfo() {
@@ -183,6 +211,10 @@ class Friends extends Notifiable(Component) {
                 </Link>
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        this.subscriber.clearSubscriptions();
     }
 
     render() {
