@@ -3,7 +3,7 @@ import { wait } from '../utils';
 
 import MockWS from './mock';
 
-const timeout = 60,
+const timeout = 15,
     PING = 'ping',
     PONG = 'pong';
 
