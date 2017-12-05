@@ -39,6 +39,7 @@ const RSBButton = ({ text, buttonType, onClickFunction, glyphicons, modalName, c
     return (
         <div>
             <button type="button"
+                style={{ boxShadow: '1px 5px 5px rgb(78, 83, 79)' }}
                 className={"btn btn-" + buttonType + " " + glyphicons + " " + className}
                 onClick={onClickFunction}
                 data-toggle="modal" data-target={"#" + modalName}

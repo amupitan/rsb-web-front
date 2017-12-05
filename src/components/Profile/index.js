@@ -258,6 +258,7 @@ class Profile extends Notifiable(Component) {
 
     updateFriendRequests() {
         return async (res) => {
+            if (this.state.user.username !== getLoggedInUserName()) return;
             const username = res.to;
             const userInfo = await user({ username, populate: 1 });
             if (userInfo.error) {
