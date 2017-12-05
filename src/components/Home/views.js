@@ -56,12 +56,6 @@ const views = [
         component: HostPage,
     },
     {
-        name: 'Settings',
-        path: 'settings',
-        isMenuOption: true,
-        component: Settings,
-    },
-    {
         name: 'Join',
         path: 'join',
         isMenuOption: true,
@@ -72,6 +66,12 @@ const views = [
         path: 'friends',
         isMenuOption: true,
         component: Friends,
+    },
+    {
+        name: 'Settings',
+        path: 'settings',
+        isMenuOption: true,
+        component: Settings,
     },
     {
         name: 'Game History',

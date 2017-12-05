@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
 import user, { getLoggedInUserName, uploadProfilePhoto, reviewFriendRequest, FriendStatus, getGameHistory } from '../../lib/user';
-import { reviewGameInvite } from '../../lib/game';
+import { reviewGameInvite, getGameById } from '../../lib/game';
+import { getAddress } from '../../lib/map'
 import constraints from '../../lib/constraints';
 import subscription, { subscriptions } from '../../lib/subscriptions';
 import { unsafeCopy } from "../../lib/utils";
+import redirect from '../../lib/navigator';
 import { showSuccess } from '../../mixins/notifiable';
 import { Notifiable } from '../../mixins';
 
@@ -28,6 +30,7 @@ class Profile extends Notifiable(Component) {
 
         this.subscriber = subscription.subscriber;
 
+        this.createSubscriptions = this.createSubscriptions.bind(this);
         this.handleUserActionClick = this.handleUserActionClick.bind(this);
         this.handleUserActionChange = this.handleUserActionChange.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
@@ -36,6 +39,8 @@ class Profile extends Notifiable(Component) {
         this.handleGameInvite = this.handleGameInvite.bind(this);
         this.displaySuccess = this.displaySuccess.bind(this);
         this.updateFriendStatus = this.updateFriendStatus.bind(this);
+        this.getInvitedGames = this.getInvitedGames.bind(this);
+        this.updateFriendRequests = this.updateFriendRequests.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,19 +64,51 @@ class Profile extends Notifiable(Component) {
             this.setState({ errorMessage: res.error });
             return;
         }
+
+        if (accept && res.successful) {
+            // TODO: use a different way to redirect
+            redirect({ path: '/game' });
+        }
         this.displaySuccess();
     }
 
     componentDidMount() {
         this.getUserInfo(this.props.match.params);
+        this.createSubscriptions();
+    }
+
+    /**
+     * Makes subscriptions to necessary socket events
+     */
+    createSubscriptions() {
         this.subscriber.multiple([
             subscription.subscribe({
                 name: subscriptions.RECEIVED_FRIEND_INVITE,
                 action: this.updateFriendStatus(FriendStatus.RECEIVED_R)
             }),
             subscription.subscribe({
+                name: subscriptions.RECEIVED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
+            }),
+            subscription.subscribe({
                 name: subscriptions.CANCELLED_FRIEND_INVITE,
                 action: this.updateFriendStatus(FriendStatus.NONE)
+            }),
+            subscription.subscribe({
+                name: subscriptions.CANCELLED_FRIEND_INVITE,
+                action: this.updateFriendRequests()
+            }),
+            subscription.subscribe({
+                name: subscriptions.RESPONSE_FRIEND_INVITE,
+                action: this.responseFriendInvite()
+            }),
+            subscription.subscribe({
+                name: subscriptions.UNFRIEND_USER,
+                action: this.unfriendUser()
+            }),
+            subscription.subscribe({
+                name: subscriptions.RECEIVED_GAME_INVITE,
+                action: this.updateGameRequests()
             }),
         ]);
     }
@@ -117,8 +154,30 @@ class Profile extends Notifiable(Component) {
         this.displaySuccess();
     }
 
+    async getInvitedGames(gameRequests) {
+        const gameInvites = [];
+        if (gameRequests) {
+            for (const req of gameRequests) {
+                const id = req.game
+
+                const curGame = await getGameById({ value: id });
+                if (curGame.error) {
+                    continue;
+                }
+
+                const res = await getAddress(curGame.data.location);
+                if (res.error) {
+                    continue;
+                }
+                curGame.data.street = res.address;
+                gameInvites[gameInvites.length] = curGame.data;
+            }
+        }
+        return gameInvites;
+    }
+
     async getUserInfo({ username = getLoggedInUserName() }) {
-        var userInfo = await user({ username, populate: 1 });
+        const userInfo = await user({ username, populate: 1 });
 
         if (userInfo.error) {
             this.setState({ errorMessage: userInfo.error });
@@ -131,18 +190,59 @@ class Profile extends Notifiable(Component) {
             return;
         }
 
+        const games = await this.getInvitedGames(userInfo.gameRequests);
+
         this.setState({
             user: userInfo,
             friends: userInfo.friends || [],
             gameHistory: gameHistory,
             errorMessage: null,
             userActionReady: true,
+            invitedGames: games,
         });
     }
 
     displaySuccess({ message = 'Success!' } = {}) {
         showSuccess(message);
         this.getUserInfo({ username: this.state.user.username });
+    }
+
+    responseFriendInvite() {
+        return async (res) => {
+            if (res.error || this.state.user.username !== res.to) return;
+
+            if (!res.accept) {
+                const _user = unsafeCopy(this.state.user);
+                _user.friendStatus = FriendStatus.NONE;
+                this.setState({ user: _user, userActionReady: true });
+                return;
+            }
+
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
+            const _user = unsafeCopy(this.state.user);
+            _user.friendStatus = FriendStatus.ARE_FRIENDS;
+            this.setState({ friends: userInfo.friends, user: _user, userActionReady: true })
+        }
+    }
+
+    unfriendUser() {
+        return async (res) => {
+            if (res.error) return;
+            const username = this.state.user.username;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+
+            this.setState({ friends: userInfo.friends, userActionReady: true })
+        }
     }
 
     updateFriendStatus(friendStatus) {
@@ -154,6 +254,35 @@ class Profile extends Notifiable(Component) {
 
             this.setState({ user: _user, userActionReady: true });
         };
+    }
+
+    updateFriendRequests() {
+        return async (res) => {
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+            this.setState({ user: userInfo })
+        }
+    }
+
+    updateGameRequests() {
+        return async (res) => {
+            const username = res.to;
+            const userInfo = await user({ username, populate: 1 });
+            if (userInfo.error) {
+                this.setState({ errorMessage: userInfo.error });
+                return;
+            }
+            const games = await this.getInvitedGames(userInfo.gameRequests);
+            if (games.error) {
+                this.setState({ errorMessage: games.error });
+                return;
+            }
+            this.setState({ user: userInfo, invitedGames: games })
+        }
     }
 
     componentWillUnmount() {
@@ -184,7 +313,7 @@ class Profile extends Notifiable(Component) {
                     isMe &&
                     <div className="row">
                         <FriendRequest {...user} onReview={this.handleFriendRequest} />
-                        <GameInvites {...user} onReview={this.handleGameInvite} />
+                        <GameInvites {...user} onReview={this.handleGameInvite} games={this.state.invitedGames} />
                     </div>
                 }
             </div >

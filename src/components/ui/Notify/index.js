@@ -25,12 +25,12 @@ class Notify extends Component {
 
     render() {
         const { title, type, message } = this.props;
-        const classes = classnames('notify-alert', type, {
+        const classes = classnames('notify-alert', 'text-center', type, {
             'notify-visible': this.state.display,
             'notify-hidden': !this.state.display,
         })
         return (
-            <div className={classes}>
+            <div className={classes} >
                 <span className="closebtn" onClick={this.handleClose}>&times;</span>
                 <strong>{title && `${title}: `}</strong>{message}
             </div>

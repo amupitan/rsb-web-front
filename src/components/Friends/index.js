@@ -21,6 +21,7 @@ class Friends extends Notifiable(Component) {
         this.state = {
             friendSearch: '',
             userFriends: [],
+            numSelected: 0,
         }
 
         this.render = this.render.bind(this);
@@ -97,14 +98,22 @@ class Friends extends Notifiable(Component) {
     }
 
     selectFriend(i) {
+        let numSelected = this.state.numSelected;
         const friends = unsafeCopy(this.state.userFriends),
             friend = friends[i];
         if (friend.selectStatus === gameStatus.IN_GAME) return;
 
-        friend.selectStatus = (friend.selectStatus === gameStatus.SELECTED) ? gameStatus.NOT_SELECTED : gameStatus.SELECTED;
+        if (friend.selectStatus === gameStatus.SELECTED) {
+            friend.selectStatus = gameStatus.NOT_SELECTED;
+            numSelected--;
+        } else {
+            friend.selectStatus = gameStatus.SELECTED
+            numSelected++;
+        }
 
         this.setState({
             userFriends: friends,
+            numSelected: numSelected
         })
     }
 
@@ -112,6 +121,7 @@ class Friends extends Notifiable(Component) {
         return classNames(
             'col-xs-3',
             'text-center',
+            'rsb-friend-user-box',
             {
                 'user-select': (user.selectStatus === gameStatus.SELECTED),
                 'user-in-game': (user.selectStatus === gameStatus.IN_GAME)
@@ -149,28 +159,30 @@ class Friends extends Notifiable(Component) {
     }
 
     displayInvite() {
-        if (this.props.location && this.props.location.pathname === '/invite') {
-            return (
-                <Link to={'/game'}>
-                    <RSBButton
-                        text="Invite"
-                        buttonType="success"
-                        onClickFunction={() => {
-                            let userFriends = this.state.userFriends;
-                            for (let friend of this.state.userFriends) {
-                                if (friend.selectStatus === gameStatus.SELECTED) {
-                                    sendGameInvite(friend.username)
-                                    friend.selectStatus = gameStatus.NOT_SELECTED;
-                                }
-                            }
-                            this.setState({
-                                userFriends: userFriends
-                            })
-                        }}
-                    />
-                </Link>
-            )
+        if (!(this.props.location && this.props.location.pathname === '/invite')) return null;
+
+        if (this.state.numSelected === 0) {
+            return <div className='rsb-friends-invite'><RSBButton text="Invite" buttonType="success" className="disabled rsb-friends-invite-button" /></div>
         }
+
+        const handleInviteClick = () => {
+            const userFriends = this.state.userFriends;
+            for (const friend of this.state.userFriends) {
+                if (friend.selectStatus === gameStatus.SELECTED) {
+                    sendGameInvite(friend.username)
+                    friend.selectStatus = gameStatus.NOT_SELECTED;
+                }
+            }
+            this.setState({ userFriends: userFriends });
+        };
+
+        return (
+            <div className='rsb-friends-invite'>
+                <Link to={'/game'}>
+                    <RSBButton text="Invite" buttonType="success" onClickFunction={handleInviteClick} className='rsb-friends-invite-button' />
+                </Link>
+            </div>
+        );
     }
 
     render() {

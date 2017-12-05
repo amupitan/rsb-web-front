@@ -5,11 +5,15 @@ import RSBButton from '../ui/RSBButton';
 import './style.css';
 import UserDisplay from './UserDisplay';
 import Logout from '../Logout';
+import logo from '../../assets/rsb_logo.png';
 
 const HamburgerMenu = ({ views, onClick, menu, width, user }) => {
   if (menu) {
     return (
       <div className="rsb-menu" style={{ width: width }}>
+        <div className="menu-logo">
+          <img className="logo" src={logo} alt="rsb_logo" />
+        </div>
         <UserDisplay {...user} />
         {menuGenerator(width)(views, onClick)}
         <Logout />

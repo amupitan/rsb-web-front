@@ -13,11 +13,17 @@ export const FriendStatus = {
 }
 
 function _handleError(error) {
-    const err = { error: errorFormatter(error) }
+    const err = { error: errorFormatter(error) };
     showError({ message: err.error });
     redirect();
     return err;
-}
+};
+
+/**
+ * Returns a user readable version of the error
+ * @param {YodaError} error 
+ */
+const _handleErrorPure = error => ({ error: errorFormatter(error) });
 
 export function getLoggedInUserName() {
     return session.getItem('username');
@@ -102,6 +108,31 @@ export async function uploadProfilePhoto(file) {
     session.user = userInfo;
 
     return res.data;
+}
+
+export async function editUser(userInfo) {
+    const newInfo = {};
+
+    for (const type in userInfo) {
+        if (userInfo[type]) {
+            newInfo[type] = userInfo[type];
+        }
+    }
+
+    const res = await yoda.post('/edit/user', (new YodaRequest({}, newInfo)).toString(), true);
+    if (res.error) {
+        return _handleErrorPure(res.data);
+    }
+
+    //Reset sessions
+    const newSessionInfo = await getUserInfo(res.data.username);
+    if (newSessionInfo.error) {
+        return newSessionInfo;
+    }
+    session.user = newSessionInfo;
+    session.setItem('username', newSessionInfo.username);
+
+    return { successful: true };
 }
 
 export async function getGameHistory({ username }) {

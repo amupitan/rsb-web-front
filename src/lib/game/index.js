@@ -1,8 +1,10 @@
 import constraints from "../constraints";
 import Game, {
+    getGame,
     getGamesNearLocation,
     joinGame,
     createGame,
+    editGame,
     leaveGame,
     sendGameInvite,
     reviewGameInvite,
@@ -26,10 +28,12 @@ export const sports = Object.freeze(Object.keys(_sports));
 export const getDuration = (sport) => _sports[sport].duration;
 
 export {
+    getGame as getGameById,
     getGamesNearLocation,
     joinAndGetGame as getGame,
     getGameHistory,
     createGame,
+    editGame,
     rateGame,
     joinGame,
     leaveGame,

@@ -5,7 +5,7 @@ import errorFormatter from '../errors';
 import { showError, showInfo } from '../../mixins/notifiable';
 
 //make request to get game
-async function _getGame({ value } = {}) {
+export async function getGame({ value } = {}) {
     const path = value ? `/game/g/${value}` : '/game';
     return await yoda.get(path, true);
 }
@@ -27,15 +27,18 @@ export async function joinAndGetGame(game, byId) {
     return res.data;
 }
 
-// leaves a game and redirects
+/**
+ * Leaves a game and returns a {message} if successful,
+ * or an error if not
+ */
 export async function leaveGame() {
     const res = await yoda.post('/game/exit', (new YodaRequest({}, {})).toString(), true);
+    session.removeItem('game');
     if (res.error) {
-        const err = _handleError(res.data);
-        showError({ message: err.error });
-        redirect();
+        return _handleError(res.data);
     }
     session.removeItem('game');
+    return { message: 'You have successfully left the game' };
 }
 
 // gets games based on a location
@@ -53,7 +56,7 @@ export async function getGamesNearLocation({ lat, lng }) {
 }
 
 // joins a game based on map find or join code
-export async function joinGame(game, { byId = true, source = '/' }) {
+export async function joinGame(game, { byId = true, source = '/' } = {}) {
     if (!game) return;
     const user = session.getItem('username'); //TODO: use navigator/history
 
@@ -79,12 +82,21 @@ export async function createGame(data) {
         return _handleError(res.data)
     }
 
-    res = await _getGame({ value: res.data });
+    res = await getGame({ value: res.data });
     if (res.error) {
         return _handleError(res.data)
     }
 
     redirect({ path: '/game', state: { game: res.data } });
+};
+
+export async function editGame(data) {
+    const res = await yoda.post('/edit/game', (new YodaRequest({}, data)).toString(), true);
+    if (res.error) {
+        return _handleError(res.data)
+    }
+
+    return res.data;
 };
 
 // rates a game if not previously rated or returns an error
@@ -123,13 +135,13 @@ export async function reviewGameInvite({ accept, id, from }) {
     if (res.error) {
         return _handleError(res.data);
     }
-    redirect({ path: '/game' });
+
     return res.data;
 }
 
 // Returns the user's current game or an error if there's no game
 export default async function Game() {
-    const game = await _getGame();
+    const game = await getGame();
     if (game.error) {
         return _handleError(game.data);
     }

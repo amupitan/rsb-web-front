@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import { verifyCredentials, loginForm, onLogin } from '../../lib/authentication';
 import { Notifiable } from '../../mixins';
@@ -28,7 +28,7 @@ class Login extends Notifiable(Component) {
             return this.onError(res.error);
         }
 
-        await onLogin(res);
+        onLogin(res);
 
         this.setState({
             redirectToReferrer: true,
@@ -53,13 +53,19 @@ class Login extends Notifiable(Component) {
 
     render() {
         if (this.state.redirectToReferrer) {
-            const { from } = this.props.location.state || { from: { pathname: '/' } };
-            return <Redirect to={from} />
+            const home = { from: '/' },
+                { from } = this.props.location.state || home,
+                next = from !== '/signup' ? from : home.from;
+
+            return <Redirect to={next} />
         }
 
         return (
             <div className="container " >
                 <div className="smart">
+                    <Link to={`/signup`}>
+                        <button className="btn btn-link">Sign Up</button>
+                    </Link>
                     <div className="form-logo">
                         <img className="logo" src={logo} alt="rsb_logo" />
                     </div>
