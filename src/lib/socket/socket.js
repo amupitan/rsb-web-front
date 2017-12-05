@@ -82,6 +82,7 @@ export default class Socket {
 
         if (!message.meta || !message.result) {
             console.error(message);
+            return;
         }
 
         const event = new Event(message.meta.name);
